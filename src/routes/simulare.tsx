@@ -17,7 +17,6 @@ export const Route = createFileRoute("/simulare")({
       { name: "description", content: "Simulare admitere 2026 cu 30 de grile cronometrate, în format identic cu examenul real. UPB, UBB, UMF, ASE și 100+ universități. Gratis." },
       { property: "og:title", content: "Simulare Admitere 2026 — Test Cronometrat Gratuit" },
       { property: "og:description", content: "30 de grile cronometrate, feedback instant și explicații detaliate la fiecare greșeală." },
-      { rel: "canonical", href: "https://grileadmitere.ro/simulare" },
     ],
     links: [{ rel: "canonical", href: "https://grileadmitere.ro/simulare" }],
   }),
