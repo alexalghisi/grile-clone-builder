@@ -68,6 +68,39 @@ export type Database = {
           },
         ]
       }
+      feedback: {
+        Row: {
+          category: string
+          created_at: string
+          email: string | null
+          grila_id: string | null
+          id: string
+          message: string
+          page_url: string | null
+          user_id: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          email?: string | null
+          grila_id?: string | null
+          id?: string
+          message: string
+          page_url?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          email?: string | null
+          grila_id?: string | null
+          id?: string
+          message?: string
+          page_url?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
