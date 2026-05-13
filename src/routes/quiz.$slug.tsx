@@ -97,6 +97,8 @@ function Page() {
 
   const isRevealed = revealed[q.id];
   const sel = answers[q.id];
+  const isWrong = isRevealed && sel !== q.correct_index;
+  const isRight = isRevealed && sel === q.correct_index;
 
   return (
     <div className="min-h-screen bg-background">
@@ -107,7 +109,15 @@ function Page() {
           <span className="flex items-center gap-1 text-muted-foreground"><Clock className="h-4 w-4" />{Math.floor(seconds/60)}:{String(seconds%60).padStart(2,"0")}</span>
         </div>
         <Progress value={((idx + 1) / questions.length) * 100} className="mb-6" />
-        <Card className="p-6">
+        <Card
+          className={`p-6 transition-colors ${
+            isWrong
+              ? "border-2 border-destructive bg-destructive/10"
+              : isRight
+              ? "border-2 border-green-600 bg-green-50 dark:bg-green-950/20"
+              : ""
+          }`}
+        >
           <Badge variant="secondary" className="mb-3">Întrebarea {idx + 1} / {questions.length}</Badge>
           <div className="text-base font-medium whitespace-pre-wrap">{q.question_text}</div>
           <div className="mt-5 space-y-2">
@@ -130,8 +140,34 @@ function Page() {
               );
             })}
           </div>
-          {isRevealed && q.explanation && (
-            <div className="mt-4 rounded-md bg-muted p-3 text-sm">{q.explanation}</div>
+          {isRevealed && (
+            <div
+              className={`mt-5 rounded-md border p-4 text-sm ${
+                isWrong
+                  ? "border-destructive/40 bg-destructive/5"
+                  : "border-green-600/40 bg-green-50 dark:bg-green-950/20"
+              }`}
+            >
+              <div className="mb-2 flex items-center gap-2 font-semibold">
+                {isWrong ? (
+                  <><XCircle className="h-5 w-5 text-destructive" /><span className="text-destructive">Răspuns greșit</span></>
+                ) : (
+                  <><CheckCircle2 className="h-5 w-5 text-green-600" /><span className="text-green-700 dark:text-green-400">Răspuns corect</span></>
+                )}
+              </div>
+              <div className="mb-2">
+                <span className="font-medium">Răspunsul corect: </span>
+                <span className="font-semibold text-green-700 dark:text-green-400">
+                  {String.fromCharCode(65 + q.correct_index)}. {q.options[q.correct_index]}
+                </span>
+              </div>
+              <div className="mt-3 border-t pt-3">
+                <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Explicație / Rezolvare</div>
+                <div className="whitespace-pre-wrap text-foreground/90">
+                  {q.explanation?.trim() || "Nu există o explicație detaliată pentru această grilă. Răspunsul corect este marcat mai sus."}
+                </div>
+              </div>
+            </div>
           )}
           <div className="mt-6 flex justify-between">
             <Button variant="ghost" disabled={idx === 0} onClick={() => setIdx(idx - 1)}>Înapoi</Button>
