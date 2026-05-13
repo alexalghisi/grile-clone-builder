@@ -13,6 +13,7 @@ const NAV = [
   { to: "/tutoriale", label: "Tutoriale" },
   { to: "/simulare", label: "Simulare" },
   { to: "/grila-zilei", label: "Grila Zilei" },
+  { to: "/feedback", label: "Feedback" },
 ] as const;
 
 export function Header() {
