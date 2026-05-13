@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { listUniversities } from "@/lib/db.functions";
 import { Header } from "@/components/Header";
-import { AdSlot } from "@/components/AdSlot";
+import { AdSlot, AdLeaderboard } from "@/components/AdSlot";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -129,6 +129,7 @@ function Index() {
       </section>
 
       <main className="container mx-auto space-y-16 px-4 py-12">
+        <AdLeaderboard className="my-2" />
         <AdSlot />
 
         {/* Simulare */}
@@ -166,6 +167,7 @@ function Index() {
           </div>
         </section>
 
+        <AdLeaderboard />
         <AdSlot />
 
         {/* Universities */}
