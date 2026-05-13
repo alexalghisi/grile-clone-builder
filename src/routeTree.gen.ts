@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as GrileIndexRouteImport } from './routes/grile.index'
+import { Route as GrileUniSlugRouteImport } from './routes/grile.$uniSlug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GrileIndexRoute = GrileIndexRouteImport.update({
+  id: '/grile/',
+  path: '/grile/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GrileUniSlugRoute = GrileUniSlugRouteImport.update({
+  id: '/grile/$uniSlug',
+  path: '/grile/$uniSlug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/grile/$uniSlug': typeof GrileUniSlugRoute
+  '/grile/': typeof GrileIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/grile/$uniSlug': typeof GrileUniSlugRoute
+  '/grile': typeof GrileIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/grile/$uniSlug': typeof GrileUniSlugRoute
+  '/grile/': typeof GrileIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/grile/$uniSlug' | '/grile/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/grile/$uniSlug' | '/grile'
+  id: '__root__' | '/' | '/grile/$uniSlug' | '/grile/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  GrileUniSlugRoute: typeof GrileUniSlugRoute
+  GrileIndexRoute: typeof GrileIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,12 +68,38 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/grile/': {
+      id: '/grile/'
+      path: '/grile'
+      fullPath: '/grile/'
+      preLoaderRoute: typeof GrileIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/grile/$uniSlug': {
+      id: '/grile/$uniSlug'
+      path: '/grile/$uniSlug'
+      fullPath: '/grile/$uniSlug'
+      preLoaderRoute: typeof GrileUniSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  GrileUniSlugRoute: GrileUniSlugRoute,
+  GrileIndexRoute: GrileIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
