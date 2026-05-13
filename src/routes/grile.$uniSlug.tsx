@@ -5,7 +5,7 @@ import { getUniversity } from "@/lib/db.functions";
 import { Header } from "@/components/Header";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { AdSlot } from "@/components/AdSlot";
+import { AdSlot, AdLeaderboard } from "@/components/AdSlot";
 import { BookOpen } from "lucide-react";
 
 export const Route = createFileRoute("/grile/$uniSlug")({
@@ -43,6 +43,7 @@ function Page() {
         <h1 className="mt-2 text-3xl font-bold">{data.name}</h1>
         <p className="text-muted-foreground">{data.city} · {data.subjects.length} materii</p>
         {data.description && <p className="mt-4 max-w-2xl text-sm text-muted-foreground">{data.description}</p>}
+        <AdLeaderboard className="my-4" />
         <AdSlot className="my-6" />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 mt-6">
           {data.subjects.map((s: any) => (

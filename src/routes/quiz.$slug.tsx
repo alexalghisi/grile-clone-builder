@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { getQuiz } from "@/lib/db.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { Header } from "@/components/Header";
-import { AdSlot } from "@/components/AdSlot";
+import { AdSlot, AdLeaderboard } from "@/components/AdSlot";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -184,6 +184,7 @@ function Page() {
               </div>
             </div>
           )}
+          {isRevealed && <AdSlot className="mt-5" />}
           <div className="mt-6 flex justify-between">
             <Button variant="ghost" disabled={idx === 0} onClick={() => setIdx(idx - 1)}>Înapoi</Button>
             {!isRevealed ? (
@@ -195,6 +196,7 @@ function Page() {
             )}
           </div>
         </Card>
+        <AdLeaderboard className="my-6" />
         <AdSlot className="my-6" />
       </main>
     </div>

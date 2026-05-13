@@ -9,7 +9,7 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
-import { AdScript } from "@/components/AdSlot";
+import { AdScript, StickyBottomAd } from "@/components/AdSlot";
 import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
@@ -207,7 +207,10 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <div className="pb-[64px] md:pb-[100px]">
+        <Outlet />
+      </div>
+      <StickyBottomAd />
       <Toaster />
     </QueryClientProvider>
   );
