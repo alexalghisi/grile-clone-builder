@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TutorialeRouteImport } from './routes/tutoriale'
 import { Route as SubiecteBacRouteImport } from './routes/subiecte-bac'
 import { Route as SubiecteAdmitereRouteImport } from './routes/subiecte-admitere'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SimulareRouteImport } from './routes/simulare'
 import { Route as GrilaZileiRouteImport } from './routes/grila-zilei'
 import { Route as FeedbackRouteImport } from './routes/feedback'
@@ -34,6 +35,11 @@ const SubiecteBacRoute = SubiecteBacRouteImport.update({
 const SubiecteAdmitereRoute = SubiecteAdmitereRouteImport.update({
   id: '/subiecte-admitere',
   path: '/subiecte-admitere',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SimulareRoute = SimulareRouteImport.update({
@@ -83,6 +89,7 @@ export interface FileRoutesByFullPath {
   '/feedback': typeof FeedbackRoute
   '/grila-zilei': typeof GrilaZileiRoute
   '/simulare': typeof SimulareRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
   '/subiecte-bac': typeof SubiecteBacRoute
   '/tutoriale': typeof TutorialeRoute
@@ -96,6 +103,7 @@ export interface FileRoutesByTo {
   '/feedback': typeof FeedbackRoute
   '/grila-zilei': typeof GrilaZileiRoute
   '/simulare': typeof SimulareRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
   '/subiecte-bac': typeof SubiecteBacRoute
   '/tutoriale': typeof TutorialeRoute
@@ -110,6 +118,7 @@ export interface FileRoutesById {
   '/feedback': typeof FeedbackRoute
   '/grila-zilei': typeof GrilaZileiRoute
   '/simulare': typeof SimulareRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
   '/subiecte-bac': typeof SubiecteBacRoute
   '/tutoriale': typeof TutorialeRoute
@@ -125,6 +134,7 @@ export interface FileRouteTypes {
     | '/feedback'
     | '/grila-zilei'
     | '/simulare'
+    | '/sitemap.xml'
     | '/subiecte-admitere'
     | '/subiecte-bac'
     | '/tutoriale'
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/feedback'
     | '/grila-zilei'
     | '/simulare'
+    | '/sitemap.xml'
     | '/subiecte-admitere'
     | '/subiecte-bac'
     | '/tutoriale'
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/feedback'
     | '/grila-zilei'
     | '/simulare'
+    | '/sitemap.xml'
     | '/subiecte-admitere'
     | '/subiecte-bac'
     | '/tutoriale'
@@ -165,6 +177,7 @@ export interface RootRouteChildren {
   FeedbackRoute: typeof FeedbackRoute
   GrilaZileiRoute: typeof GrilaZileiRoute
   SimulareRoute: typeof SimulareRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SubiecteAdmitereRoute: typeof SubiecteAdmitereRoute
   SubiecteBacRoute: typeof SubiecteBacRoute
   TutorialeRoute: typeof TutorialeRoute
@@ -194,6 +207,13 @@ declare module '@tanstack/react-router' {
       path: '/subiecte-admitere'
       fullPath: '/subiecte-admitere'
       preLoaderRoute: typeof SubiecteAdmitereRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/simulare': {
@@ -261,6 +281,7 @@ const rootRouteChildren: RootRouteChildren = {
   FeedbackRoute: FeedbackRoute,
   GrilaZileiRoute: GrilaZileiRoute,
   SimulareRoute: SimulareRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   SubiecteAdmitereRoute: SubiecteAdmitereRoute,
   SubiecteBacRoute: SubiecteBacRoute,
   TutorialeRoute: TutorialeRoute,
@@ -271,3 +292,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
