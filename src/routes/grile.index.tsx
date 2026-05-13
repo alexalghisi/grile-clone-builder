@@ -1,4 +1,5 @@
-import { createFileRoute, Link, useServerFn } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { useState, useMemo } from "react";
 import { listUniversities } from "@/lib/db.functions";
@@ -15,7 +16,7 @@ function Page() {
   const { data: unis = [] } = useQuery({ queryKey: ["unis"], queryFn: () => fn() });
   const [q, setQ] = useState("");
   const filtered = useMemo(
-    () => unis.filter((u) => `${u.short_name} ${u.name} ${u.city}`.toLowerCase().includes(q.toLowerCase())),
+    () => unis.filter((u: any) => `${u.short_name} ${u.name} ${u.city}`.toLowerCase().includes(q.toLowerCase())),
     [unis, q]
   );
 
@@ -28,7 +29,7 @@ function Page() {
         <Input className="mt-6 max-w-md" placeholder="Caută universitate sau oraș…" value={q} onChange={(e) => setQ(e.target.value)} />
         <AdSlot className="my-6" />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((u) => (
+          {filtered.map((u: any) => (
             <Link key={u.id} to="/grile/$uniSlug" params={{ uniSlug: u.slug }}>
               <Card className="p-5 h-full transition hover:border-primary/40 hover:shadow">
                 <div className="flex items-start gap-3">

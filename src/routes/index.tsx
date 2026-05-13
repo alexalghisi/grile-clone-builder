@@ -1,4 +1,5 @@
-import { createFileRoute, Link, useServerFn } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { listUniversities } from "@/lib/db.functions";
 import { Header } from "@/components/Header";
@@ -52,7 +53,7 @@ function Index() {
 
         {groups.map((g) => {
           const list = g.match
-            ? unis.filter((u) => g.match!.some((m) => u.slug.startsWith(m)))
+            ? unis.filter((u: any) => g.match!.some((m) => u.slug.startsWith(m)))
             : unis;
           if (!list.length) return null;
           return (
@@ -61,7 +62,7 @@ function Index() {
                 <Sparkles className="h-5 w-5 text-primary" />{g.title}
               </h2>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {list.map((u) => (
+                {list.map((u: any) => (
                   <Link key={u.id} to="/grile/$uniSlug" params={{ uniSlug: u.slug }}>
                     <Card className="p-5 h-full transition-shadow hover:shadow-lg hover:border-primary/40">
                       <div className="flex items-start gap-3">
