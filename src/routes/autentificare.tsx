@@ -8,7 +8,16 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/autentificare")({ component: Page });
+export const Route = createFileRoute("/autentificare")({
+  head: () => ({
+    meta: [
+      { title: "Autentificare — GrileAdmitere.ro" },
+      { name: "description", content: "Autentifică-te pe GrileAdmitere.ro pentru a-ți salva progresul la grilele de admitere și simulările BAC 2026." },
+      { name: "robots", content: "noindex, follow" },
+    ],
+  }),
+  component: Page,
+});
 
 function Page() {
   const nav = useNavigate();
