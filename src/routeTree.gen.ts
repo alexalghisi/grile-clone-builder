@@ -9,10 +9,29 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TutorialeRouteImport } from './routes/tutoriale'
+import { Route as SimulareRouteImport } from './routes/simulare'
+import { Route as AutentificareRouteImport } from './routes/autentificare'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GrileIndexRouteImport } from './routes/grile.index'
+import { Route as QuizSlugRouteImport } from './routes/quiz.$slug'
 import { Route as GrileUniSlugRouteImport } from './routes/grile.$uniSlug'
 
+const TutorialeRoute = TutorialeRouteImport.update({
+  id: '/tutoriale',
+  path: '/tutoriale',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SimulareRoute = SimulareRouteImport.update({
+  id: '/simulare',
+  path: '/simulare',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AutentificareRoute = AutentificareRouteImport.update({
+  id: '/autentificare',
+  path: '/autentificare',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -23,6 +42,11 @@ const GrileIndexRoute = GrileIndexRouteImport.update({
   path: '/grile/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const QuizSlugRoute = QuizSlugRouteImport.update({
+  id: '/quiz/$slug',
+  path: '/quiz/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GrileUniSlugRoute = GrileUniSlugRouteImport.update({
   id: '/grile/$uniSlug',
   path: '/grile/$uniSlug',
@@ -31,36 +55,95 @@ const GrileUniSlugRoute = GrileUniSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/autentificare': typeof AutentificareRoute
+  '/simulare': typeof SimulareRoute
+  '/tutoriale': typeof TutorialeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
+  '/quiz/$slug': typeof QuizSlugRoute
   '/grile/': typeof GrileIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/autentificare': typeof AutentificareRoute
+  '/simulare': typeof SimulareRoute
+  '/tutoriale': typeof TutorialeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
+  '/quiz/$slug': typeof QuizSlugRoute
   '/grile': typeof GrileIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/autentificare': typeof AutentificareRoute
+  '/simulare': typeof SimulareRoute
+  '/tutoriale': typeof TutorialeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
+  '/quiz/$slug': typeof QuizSlugRoute
   '/grile/': typeof GrileIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/grile/$uniSlug' | '/grile/'
+  fullPaths:
+    | '/'
+    | '/autentificare'
+    | '/simulare'
+    | '/tutoriale'
+    | '/grile/$uniSlug'
+    | '/quiz/$slug'
+    | '/grile/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/grile/$uniSlug' | '/grile'
-  id: '__root__' | '/' | '/grile/$uniSlug' | '/grile/'
+  to:
+    | '/'
+    | '/autentificare'
+    | '/simulare'
+    | '/tutoriale'
+    | '/grile/$uniSlug'
+    | '/quiz/$slug'
+    | '/grile'
+  id:
+    | '__root__'
+    | '/'
+    | '/autentificare'
+    | '/simulare'
+    | '/tutoriale'
+    | '/grile/$uniSlug'
+    | '/quiz/$slug'
+    | '/grile/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AutentificareRoute: typeof AutentificareRoute
+  SimulareRoute: typeof SimulareRoute
+  TutorialeRoute: typeof TutorialeRoute
   GrileUniSlugRoute: typeof GrileUniSlugRoute
+  QuizSlugRoute: typeof QuizSlugRoute
   GrileIndexRoute: typeof GrileIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tutoriale': {
+      id: '/tutoriale'
+      path: '/tutoriale'
+      fullPath: '/tutoriale'
+      preLoaderRoute: typeof TutorialeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/simulare': {
+      id: '/simulare'
+      path: '/simulare'
+      fullPath: '/simulare'
+      preLoaderRoute: typeof SimulareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/autentificare': {
+      id: '/autentificare'
+      path: '/autentificare'
+      fullPath: '/autentificare'
+      preLoaderRoute: typeof AutentificareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -75,6 +158,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GrileIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/quiz/$slug': {
+      id: '/quiz/$slug'
+      path: '/quiz/$slug'
+      fullPath: '/quiz/$slug'
+      preLoaderRoute: typeof QuizSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/grile/$uniSlug': {
       id: '/grile/$uniSlug'
       path: '/grile/$uniSlug'
@@ -87,7 +177,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AutentificareRoute: AutentificareRoute,
+  SimulareRoute: SimulareRoute,
+  TutorialeRoute: TutorialeRoute,
   GrileUniSlugRoute: GrileUniSlugRoute,
+  QuizSlugRoute: QuizSlugRoute,
   GrileIndexRoute: GrileIndexRoute,
 }
 export const routeTree = rootRouteImport
