@@ -14,6 +14,7 @@ import { Route as SubiecteBacRouteImport } from './routes/subiecte-bac'
 import { Route as SubiecteAdmitereRouteImport } from './routes/subiecte-admitere'
 import { Route as SimulareRouteImport } from './routes/simulare'
 import { Route as GrilaZileiRouteImport } from './routes/grila-zilei'
+import { Route as FeedbackRouteImport } from './routes/feedback'
 import { Route as AutentificareRouteImport } from './routes/autentificare'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GrileIndexRouteImport } from './routes/grile.index'
@@ -45,6 +46,11 @@ const GrilaZileiRoute = GrilaZileiRouteImport.update({
   path: '/grila-zilei',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FeedbackRoute = FeedbackRouteImport.update({
+  id: '/feedback',
+  path: '/feedback',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AutentificareRoute = AutentificareRouteImport.update({
   id: '/autentificare',
   path: '/autentificare',
@@ -74,6 +80,7 @@ const GrileUniSlugRoute = GrileUniSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/autentificare': typeof AutentificareRoute
+  '/feedback': typeof FeedbackRoute
   '/grila-zilei': typeof GrilaZileiRoute
   '/simulare': typeof SimulareRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
@@ -86,6 +93,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/autentificare': typeof AutentificareRoute
+  '/feedback': typeof FeedbackRoute
   '/grila-zilei': typeof GrilaZileiRoute
   '/simulare': typeof SimulareRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
@@ -99,6 +107,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/autentificare': typeof AutentificareRoute
+  '/feedback': typeof FeedbackRoute
   '/grila-zilei': typeof GrilaZileiRoute
   '/simulare': typeof SimulareRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
@@ -113,6 +122,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/autentificare'
+    | '/feedback'
     | '/grila-zilei'
     | '/simulare'
     | '/subiecte-admitere'
@@ -125,6 +135,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/autentificare'
+    | '/feedback'
     | '/grila-zilei'
     | '/simulare'
     | '/subiecte-admitere'
@@ -137,6 +148,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/autentificare'
+    | '/feedback'
     | '/grila-zilei'
     | '/simulare'
     | '/subiecte-admitere'
@@ -150,6 +162,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AutentificareRoute: typeof AutentificareRoute
+  FeedbackRoute: typeof FeedbackRoute
   GrilaZileiRoute: typeof GrilaZileiRoute
   SimulareRoute: typeof SimulareRoute
   SubiecteAdmitereRoute: typeof SubiecteAdmitereRoute
@@ -197,6 +210,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GrilaZileiRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/feedback': {
+      id: '/feedback'
+      path: '/feedback'
+      fullPath: '/feedback'
+      preLoaderRoute: typeof FeedbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/autentificare': {
       id: '/autentificare'
       path: '/autentificare'
@@ -238,6 +258,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AutentificareRoute: AutentificareRoute,
+  FeedbackRoute: FeedbackRoute,
   GrilaZileiRoute: GrilaZileiRoute,
   SimulareRoute: SimulareRoute,
   SubiecteAdmitereRoute: SubiecteAdmitereRoute,
@@ -250,3 +271,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
