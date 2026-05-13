@@ -10,7 +10,10 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TutorialeRouteImport } from './routes/tutoriale'
+import { Route as SubiecteBacRouteImport } from './routes/subiecte-bac'
+import { Route as SubiecteAdmitereRouteImport } from './routes/subiecte-admitere'
 import { Route as SimulareRouteImport } from './routes/simulare'
+import { Route as GrilaZileiRouteImport } from './routes/grila-zilei'
 import { Route as AutentificareRouteImport } from './routes/autentificare'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GrileIndexRouteImport } from './routes/grile.index'
@@ -22,9 +25,24 @@ const TutorialeRoute = TutorialeRouteImport.update({
   path: '/tutoriale',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SubiecteBacRoute = SubiecteBacRouteImport.update({
+  id: '/subiecte-bac',
+  path: '/subiecte-bac',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SubiecteAdmitereRoute = SubiecteAdmitereRouteImport.update({
+  id: '/subiecte-admitere',
+  path: '/subiecte-admitere',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SimulareRoute = SimulareRouteImport.update({
   id: '/simulare',
   path: '/simulare',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GrilaZileiRoute = GrilaZileiRouteImport.update({
+  id: '/grila-zilei',
+  path: '/grila-zilei',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AutentificareRoute = AutentificareRouteImport.update({
@@ -56,7 +74,10 @@ const GrileUniSlugRoute = GrileUniSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/autentificare': typeof AutentificareRoute
+  '/grila-zilei': typeof GrilaZileiRoute
   '/simulare': typeof SimulareRoute
+  '/subiecte-admitere': typeof SubiecteAdmitereRoute
+  '/subiecte-bac': typeof SubiecteBacRoute
   '/tutoriale': typeof TutorialeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/quiz/$slug': typeof QuizSlugRoute
@@ -65,7 +86,10 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/autentificare': typeof AutentificareRoute
+  '/grila-zilei': typeof GrilaZileiRoute
   '/simulare': typeof SimulareRoute
+  '/subiecte-admitere': typeof SubiecteAdmitereRoute
+  '/subiecte-bac': typeof SubiecteBacRoute
   '/tutoriale': typeof TutorialeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/quiz/$slug': typeof QuizSlugRoute
@@ -75,7 +99,10 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/autentificare': typeof AutentificareRoute
+  '/grila-zilei': typeof GrilaZileiRoute
   '/simulare': typeof SimulareRoute
+  '/subiecte-admitere': typeof SubiecteAdmitereRoute
+  '/subiecte-bac': typeof SubiecteBacRoute
   '/tutoriale': typeof TutorialeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/quiz/$slug': typeof QuizSlugRoute
@@ -86,7 +113,10 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/autentificare'
+    | '/grila-zilei'
     | '/simulare'
+    | '/subiecte-admitere'
+    | '/subiecte-bac'
     | '/tutoriale'
     | '/grile/$uniSlug'
     | '/quiz/$slug'
@@ -95,7 +125,10 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/autentificare'
+    | '/grila-zilei'
     | '/simulare'
+    | '/subiecte-admitere'
+    | '/subiecte-bac'
     | '/tutoriale'
     | '/grile/$uniSlug'
     | '/quiz/$slug'
@@ -104,7 +137,10 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/autentificare'
+    | '/grila-zilei'
     | '/simulare'
+    | '/subiecte-admitere'
+    | '/subiecte-bac'
     | '/tutoriale'
     | '/grile/$uniSlug'
     | '/quiz/$slug'
@@ -114,7 +150,10 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AutentificareRoute: typeof AutentificareRoute
+  GrilaZileiRoute: typeof GrilaZileiRoute
   SimulareRoute: typeof SimulareRoute
+  SubiecteAdmitereRoute: typeof SubiecteAdmitereRoute
+  SubiecteBacRoute: typeof SubiecteBacRoute
   TutorialeRoute: typeof TutorialeRoute
   GrileUniSlugRoute: typeof GrileUniSlugRoute
   QuizSlugRoute: typeof QuizSlugRoute
@@ -130,11 +169,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TutorialeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/subiecte-bac': {
+      id: '/subiecte-bac'
+      path: '/subiecte-bac'
+      fullPath: '/subiecte-bac'
+      preLoaderRoute: typeof SubiecteBacRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/subiecte-admitere': {
+      id: '/subiecte-admitere'
+      path: '/subiecte-admitere'
+      fullPath: '/subiecte-admitere'
+      preLoaderRoute: typeof SubiecteAdmitereRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/simulare': {
       id: '/simulare'
       path: '/simulare'
       fullPath: '/simulare'
       preLoaderRoute: typeof SimulareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/grila-zilei': {
+      id: '/grila-zilei'
+      path: '/grila-zilei'
+      fullPath: '/grila-zilei'
+      preLoaderRoute: typeof GrilaZileiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/autentificare': {
@@ -178,7 +238,10 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AutentificareRoute: AutentificareRoute,
+  GrilaZileiRoute: GrilaZileiRoute,
   SimulareRoute: SimulareRoute,
+  SubiecteAdmitereRoute: SubiecteAdmitereRoute,
+  SubiecteBacRoute: SubiecteBacRoute,
   TutorialeRoute: TutorialeRoute,
   GrileUniSlugRoute: GrileUniSlugRoute,
   QuizSlugRoute: QuizSlugRoute,

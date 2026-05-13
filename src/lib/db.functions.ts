@@ -8,7 +8,10 @@ function srv() {
 export const listUniversities = createServerFn({ method: "GET" }).handler(async () => {
   const sb = srv();
   const { data } = await sb.from("universities").select("id, slug, short_name, name, city, description").order("short_name");
-  return data ?? [];
+  const { data: subs } = await sb.from("subjects").select("university_id");
+  const counts: Record<string, number> = {};
+  (subs ?? []).forEach((s: any) => { counts[s.university_id] = (counts[s.university_id] ?? 0) + 1; });
+  return (data ?? []).map((u: any) => ({ ...u, subject_count: counts[u.id] ?? 0 }));
 });
 
 export const getUniversity = createServerFn({ method: "GET" })
