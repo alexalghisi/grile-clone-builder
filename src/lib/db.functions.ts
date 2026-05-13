@@ -1,8 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
-import { createClient } from "@supabase/supabase-js";
+import { supabaseAdmin } from "@/integrations/supabase/client.server";
 
 function srv() {
-  return createClient(process.env.VITE_SUPABASE_URL!, process.env.VITE_SUPABASE_PUBLISHABLE_KEY!);
+  return supabaseAdmin;
 }
 
 export const listUniversities = createServerFn({ method: "GET" }).handler(async () => {
