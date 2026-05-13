@@ -9,6 +9,8 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import { AdScript } from "@/components/AdSlot";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -72,14 +74,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { name: "theme-color", content: "#3B82F6" },
+      { title: "GrileAdmitere.ro - Pregătire pentru admiterea la facultate" },
+      { name: "description", content: "Platformă gratuită de pregătire pentru admiterea la facultate. Grile rezolvate pentru UPB, UBB, ASE, Medicină și alte universități din România." },
+      { name: "author", content: "GrileAdmitere.ro" },
+      { name: "keywords", content: "admitere facultate, grile admitere, pregătire admitere, UPB, UBB, ASE, Medicină, teste admitere, România" },
+      { property: "og:title", content: "GrileAdmitere.ro - Pregătire pentru admiterea la facultate" },
+      { property: "og:description", content: "Platformă gratuită de pregătire pentru admiterea la facultate cu grile rezolvate." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { property: "og:locale", content: "ro_RO" },
     ],
     links: [
       {
@@ -96,9 +100,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="ro">
       <head>
         <HeadContent />
+        <AdScript />
       </head>
       <body>
         {children}
@@ -114,6 +119,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />
+      <Toaster />
     </QueryClientProvider>
   );
 }
