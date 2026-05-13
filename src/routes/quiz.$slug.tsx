@@ -12,7 +12,22 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, XCircle, Clock, RotateCcw } from "lucide-react";
 
-export const Route = createFileRoute("/quiz/$slug")({ component: Page });
+export const Route = createFileRoute("/quiz/$slug")({
+  head: ({ params }) => {
+    const title = `Test Grile ${params.slug} — Admitere 2026 | GrileAdmitere.ro`;
+    const description = `Rezolvă grilele de admitere 2026 pentru ${params.slug} cu explicații pas cu pas la fiecare răspuns. Gratuit.`;
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+      ],
+      links: [{ rel: "canonical", href: `https://grileadmitere.ro/quiz/${params.slug}` }],
+    };
+  },
+  component: Page,
+});
 
 type Q = { id: string; question_text: string; options: string[]; correct_index: number; explanation: string | null };
 

@@ -8,7 +8,24 @@ import { Badge } from "@/components/ui/badge";
 import { AdSlot } from "@/components/AdSlot";
 import { BookOpen } from "lucide-react";
 
-export const Route = createFileRoute("/grile/$uniSlug")({ component: Page });
+export const Route = createFileRoute("/grile/$uniSlug")({
+  head: ({ params }) => {
+    const slug = params.uniSlug;
+    const title = `Grile Admitere ${slug.toUpperCase()} 2026 Rezolvate | GrileAdmitere.ro`;
+    const description = `Grile admitere ${slug.toUpperCase()} 2026 rezolvate pas cu pas, cu explicații detaliate pentru fiecare răspuns. Pregătire gratuită online.`;
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: "article" },
+      ],
+      links: [{ rel: "canonical", href: `https://grileadmitere.ro/grile/${slug}` }],
+    };
+  },
+  component: Page,
+});
 
 function Page() {
   const { uniSlug } = Route.useParams();

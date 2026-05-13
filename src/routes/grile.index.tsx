@@ -9,7 +9,18 @@ import { Card } from "@/components/ui/card";
 import { GraduationCap } from "lucide-react";
 import { AdSlot } from "@/components/AdSlot";
 
-export const Route = createFileRoute("/grile/")({ component: Page });
+export const Route = createFileRoute("/grile/")({
+  head: () => ({
+    meta: [
+      { title: "Grile Admitere — Toate Universitățile 2026 | GrileAdmitere.ro" },
+      { name: "description", content: "Lista completă a universităților din România cu grile admitere 2026 rezolvate: UMF, UPB, UBB, ASE, UAIC, UTCN și 100+ instituții." },
+      { property: "og:title", content: "Grile Admitere — Toate Universitățile 2026" },
+      { property: "og:description", content: "Alege universitatea și începe pregătirea cu grile rezolvate pas cu pas." },
+    ],
+    links: [{ rel: "canonical", href: "https://grileadmitere.ro/grile" }],
+  }),
+  component: Page,
+});
 
 function Page() {
   const fn = useServerFn(listUniversities);
