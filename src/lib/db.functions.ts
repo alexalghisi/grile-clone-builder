@@ -49,3 +49,33 @@ export const simulationQuestions = createServerFn({ method: "GET" })
     const shuffled = (qs ?? []).sort(() => Math.random() - 0.5).slice(0, data.count);
     return shuffled;
   });
+
+export const getNextSubjects = createServerFn({ method: "GET" })
+  .inputValidator((d: { currentSubjectId: string; universityId?: string | null }) => d)
+  .handler(async ({ data }) => {
+    const sb = srv();
+    // Next subject in same university
+    let sameUni: any[] = [];
+    if (data.universityId) {
+      const { data: s } = await sb
+        .from("subjects")
+        .select("id, slug, name, question_count, university_id, universities(slug, short_name, name)")
+        .eq("university_id", data.universityId)
+        .neq("id", data.currentSubjectId)
+        .gt("question_count", 0)
+        .order("name")
+        .limit(3);
+      sameUni = s ?? [];
+    }
+    // Fill with popular subjects from other universities
+    const { data: others } = await sb
+      .from("subjects")
+      .select("id, slug, name, question_count, university_id, universities(slug, short_name, name)")
+      .neq("id", data.currentSubjectId)
+      .gt("question_count", 0)
+      .order("question_count", { ascending: false })
+      .limit(8);
+    const seen = new Set<string>([data.currentSubjectId, ...sameUni.map((x: any) => x.id)]);
+    const fill = (others ?? []).filter((s: any) => !seen.has(s.id)).slice(0, Math.max(0, 4 - sameUni.length));
+    return { next: sameUni[0] ?? fill[0] ?? null, recommendations: [...sameUni, ...fill].slice(0, 4) };
+  });

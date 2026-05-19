@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
-import { getQuiz } from "@/lib/db.functions";
+import { getQuiz, getNextSubjects } from "@/lib/db.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { Header } from "@/components/Header";
 import { AdSlot, AdLeaderboard } from "@/components/AdSlot";
@@ -10,7 +10,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, XCircle, Clock, RotateCcw } from "lucide-react";
+import { CheckCircle2, XCircle, Clock, RotateCcw, ArrowRight, Sparkles, BookOpen } from "lucide-react";
 
 export const Route = createFileRoute("/quiz/$slug")({
   head: ({ params }) => {
@@ -35,6 +35,12 @@ function Page() {
   const { slug } = Route.useParams();
   const fn = useServerFn(getQuiz);
   const { data, isLoading } = useQuery({ queryKey: ["quiz", slug], queryFn: () => fn({ data: { slug } }) });
+  const nextFn = useServerFn(getNextSubjects);
+  const { data: nextData } = useQuery({
+    queryKey: ["next-subjects", (data?.subject as any)?.id],
+    queryFn: () => nextFn({ data: { currentSubjectId: (data!.subject as any).id, universityId: (data!.subject as any).university_id } }),
+    enabled: !!data?.subject,
+  });
 
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
@@ -69,6 +75,8 @@ function Page() {
   if (done) {
     const score = questions.reduce((acc, qq) => acc + (answers[qq.id] === qq.correct_index ? 1 : 0), 0);
     const pct = Math.round((score / questions.length) * 100);
+    const next = nextData?.next;
+    const recs = nextData?.recommendations ?? [];
     return (
       <div className="min-h-screen bg-background">
         <Header />
@@ -87,6 +95,47 @@ function Page() {
               </Link>
             </div>
           </Card>
+
+          {next && (
+            <Card className="mt-6 p-6 border-2 border-primary/40 bg-gradient-to-br from-primary/5 to-transparent">
+              <div className="flex items-center gap-2 text-xs uppercase tracking-wider text-primary font-semibold">
+                <Sparkles className="h-4 w-4" /> Continuă pregătirea
+              </div>
+              <div className="mt-2 text-lg font-bold">{next.name}</div>
+              <div className="text-sm text-muted-foreground">
+                {(next as any).universities?.short_name ?? ""} · {next.question_count} grile
+              </div>
+              <Link to="/quiz/$slug" params={{ slug: next.slug }} className="mt-4 block">
+                <Button size="lg" className="w-full">
+                  Grila următoare <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </Card>
+          )}
+
+          {recs.length > 0 && (
+            <div className="mt-6">
+              <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Recomandate pentru tine</h2>
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                {recs.map((r: any) => (
+                  <Link key={r.id} to="/quiz/$slug" params={{ slug: r.slug }}>
+                    <Card className="p-4 h-full transition hover:border-primary/40 hover:shadow">
+                      <div className="flex items-start gap-2">
+                        <BookOpen className="h-4 w-4 text-primary mt-1" />
+                        <div className="flex-1 min-w-0">
+                          <div className="text-sm font-semibold truncate">{r.name}</div>
+                          <div className="text-xs text-muted-foreground truncate">
+                            {r.universities?.short_name ?? ""} · {r.question_count} grile
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
           <AdSlot className="my-6" />
           <div className="space-y-3">
             {questions.map((qq, i) => {
