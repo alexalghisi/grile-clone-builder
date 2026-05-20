@@ -75,6 +75,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "theme-color", content: "#3B82F6" },
+      { name: "google-site-verification", content: "BAV_3T4OOQ8TgVARB2zxs7EoZ4avHrMvPc6o0qzTMSI" },
       { title: "Grile Admitere 2026 Rezolvate - Medicină, UPB, UBB | Gratis" },
       { name: "description", content: "Grile admitere 2026 rezolvate pas cu pas pentru UMF, UPB, UBB, ASE și 100+ universități. Explicații detaliate, simulări BAC gratuite. Începe acum!" },
       { name: "author", content: "GrileAdmitere.ro" },
