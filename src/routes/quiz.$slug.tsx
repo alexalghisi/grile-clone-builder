@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { getQuiz, getNextSubjects } from "@/lib/db.functions";
 import { supabase } from "@/integrations/supabase/client";
@@ -33,14 +33,41 @@ type Q = { id: string; question_text: string; options: string[]; correct_index: 
 
 function Page() {
   const { slug } = Route.useParams();
+  const queryClient = useQueryClient();
   const fn = useServerFn(getQuiz);
-  const { data, isLoading } = useQuery({ queryKey: ["quiz", slug], queryFn: () => fn({ data: { slug } }) });
-  const nextFn = useServerFn(getNextSubjects);
-  const { data: nextData } = useQuery({
-    queryKey: ["next-subjects", (data?.subject as any)?.id],
-    queryFn: () => nextFn({ data: { currentSubjectId: (data!.subject as any).id, universityId: (data!.subject as any).university_id } }),
-    enabled: !!data?.subject,
+  const { data, isLoading } = useQuery({
+    queryKey: ["quiz", slug],
+    queryFn: () => fn({ data: { slug } }),
+    staleTime: 5 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
   });
+  const nextFn = useServerFn(getNextSubjects);
+  const subjectId = (data?.subject as any)?.id;
+  const universityId = (data?.subject as any)?.university_id;
+  const { data: nextData } = useQuery({
+    queryKey: ["next-subjects", subjectId],
+    queryFn: () => nextFn({ data: { currentSubjectId: subjectId, universityId } }),
+    enabled: !!subjectId,
+    staleTime: 10 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
+  });
+
+  // Prefetch next quiz + its recommendations as soon as we know what's next
+  useEffect(() => {
+    if (!nextData?.recommendations?.length) return;
+    for (const r of nextData.recommendations) {
+      queryClient.prefetchQuery({
+        queryKey: ["quiz", r.slug],
+        queryFn: () => fn({ data: { slug: r.slug } }),
+        staleTime: 5 * 60 * 1000,
+      });
+      queryClient.prefetchQuery({
+        queryKey: ["next-subjects", r.id],
+        queryFn: () => nextFn({ data: { currentSubjectId: r.id, universityId: r.university_id } }),
+        staleTime: 10 * 60 * 1000,
+      });
+    }
+  }, [nextData, queryClient, fn, nextFn]);
 
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
