@@ -29,7 +29,7 @@ export const Route = createFileRoute("/quiz/$slug")({
   component: Page,
 });
 
-type Q = { id: string; question_text: string; options: string[]; correct_index: number; explanation: string | null };
+type Q = { id: string; question_text: string; options: string[]; correct_index: number; explanation: string | null; difficulty?: string | null };
 
 function Page() {
   const { slug } = Route.useParams();
