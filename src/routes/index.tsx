@@ -36,6 +36,7 @@ export const Route = createFileRoute("/")({
       { property: "og:title", content: "Grile Admitere 2026 cu Explicații Pas cu Pas" },
       { property: "og:description", content: "Singurul site de grile online care îți arată DE CE ai greșit. UPB, UBB, UTCN, UMF, ASE și 100+ universități." },
     ],
+    links: [{ rel: "canonical", href: "https://grileadmitere.ro/" }],
   }),
   component: Index,
 });

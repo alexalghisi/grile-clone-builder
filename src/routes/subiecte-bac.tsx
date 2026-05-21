@@ -10,6 +10,7 @@ export const Route = createFileRoute("/subiecte-bac")({
       { title: "Subiecte BAC 2026 — GrileAdmitere.ro" },
       { name: "description", content: "Subiecte și grile pentru BAC 2026: matematică, română, biologie, chimie, fizică, istorie." },
     ],
+    links: [{ rel: "canonical", href: "https://grileadmitere.ro/subiecte-bac" }],
   }),
   component: Page,
 });

@@ -10,6 +10,7 @@ export const Route = createFileRoute("/subiecte-admitere")({
       { title: "Subiecte de Admitere — GrileAdmitere.ro" },
       { name: "description", content: "Grile pe materii pentru admitere: biologie, chimie, fizică, matematică, română, engleză." },
     ],
+    links: [{ rel: "canonical", href: "https://grileadmitere.ro/subiecte-admitere" }],
   }),
   component: Page,
 });
