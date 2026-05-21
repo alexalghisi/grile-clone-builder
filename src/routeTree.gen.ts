@@ -14,7 +14,6 @@ import { Route as SubiecteBacRouteImport } from './routes/subiecte-bac'
 import { Route as SubiecteAdmitereRouteImport } from './routes/subiecte-admitere'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SimulareRouteImport } from './routes/simulare'
-import { Route as GrileUniSlugRouteImport } from './routes/grile-$uniSlug'
 import { Route as GrilaZileiRouteImport } from './routes/grila-zilei'
 import { Route as FeedbackRouteImport } from './routes/feedback'
 import { Route as AutentificareRouteImport } from './routes/autentificare'
@@ -46,11 +45,6 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const SimulareRoute = SimulareRouteImport.update({
   id: '/simulare',
   path: '/simulare',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GrileUniSlugRoute = GrileUniSlugRouteImport.update({
-  id: '/grile-$uniSlug',
-  path: '/grile-$uniSlug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GrilaZileiRoute = GrilaZileiRouteImport.update({
@@ -94,7 +88,6 @@ export interface FileRoutesByFullPath {
   '/autentificare': typeof AutentificareRoute
   '/feedback': typeof FeedbackRoute
   '/grila-zilei': typeof GrilaZileiRoute
-  '/grile-$uniSlug': typeof GrileUniSlugRoute
   '/simulare': typeof SimulareRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
@@ -109,7 +102,6 @@ export interface FileRoutesByTo {
   '/autentificare': typeof AutentificareRoute
   '/feedback': typeof FeedbackRoute
   '/grila-zilei': typeof GrilaZileiRoute
-  '/grile-$uniSlug': typeof GrileUniSlugRoute
   '/simulare': typeof SimulareRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
@@ -125,7 +117,6 @@ export interface FileRoutesById {
   '/autentificare': typeof AutentificareRoute
   '/feedback': typeof FeedbackRoute
   '/grila-zilei': typeof GrilaZileiRoute
-  '/grile-$uniSlug': typeof GrileUniSlugRoute
   '/simulare': typeof SimulareRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
@@ -142,7 +133,6 @@ export interface FileRouteTypes {
     | '/autentificare'
     | '/feedback'
     | '/grila-zilei'
-    | '/grile-$uniSlug'
     | '/simulare'
     | '/sitemap.xml'
     | '/subiecte-admitere'
@@ -157,7 +147,6 @@ export interface FileRouteTypes {
     | '/autentificare'
     | '/feedback'
     | '/grila-zilei'
-    | '/grile-$uniSlug'
     | '/simulare'
     | '/sitemap.xml'
     | '/subiecte-admitere'
@@ -172,7 +161,6 @@ export interface FileRouteTypes {
     | '/autentificare'
     | '/feedback'
     | '/grila-zilei'
-    | '/grile-$uniSlug'
     | '/simulare'
     | '/sitemap.xml'
     | '/subiecte-admitere'
@@ -188,7 +176,6 @@ export interface RootRouteChildren {
   AutentificareRoute: typeof AutentificareRoute
   FeedbackRoute: typeof FeedbackRoute
   GrilaZileiRoute: typeof GrilaZileiRoute
-  GrileUniSlugRoute: typeof GrileUniSlugRoute
   SimulareRoute: typeof SimulareRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SubiecteAdmitereRoute: typeof SubiecteAdmitereRoute
@@ -234,13 +221,6 @@ declare module '@tanstack/react-router' {
       path: '/simulare'
       fullPath: '/simulare'
       preLoaderRoute: typeof SimulareRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/grile-$uniSlug': {
-      id: '/grile-$uniSlug'
-      path: '/grile-$uniSlug'
-      fullPath: '/grile-$uniSlug'
-      preLoaderRoute: typeof GrileUniSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/grila-zilei': {
@@ -300,7 +280,6 @@ const rootRouteChildren: RootRouteChildren = {
   AutentificareRoute: AutentificareRoute,
   FeedbackRoute: FeedbackRoute,
   GrilaZileiRoute: GrilaZileiRoute,
-  GrileUniSlugRoute: GrileUniSlugRoute,
   SimulareRoute: SimulareRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SubiecteAdmitereRoute: SubiecteAdmitereRoute,
