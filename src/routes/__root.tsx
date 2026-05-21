@@ -6,6 +6,7 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  redirect,
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
@@ -70,6 +71,17 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  beforeLoad: ({ location }) => {
+    // Legacy/typo URLs like /grile-ubb -> /grile/ubb
+    const m = location.pathname.match(/^\/grile-([^/]+)\/?$/);
+    if (m) {
+      throw redirect({
+        to: "/grile/$uniSlug",
+        params: { uniSlug: m[1] },
+        replace: true,
+      });
+    }
+  },
   head: () => ({
     meta: [
       { charSet: "utf-8" },
