@@ -15,6 +15,7 @@ export const Route = createFileRoute("/grila-zilei")({
       { title: "Grila Zilei — GrileAdmitere.ro" },
       { name: "description", content: "Revino zilnic pentru a rezolva grila zilei și a-ți testa cunoștințele!" },
     ],
+    links: [{ rel: "canonical", href: "https://grileadmitere.ro/grila-zilei" }],
   }),
   component: Page,
 });

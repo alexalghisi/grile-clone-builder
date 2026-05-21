@@ -17,6 +17,7 @@ export const Route = createFileRoute("/feedback")({
       { title: "Feedback - GrileAdmitere" },
       { name: "description", content: "Trimite-ne feedback, raportează un bug sau propune o îmbunătățire pentru GrileAdmitere." },
     ],
+    links: [{ rel: "canonical", href: "https://grileadmitere.ro/feedback" }],
   }),
 });
 

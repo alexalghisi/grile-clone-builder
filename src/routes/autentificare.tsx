@@ -15,6 +15,7 @@ export const Route = createFileRoute("/autentificare")({
       { name: "description", content: "Autentifică-te pe GrileAdmitere.ro pentru a-ți salva progresul la grilele de admitere și simulările BAC 2026." },
       { name: "robots", content: "noindex, follow" },
     ],
+    links: [{ rel: "canonical", href: "https://grileadmitere.ro/autentificare" }],
   }),
   component: Page,
 });
