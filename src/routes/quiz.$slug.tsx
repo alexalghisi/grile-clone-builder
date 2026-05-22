@@ -22,7 +22,7 @@ const EMAIL_GATE_KEY = "ga_email_captured_v1";
 
 function QuestionContent({ text }: { text: string }) {
   return (
-    <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:my-0 [&_pre]:my-2 [&_code]:font-mono">
+    <div className="max-w-none [&_p]:my-0 [&_p]:leading-relaxed [&_pre]:my-2 [&_code]:font-mono [&_ul]:my-2 [&_ul]:pl-5 [&_ul]:list-disc [&_ol]:my-2 [&_ol]:pl-5 [&_ol]:list-decimal">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
