@@ -68,6 +68,30 @@ export type Database = {
           },
         ]
       }
+      email_leads: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          quiz_slug: string | null
+          source: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          quiz_slug?: string | null
+          source?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          quiz_slug?: string | null
+          source?: string | null
+        }
+        Relationships: []
+      }
       feedback: {
         Row: {
           category: string
