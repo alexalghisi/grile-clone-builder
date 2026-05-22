@@ -286,7 +286,10 @@ function Page() {
                   <div className="flex items-start gap-2">
                     {ok ? <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5" /> : <XCircle className="h-5 w-5 text-destructive mt-0.5" />}
                     <div className="flex-1">
-                      <div className="text-sm font-medium whitespace-pre-wrap">{i + 1}. {qq.question_text}</div>
+                      <div className="text-sm font-medium">
+                        <span className="mr-1 font-semibold">{i + 1}.</span>
+                        <QuestionContent text={qq.question_text} />
+                      </div>
                       <div className="mt-2 text-xs text-muted-foreground">Corect: {String.fromCharCode(65 + qq.correct_index)}. {qq.options[qq.correct_index]}</div>
                       {qq.explanation && <div className="mt-2 text-xs text-foreground/80">{qq.explanation}</div>}
                     </div>
@@ -340,7 +343,9 @@ function Page() {
               </Badge>
             )}
           </div>
-          <div className="text-base font-medium whitespace-pre-wrap">{q.question_text}</div>
+          <div className="text-base font-medium">
+            <QuestionContent text={q.question_text} />
+          </div>
           <div className="mt-5 space-y-2">
             {q.options.map((opt, i) => {
               const isCorrect = i === q.correct_index;
