@@ -11,6 +11,110 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, XCircle, Clock, RotateCcw, ArrowRight, Sparkles, BookOpen } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { toast } from "sonner";
+
+const EMAIL_GATE_KEY = "ga_email_captured_v1";
+
+function QuestionContent({ text }: { text: string }) {
+  return (
+    <div className="prose prose-sm dark:prose-invert max-w-none [&_p]:my-0 [&_pre]:my-2 [&_code]:font-mono">
+      <ReactMarkdown
+        remarkPlugins={[remarkGfm]}
+        components={{
+          code({ inline, className, children, ...props }: any) {
+            const match = /language-(\w+)/.exec(className || "");
+            const lang = match?.[1] || "cpp";
+            const value = String(children).replace(/\n$/, "");
+            if (!inline && (value.includes("\n") || match)) {
+              return (
+                <div className="my-3 overflow-hidden rounded-lg border border-border bg-[#282c34] text-sm shadow-sm">
+                  <div className="flex items-center justify-between bg-black/40 px-3 py-1.5 text-[10px] uppercase tracking-wider text-zinc-300">
+                    <span>{lang}</span>
+                    <span className="opacity-60">cod</span>
+                  </div>
+                  <SyntaxHighlighter
+                    language={lang}
+                    style={oneDark}
+                    PreTag="div"
+                    customStyle={{ margin: 0, padding: "0.85rem 1rem", background: "transparent", fontSize: "0.85rem" }}
+                    codeTagProps={{ style: { fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" } }}
+                  >
+                    {value}
+                  </SyntaxHighlighter>
+                </div>
+              );
+            }
+            return (
+              <code className="rounded bg-muted px-1.5 py-0.5 text-[0.85em] text-foreground" {...props}>
+                {children}
+              </code>
+            );
+          },
+        }}
+      >
+        {text}
+      </ReactMarkdown>
+    </div>
+  );
+}
+
+function EmailGate({ slug, onDone }: { slug: string; onDone: () => void }) {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const v = email.trim();
+    if (!/^\S+@\S+\.\S+$/.test(v)) { toast.error("Introdu un email valid"); return; }
+    setLoading(true);
+    const { error } = await supabase.from("email_leads").insert({ email: v, source: "quiz_gate", quiz_slug: slug });
+    setLoading(false);
+    if (error && !String(error.message).toLowerCase().includes("duplicate")) {
+      toast.error("Nu am putut salva emailul. Încearcă din nou.");
+      return;
+    }
+    try { localStorage.setItem(EMAIL_GATE_KEY, v); } catch {}
+    toast.success("Mulțumim! Continuă cu grilele.");
+    onDone();
+  };
+  return (
+    <div className="min-h-screen bg-background">
+      <Header />
+      <main className="container mx-auto max-w-lg px-4 py-12">
+        <Card className="p-8 border-2 border-primary/30 bg-gradient-to-br from-primary/5 to-transparent">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary uppercase tracking-wider">
+            <Sparkles className="h-3.5 w-3.5" /> Continuă gratuit
+          </div>
+          <h1 className="text-2xl font-bold">Lasă-ne emailul tău</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Ai rezolvat primele 3 grile. Introdu emailul pentru a continua cu restul grilelor și pentru a primi
+            grila zilei + sfaturi de pregătire pentru admitere.
+          </p>
+          <form onSubmit={submit} className="mt-6 space-y-3">
+            <Input
+              type="email"
+              required
+              autoFocus
+              placeholder="numele.tau@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Button type="submit" size="lg" className="w-full" disabled={loading}>
+              {loading ? "Se trimite…" : "Continuă cu grilele"}
+            </Button>
+            <p className="text-[11px] text-muted-foreground text-center">
+              Nu trimitem spam. Te poți dezabona oricând.
+            </p>
+          </form>
+        </Card>
+      </main>
+    </div>
+  );
+}
 
 export const Route = createFileRoute("/quiz/$slug")({
   head: ({ params }) => {
@@ -74,6 +178,10 @@ function Page() {
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
   const [done, setDone] = useState(false);
   const [seconds, setSeconds] = useState(0);
+  const [emailOk, setEmailOk] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    try { return !!localStorage.getItem(EMAIL_GATE_KEY); } catch { return false; }
+  });
 
   useEffect(() => { const t = setInterval(() => setSeconds((s) => s + 1), 1000); return () => clearInterval(t); }, []);
 
@@ -98,6 +206,12 @@ function Page() {
 
   if (isLoading) return (<div className="min-h-screen bg-background"><Header /><div className="container py-10">Se încarcă…</div></div>);
   if (!data || !questions.length) return (<div className="min-h-screen bg-background"><Header /><div className="container py-10">Niciun quiz găsit.</div></div>);
+
+  // Email gate: after the user has revealed 3 questions, require email to continue.
+  const revealedCount = Object.keys(revealed).length;
+  if (!emailOk && revealedCount >= 3 && !done) {
+    return <EmailGate slug={slug} onDone={() => setEmailOk(true)} />;
+  }
 
   if (done) {
     const score = questions.reduce((acc, qq) => acc + (answers[qq.id] === qq.correct_index ? 1 : 0), 0);
