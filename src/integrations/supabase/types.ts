@@ -14,6 +14,72 @@ export type Database = {
   }
   public: {
     Tables: {
+      admitere_papers: {
+        Row: {
+          created_at: string
+          description: string | null
+          file_size_bytes: number | null
+          id: string
+          ocr_text: string | null
+          page_count: number | null
+          paper_type: string
+          pdf_url: string | null
+          session: string | null
+          source_url: string | null
+          storage_path: string | null
+          subject_name: string
+          subject_slug: string
+          title: string
+          university_name: string
+          university_slug: string
+          updated_at: string
+          variant: string | null
+          year: number
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          file_size_bytes?: number | null
+          id?: string
+          ocr_text?: string | null
+          page_count?: number | null
+          paper_type?: string
+          pdf_url?: string | null
+          session?: string | null
+          source_url?: string | null
+          storage_path?: string | null
+          subject_name: string
+          subject_slug: string
+          title: string
+          university_name: string
+          university_slug: string
+          updated_at?: string
+          variant?: string | null
+          year: number
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          file_size_bytes?: number | null
+          id?: string
+          ocr_text?: string | null
+          page_count?: number | null
+          paper_type?: string
+          pdf_url?: string | null
+          session?: string | null
+          source_url?: string | null
+          storage_path?: string | null
+          subject_name?: string
+          subject_slug?: string
+          title?: string
+          university_name?: string
+          university_slug?: string
+          updated_at?: string
+          variant?: string | null
+          year?: number
+        }
+        Relationships: []
+      }
       attempts: {
         Row: {
           answers: Json | null
@@ -266,6 +332,57 @@ export type Database = {
         }
         Relationships: []
       }
+      health_checks: {
+        Row: {
+          consecutive_failures: number
+          created_at: string
+          enabled: boolean
+          expected_status: number
+          id: string
+          label: string
+          last_alert_at: string | null
+          last_checked_at: string | null
+          last_error: string | null
+          last_response_ms: number | null
+          last_status: number | null
+          max_response_ms: number
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          consecutive_failures?: number
+          created_at?: string
+          enabled?: boolean
+          expected_status?: number
+          id?: string
+          label: string
+          last_alert_at?: string | null
+          last_checked_at?: string | null
+          last_error?: string | null
+          last_response_ms?: number | null
+          last_status?: number | null
+          max_response_ms?: number
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          consecutive_failures?: number
+          created_at?: string
+          enabled?: boolean
+          expected_status?: number
+          id?: string
+          label?: string
+          last_alert_at?: string | null
+          last_checked_at?: string | null
+          last_error?: string | null
+          last_response_ms?: number | null
+          last_status?: number | null
+          max_response_ms?: number
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
       meditatii_leads: {
         Row: {
           budget: string | null
@@ -369,6 +486,107 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      scrape_jobs: {
+        Row: {
+          error_message: string | null
+          finished_at: string | null
+          id: string
+          log: Json | null
+          pdfs_discovered: number
+          pdfs_failed: number
+          pdfs_imported: number
+          source_id: string | null
+          started_at: string
+          status: string
+          university_slug: string
+        }
+        Insert: {
+          error_message?: string | null
+          finished_at?: string | null
+          id?: string
+          log?: Json | null
+          pdfs_discovered?: number
+          pdfs_failed?: number
+          pdfs_imported?: number
+          source_id?: string | null
+          started_at?: string
+          status?: string
+          university_slug: string
+        }
+        Update: {
+          error_message?: string | null
+          finished_at?: string | null
+          id?: string
+          log?: Json | null
+          pdfs_discovered?: number
+          pdfs_failed?: number
+          pdfs_imported?: number
+          source_id?: string | null
+          started_at?: string
+          status?: string
+          university_slug?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scrape_jobs_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "scrape_sources"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scrape_sources: {
+        Row: {
+          created_at: string
+          enabled: boolean
+          id: string
+          last_error: string | null
+          last_run_at: string | null
+          pdf_url_pattern: string | null
+          pdfs_discovered: number
+          pdfs_imported: number
+          root_url: string
+          status: string
+          subject_hints: Json | null
+          university_name: string
+          university_slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          last_error?: string | null
+          last_run_at?: string | null
+          pdf_url_pattern?: string | null
+          pdfs_discovered?: number
+          pdfs_imported?: number
+          root_url: string
+          status?: string
+          subject_hints?: Json | null
+          university_name: string
+          university_slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          last_error?: string | null
+          last_run_at?: string | null
+          pdf_url_pattern?: string | null
+          pdfs_discovered?: number
+          pdfs_imported?: number
+          root_url?: string
+          status?: string
+          subject_hints?: Json | null
+          university_name?: string
+          university_slug?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       subjects: {
         Row: {
