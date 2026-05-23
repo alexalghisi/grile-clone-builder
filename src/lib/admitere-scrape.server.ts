@@ -181,7 +181,18 @@ export async function runScrapeBatch(): Promise<{ processed: number; sources: nu
       console.log(`[scrape] source=${source.university_slug} pdfs_found=${pdfs.length}`)
       const isMultiUni = (source.subject_hints as any)?.multi_uni === true
       discovered = pdfs.length
-      const batch = pdfs.slice(0, MAX_PDFS_PER_RUN)
+
+      // Skip PDFs already imported (by source_url) so successive runs
+      // make progress through the full list instead of re-processing
+      // the first MAX_PDFS_PER_RUN every time.
+      const { data: existing } = await supabase
+        .from('admitere_papers')
+        .select('source_url')
+        .in('source_url', pdfs)
+      const seen = new Set<string>((existing ?? []).map((r: any) => r.source_url))
+      const remaining = pdfs.filter((u) => !seen.has(u))
+      const batch = remaining.slice(0, MAX_PDFS_PER_RUN)
+      console.log(`[scrape] source=${source.university_slug} remaining=${remaining.length} batch=${batch.length}`)
 
       for (const pdfUrl of batch) {
         try {
