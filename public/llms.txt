@@ -1,0 +1,20 @@
+# GrileAdmitere.ro
+
+> Platformă gratuită de pregătire pentru admiterea la facultate și BAC în România, cu peste 74.000 de grile rezolvate pas cu pas pentru UMF, UPB, UBB, ASE, UAIC, UTCN și 100+ universități.
+
+GrileAdmitere.ro oferă teste grilă cu explicații detaliate pentru fiecare răspuns, simulări de BAC, subiecte oficiale BAC 2001-2026 în format PDF cu bareme, și arhivă de subiecte admitere pe universități și materii.
+
+## Pages
+
+- [Acasă](/): Prezentare generală, universități populare și acces rapid la teste.
+- [Grile pe universități](/grile): Lista completă a universităților cu grile admitere.
+- [Grila zilei](/grila-zilei): O grilă nouă în fiecare zi, cu explicație.
+- [Simulare BAC](/simulare): Simulare cronometrată tip Bacalaureat.
+- [Subiecte BAC](/subiecte-bac): Arhiva subiectelor de BAC 2001-2026 cu PDF și bareme.
+- [Subiecte admitere](/subiecte-admitere): Subiecte oficiale de admitere din anii trecuți.
+- [Tutoriale](/tutoriale): Ghiduri și sfaturi pentru pregătirea admiterii.
+
+## Optional
+
+- [Autentificare](/autentificare): Creează cont pentru a-ți salva progresul.
+- [Feedback](/feedback): Trimite-ne sugestii și raportează probleme.
