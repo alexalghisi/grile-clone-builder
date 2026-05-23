@@ -34,6 +34,9 @@ export const Route = createFileRoute("/sitemap.xml")({
         const { data: subjects } = await supabaseAdmin
           .from("subjects")
           .select("slug");
+        const { data: bacSubjects } = await supabaseAdmin
+          .from("bac_papers")
+          .select("subject_slug");
 
         const uniEntries: SitemapEntry[] = (unis ?? []).map((u: any) => ({
           path: `/grile/${u.slug}`,
@@ -45,8 +48,15 @@ export const Route = createFileRoute("/sitemap.xml")({
           changefreq: "weekly",
           priority: "0.6",
         }));
+        const bacSubjectEntries: SitemapEntry[] = Array.from(
+          new Set((bacSubjects ?? []).map((r: any) => r.subject_slug as string)),
+        ).map((slug) => ({
+          path: `/subiecte-bac/${slug}`,
+          changefreq: "monthly",
+          priority: "0.7",
+        }));
 
-        const all = [...staticEntries, ...uniEntries, ...quizEntries];
+        const all = [...staticEntries, ...uniEntries, ...quizEntries, ...bacSubjectEntries];
         const urls = all.map((e) =>
           [
             `  <url>`,

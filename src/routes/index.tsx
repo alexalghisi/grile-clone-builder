@@ -31,10 +31,11 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Grile Admitere 2026 cu Explicații Pas cu Pas — GrileAdmitere.ro" },
+      { title: "Grile Admitere 2026 cu Explicații Pas cu Pas" },
       { name: "description", content: "Grile admitere și BAC 2026 cu explicații detaliate pas cu pas. UPB, UBB, UTCN, UMF, UAIC, ASE și 100+ universități din România." },
       { property: "og:title", content: "Grile Admitere 2026 cu Explicații Pas cu Pas" },
       { property: "og:description", content: "Singurul site de grile online care îți arată DE CE ai greșit. UPB, UBB, UTCN, UMF, ASE și 100+ universități." },
+      { property: "og:url", content: "https://grileadmitere.ro/" },
     ],
     links: [{ rel: "canonical", href: "https://grileadmitere.ro/" }],
   }),
