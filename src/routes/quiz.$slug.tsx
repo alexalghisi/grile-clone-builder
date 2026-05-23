@@ -126,8 +126,22 @@ export const Route = createFileRoute("/quiz/$slug")({
         { name: "description", content: description },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
+        { property: "og:url", content: `https://grileadmitere.ro/quiz/${params.slug}` },
       ],
       links: [{ rel: "canonical", href: `https://grileadmitere.ro/quiz/${params.slug}` }],
+      scripts: [{
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Quiz",
+          name: title,
+          description,
+          url: `https://grileadmitere.ro/quiz/${params.slug}`,
+          inLanguage: "ro-RO",
+          educationalUse: "Assessment",
+          learningResourceType: "Quiz",
+        }),
+      }],
     };
   },
   component: Page,
