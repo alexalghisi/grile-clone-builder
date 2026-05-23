@@ -140,7 +140,11 @@ export async function runScrapeBatch(): Promise<{ processed: number; sources: nu
           const year = detectYear(pdfUrl) ?? new Date().getFullYear()
           const session = detectSession(pdfUrl)
           const paperType = detectPaperType(pdfUrl)
-          const variant = pdfUrl.match(/varianta?[-_]?(\d+)/i)?.[1] ?? null
+          const variant =
+            pdfUrl.match(/varianta?[-_]?([A-Za-z0-9]+)/i)?.[1] ??
+            pdfUrl.match(/[_-]var[_-]?([A-Za-z0-9]+)/i)?.[1] ??
+            pdfUrl.match(/model[-_]?(\d+)/i)?.[1] ??
+            null
           const title = `Subiecte ${subj.name} ${source.university_name} ${year}${session ? ` — ${session}` : ''}${variant ? ` (varianta ${variant})` : ''}`
 
           await supabase.from('admitere_papers').upsert(
