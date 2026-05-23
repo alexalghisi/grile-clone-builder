@@ -342,20 +342,6 @@ function Page() {
         >
           <div className="mb-3 flex items-center gap-2 flex-wrap">
             <Badge variant="secondary">Întrebarea {idx + 1} / {questions.length}</Badge>
-            {q.difficulty && (
-              <Badge
-                variant="outline"
-                className={
-                  q.difficulty === "easy"
-                    ? "border-green-600/40 text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-950/20"
-                    : q.difficulty === "hard"
-                    ? "border-destructive/40 text-destructive bg-destructive/10"
-                    : "border-amber-500/40 text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/20"
-                }
-              >
-                {q.difficulty === "easy" ? "Ușor" : q.difficulty === "hard" ? "Greu" : "Mediu"}
-              </Badge>
-            )}
           </div>
           <div className="text-base font-medium">
             <QuestionContent text={q.question_text} />
