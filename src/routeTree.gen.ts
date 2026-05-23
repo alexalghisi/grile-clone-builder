@@ -28,6 +28,7 @@ import { Route as ApiPublicLogErrorRouteImport } from './routes/api/public/log-e
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
+import { Route as ApiPublicHooksHealthCheckRouteImport } from './routes/api/public/hooks/health-check'
 
 const TutorialeRoute = TutorialeRouteImport.update({
   id: '/tutoriale',
@@ -127,6 +128,12 @@ const LovableEmailQueueProcessRoute =
     path: '/lovable/email/queue/process',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicHooksHealthCheckRoute =
+  ApiPublicHooksHealthCheckRouteImport.update({
+    id: '/api/public/hooks/health-check',
+    path: '/api/public/hooks/health-check',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -145,6 +152,7 @@ export interface FileRoutesByFullPath {
   '/grile/': typeof GrileIndexRoute
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/api/public/hooks/health-check': typeof ApiPublicHooksHealthCheckRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
@@ -166,6 +174,7 @@ export interface FileRoutesByTo {
   '/grile': typeof GrileIndexRoute
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/api/public/hooks/health-check': typeof ApiPublicHooksHealthCheckRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
@@ -188,6 +197,7 @@ export interface FileRoutesById {
   '/grile/': typeof GrileIndexRoute
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/api/public/hooks/health-check': typeof ApiPublicHooksHealthCheckRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
@@ -211,6 +221,7 @@ export interface FileRouteTypes {
     | '/grile/'
     | '/api/public/log-error'
     | '/lovable/email/suppression'
+    | '/api/public/hooks/health-check'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
     | '/lovable/email/transactional/send'
@@ -232,6 +243,7 @@ export interface FileRouteTypes {
     | '/grile'
     | '/api/public/log-error'
     | '/lovable/email/suppression'
+    | '/api/public/hooks/health-check'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
     | '/lovable/email/transactional/send'
@@ -253,6 +265,7 @@ export interface FileRouteTypes {
     | '/grile/'
     | '/api/public/log-error'
     | '/lovable/email/suppression'
+    | '/api/public/hooks/health-check'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
     | '/lovable/email/transactional/send'
@@ -274,6 +287,7 @@ export interface RootRouteChildren {
   GrileIndexRoute: typeof GrileIndexRoute
   ApiPublicLogErrorRoute: typeof ApiPublicLogErrorRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
+  ApiPublicHooksHealthCheckRoute: typeof ApiPublicHooksHealthCheckRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
   LovableEmailTransactionalSendRoute: typeof LovableEmailTransactionalSendRoute
@@ -414,6 +428,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LovableEmailQueueProcessRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/hooks/health-check': {
+      id: '/api/public/hooks/health-check'
+      path: '/api/public/hooks/health-check'
+      fullPath: '/api/public/hooks/health-check'
+      preLoaderRoute: typeof ApiPublicHooksHealthCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -445,6 +466,7 @@ const rootRouteChildren: RootRouteChildren = {
   GrileIndexRoute: GrileIndexRoute,
   ApiPublicLogErrorRoute: ApiPublicLogErrorRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
+  ApiPublicHooksHealthCheckRoute: ApiPublicHooksHealthCheckRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
   LovableEmailTransactionalSendRoute: LovableEmailTransactionalSendRoute,
@@ -452,3 +474,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
