@@ -18,7 +18,9 @@ export interface TemplateEntry {
  *   // then add to TEMPLATES: 'welcome': welcomeTemplate
  */
 import { template as errorAlert } from './error-alert'
+import { template as leadAlert } from './lead-alert'
 
 export const TEMPLATES: Record<string, TemplateEntry> = {
   'error-alert': errorAlert,
+  'lead-alert': leadAlert,
 }
