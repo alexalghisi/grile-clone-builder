@@ -173,10 +173,12 @@ export async function runScrapeBatch(): Promise<{ processed: number; sources: nu
 
     try {
       const mode = (source.subject_hints as any)?.mode ?? 'map'
+      console.log(`[scrape] source=${source.university_slug} mode=${mode} root=${source.root_url}`)
       const pdfs =
         mode === 'index'
           ? await firecrawlIndexPdfs(source.root_url)
           : await firecrawlMap(source.root_url)
+      console.log(`[scrape] source=${source.university_slug} pdfs_found=${pdfs.length}`)
       const isMultiUni = (source.subject_hints as any)?.multi_uni === true
       discovered = pdfs.length
       const batch = pdfs.slice(0, MAX_PDFS_PER_RUN)
