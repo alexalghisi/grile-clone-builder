@@ -24,6 +24,7 @@ import { Route as SubiecteBacMaterieRouteImport } from './routes/subiecte-bac.$m
 import { Route as QuizSlugRouteImport } from './routes/quiz.$slug'
 import { Route as GrileUniSlugRouteImport } from './routes/grile.$uniSlug'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
+import { Route as AdmitereUniSlugRouteImport } from './routes/admitere.$uniSlug'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicLogErrorRouteImport } from './routes/api/public/log-error'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
@@ -107,6 +108,11 @@ const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
   path: '/email/unsubscribe',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdmitereUniSlugRoute = AdmitereUniSlugRouteImport.update({
+  id: '/$uniSlug',
+  path: '/$uniSlug',
+  getParentRoute: () => AdmitereRoute,
+} as any)
 const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   id: '/lovable/email/suppression',
   path: '/lovable/email/suppression',
@@ -150,7 +156,7 @@ const ApiPublicHooksHealthCheckRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admitere': typeof AdmitereRoute
+  '/admitere': typeof AdmitereRouteWithChildren
   '/autentificare': typeof AutentificareRoute
   '/feedback': typeof FeedbackRoute
   '/grila-zilei': typeof GrilaZileiRoute
@@ -159,6 +165,7 @@ export interface FileRoutesByFullPath {
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
   '/subiecte-bac': typeof SubiecteBacRouteWithChildren
   '/tutoriale': typeof TutorialeRoute
+  '/admitere/$uniSlug': typeof AdmitereUniSlugRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/quiz/$slug': typeof QuizSlugRoute
@@ -174,7 +181,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admitere': typeof AdmitereRoute
+  '/admitere': typeof AdmitereRouteWithChildren
   '/autentificare': typeof AutentificareRoute
   '/feedback': typeof FeedbackRoute
   '/grila-zilei': typeof GrilaZileiRoute
@@ -183,6 +190,7 @@ export interface FileRoutesByTo {
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
   '/subiecte-bac': typeof SubiecteBacRouteWithChildren
   '/tutoriale': typeof TutorialeRoute
+  '/admitere/$uniSlug': typeof AdmitereUniSlugRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/quiz/$slug': typeof QuizSlugRoute
@@ -199,7 +207,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admitere': typeof AdmitereRoute
+  '/admitere': typeof AdmitereRouteWithChildren
   '/autentificare': typeof AutentificareRoute
   '/feedback': typeof FeedbackRoute
   '/grila-zilei': typeof GrilaZileiRoute
@@ -208,6 +216,7 @@ export interface FileRoutesById {
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
   '/subiecte-bac': typeof SubiecteBacRouteWithChildren
   '/tutoriale': typeof TutorialeRoute
+  '/admitere/$uniSlug': typeof AdmitereUniSlugRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/quiz/$slug': typeof QuizSlugRoute
@@ -234,6 +243,7 @@ export interface FileRouteTypes {
     | '/subiecte-admitere'
     | '/subiecte-bac'
     | '/tutoriale'
+    | '/admitere/$uniSlug'
     | '/email/unsubscribe'
     | '/grile/$uniSlug'
     | '/quiz/$slug'
@@ -258,6 +268,7 @@ export interface FileRouteTypes {
     | '/subiecte-admitere'
     | '/subiecte-bac'
     | '/tutoriale'
+    | '/admitere/$uniSlug'
     | '/email/unsubscribe'
     | '/grile/$uniSlug'
     | '/quiz/$slug'
@@ -282,6 +293,7 @@ export interface FileRouteTypes {
     | '/subiecte-admitere'
     | '/subiecte-bac'
     | '/tutoriale'
+    | '/admitere/$uniSlug'
     | '/email/unsubscribe'
     | '/grile/$uniSlug'
     | '/quiz/$slug'
@@ -298,7 +310,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdmitereRoute: typeof AdmitereRoute
+  AdmitereRoute: typeof AdmitereRouteWithChildren
   AutentificareRoute: typeof AutentificareRoute
   FeedbackRoute: typeof FeedbackRoute
   GrilaZileiRoute: typeof GrilaZileiRoute
@@ -427,6 +439,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmailUnsubscribeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admitere/$uniSlug': {
+      id: '/admitere/$uniSlug'
+      path: '/$uniSlug'
+      fullPath: '/admitere/$uniSlug'
+      preLoaderRoute: typeof AdmitereUniSlugRouteImport
+      parentRoute: typeof AdmitereRoute
+    }
     '/lovable/email/suppression': {
       id: '/lovable/email/suppression'
       path: '/lovable/email/suppression'
@@ -479,6 +498,18 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdmitereRouteChildren {
+  AdmitereUniSlugRoute: typeof AdmitereUniSlugRoute
+}
+
+const AdmitereRouteChildren: AdmitereRouteChildren = {
+  AdmitereUniSlugRoute: AdmitereUniSlugRoute,
+}
+
+const AdmitereRouteWithChildren = AdmitereRoute._addFileChildren(
+  AdmitereRouteChildren,
+)
+
 interface SubiecteBacRouteChildren {
   SubiecteBacMaterieRoute: typeof SubiecteBacMaterieRoute
 }
@@ -493,7 +524,7 @@ const SubiecteBacRouteWithChildren = SubiecteBacRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdmitereRoute: AdmitereRoute,
+  AdmitereRoute: AdmitereRouteWithChildren,
   AutentificareRoute: AutentificareRoute,
   FeedbackRoute: FeedbackRoute,
   GrilaZileiRoute: GrilaZileiRoute,
