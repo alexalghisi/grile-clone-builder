@@ -9,7 +9,7 @@ const NAV = [
   { to: "/", label: "Acasă" },
   { to: "/grile", label: "Grile" },
   { to: "/subiecte-bac", label: "Subiecte BAC" },
-  { to: "/subiecte-admitere", label: "Subiecte Admitere" },
+  { to: "/admitere", label: "Subiecte Admitere" },
   { to: "/tutoriale", label: "Tutoriale" },
   { to: "/simulare", label: "Simulare" },
   { to: "/grila-zilei", label: "Grila Zilei" },
