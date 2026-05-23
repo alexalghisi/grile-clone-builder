@@ -45,7 +45,7 @@ function Page() {
         </p>
 
         <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {data.years.map((y) => (
+          {data.years.map((y: { year: number; items: any[] }) => (
             <Link key={y.year} to="/subiecte-bac/$materie/$an" params={{ materie: params.materie, an: String(y.year) }}>
               <Card className="p-4 transition hover:border-primary/40 hover:shadow-md">
                 <div className="flex items-center justify-between">
