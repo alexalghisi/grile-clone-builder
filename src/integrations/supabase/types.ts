@@ -68,6 +68,60 @@ export type Database = {
           },
         ]
       }
+      bac_papers: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          paper_type: string
+          pdf_url: string | null
+          session: string
+          slug: string
+          source_url: string | null
+          storage_path: string | null
+          subject_name: string
+          subject_slug: string
+          title: string
+          updated_at: string
+          variant: string | null
+          year: number
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          paper_type?: string
+          pdf_url?: string | null
+          session?: string
+          slug: string
+          source_url?: string | null
+          storage_path?: string | null
+          subject_name: string
+          subject_slug: string
+          title: string
+          updated_at?: string
+          variant?: string | null
+          year: number
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          paper_type?: string
+          pdf_url?: string | null
+          session?: string
+          slug?: string
+          source_url?: string | null
+          storage_path?: string | null
+          subject_name?: string
+          subject_slug?: string
+          title?: string
+          updated_at?: string
+          variant?: string | null
+          year?: number
+        }
+        Relationships: []
+      }
       email_leads: {
         Row: {
           created_at: string
@@ -209,6 +263,42 @@ export type Database = {
           message?: string
           page_url?: string | null
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      meditatii_leads: {
+        Row: {
+          budget: string | null
+          contact: string
+          contact_type: string
+          created_at: string
+          id: string
+          level: string | null
+          message: string | null
+          page_url: string | null
+          subject: string
+        }
+        Insert: {
+          budget?: string | null
+          contact: string
+          contact_type?: string
+          created_at?: string
+          id?: string
+          level?: string | null
+          message?: string | null
+          page_url?: string | null
+          subject: string
+        }
+        Update: {
+          budget?: string | null
+          contact?: string
+          contact_type?: string
+          created_at?: string
+          id?: string
+          level?: string | null
+          message?: string | null
+          page_url?: string | null
+          subject?: string
         }
         Relationships: []
       }
