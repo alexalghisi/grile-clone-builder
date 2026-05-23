@@ -17,6 +17,7 @@ import { Route as SimulareRouteImport } from './routes/simulare'
 import { Route as GrilaZileiRouteImport } from './routes/grila-zilei'
 import { Route as FeedbackRouteImport } from './routes/feedback'
 import { Route as AutentificareRouteImport } from './routes/autentificare'
+import { Route as AdmitereRouteImport } from './routes/admitere'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GrileIndexRouteImport } from './routes/grile.index'
 import { Route as SubiecteBacMaterieRouteImport } from './routes/subiecte-bac.$materie'
@@ -69,6 +70,11 @@ const FeedbackRoute = FeedbackRouteImport.update({
 const AutentificareRoute = AutentificareRouteImport.update({
   id: '/autentificare',
   path: '/autentificare',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdmitereRoute = AdmitereRouteImport.update({
+  id: '/admitere',
+  path: '/admitere',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -144,6 +150,7 @@ const ApiPublicHooksHealthCheckRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admitere': typeof AdmitereRoute
   '/autentificare': typeof AutentificareRoute
   '/feedback': typeof FeedbackRoute
   '/grila-zilei': typeof GrilaZileiRoute
@@ -167,6 +174,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admitere': typeof AdmitereRoute
   '/autentificare': typeof AutentificareRoute
   '/feedback': typeof FeedbackRoute
   '/grila-zilei': typeof GrilaZileiRoute
@@ -191,6 +199,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admitere': typeof AdmitereRoute
   '/autentificare': typeof AutentificareRoute
   '/feedback': typeof FeedbackRoute
   '/grila-zilei': typeof GrilaZileiRoute
@@ -216,6 +225,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admitere'
     | '/autentificare'
     | '/feedback'
     | '/grila-zilei'
@@ -239,6 +249,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admitere'
     | '/autentificare'
     | '/feedback'
     | '/grila-zilei'
@@ -262,6 +273,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/admitere'
     | '/autentificare'
     | '/feedback'
     | '/grila-zilei'
@@ -286,6 +298,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdmitereRoute: typeof AdmitereRoute
   AutentificareRoute: typeof AutentificareRoute
   FeedbackRoute: typeof FeedbackRoute
   GrilaZileiRoute: typeof GrilaZileiRoute
@@ -363,6 +376,13 @@ declare module '@tanstack/react-router' {
       path: '/autentificare'
       fullPath: '/autentificare'
       preLoaderRoute: typeof AutentificareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admitere': {
+      id: '/admitere'
+      path: '/admitere'
+      fullPath: '/admitere'
+      preLoaderRoute: typeof AdmitereRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -473,6 +493,7 @@ const SubiecteBacRouteWithChildren = SubiecteBacRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdmitereRoute: AdmitereRoute,
   AutentificareRoute: AutentificareRoute,
   FeedbackRoute: FeedbackRoute,
   GrilaZileiRoute: GrilaZileiRoute,
