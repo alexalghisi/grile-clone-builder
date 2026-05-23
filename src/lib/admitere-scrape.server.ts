@@ -184,12 +184,22 @@ export async function runScrapeBatch(): Promise<{ processed: number; sources: nu
 
       // Skip PDFs already imported (by source_url) so successive runs
       // make progress through the full list instead of re-processing
-      // the first MAX_PDFS_PER_RUN every time.
-      const { data: existing } = await supabase
-        .from('admitere_papers')
-        .select('source_url')
-        .in('source_url', pdfs)
-      const seen = new Set<string>((existing ?? []).map((r: any) => r.source_url))
+      // the first MAX_PDFS_PER_RUN every time. We paginate to avoid the
+      // 1000-row default limit and to skip the URL-length cap on .in().
+      const seen = new Set<string>()
+      {
+        const pageSize = 1000
+        for (let from = 0; ; from += pageSize) {
+          const { data: page } = await supabase
+            .from('admitere_papers')
+            .select('source_url')
+            .not('source_url', 'is', null)
+            .range(from, from + pageSize - 1)
+          if (!page || page.length === 0) break
+          for (const r of page as any[]) if (r.source_url) seen.add(r.source_url)
+          if (page.length < pageSize) break
+        }
+      }
       const remaining = pdfs.filter((u) => !seen.has(u))
       const batch = remaining.slice(0, MAX_PDFS_PER_RUN)
       console.log(`[scrape] source=${source.university_slug} remaining=${remaining.length} batch=${batch.length}`)
