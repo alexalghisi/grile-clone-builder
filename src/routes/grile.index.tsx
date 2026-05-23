@@ -10,15 +10,48 @@ import { GraduationCap } from "lucide-react";
 import { AdSlot } from "@/components/AdSlot";
 
 export const Route = createFileRoute("/grile/")({
-  head: () => ({
-    meta: [
-      { title: "Grile Admitere — Toate Universitățile 2026 | GrileAdmitere.ro" },
-      { name: "description", content: "Lista completă a universităților din România cu grile admitere 2026 rezolvate: UMF, UPB, UBB, ASE, UAIC, UTCN și 100+ instituții." },
-      { property: "og:title", content: "Grile Admitere — Toate Universitățile 2026" },
-      { property: "og:description", content: "Alege universitatea și începe pregătirea cu grile rezolvate pas cu pas." },
-    ],
-    links: [{ rel: "canonical", href: "https://grileadmitere.ro/grile" }],
-  }),
+  head: () => {
+    const title = "Grile Admitere 2026 — Toate Universitățile din România | GrileAdmitere.ro";
+    const description =
+      "Toate universitățile din România cu grile admitere 2026 rezolvate pas cu pas: UMF (București, Cluj, Iași, Timișoara), UPB, UBB, ASE, UAIC, UTCN și 100+ facultăți. Gratuit.";
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { name: "keywords", content: "grile admitere, admitere facultate 2026, UMF, UPB, UBB, ASE, UAIC, UTCN, teste admitere, medicina, politehnica, drept, informatica" },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: "website" },
+        { property: "og:url", content: "https://grileadmitere.ro/grile" },
+      ],
+      links: [{ rel: "canonical", href: "https://grileadmitere.ro/grile" }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Acasă", item: "https://grileadmitere.ro/" },
+              { "@type": "ListItem", position: 2, name: "Grile Admitere", item: "https://grileadmitere.ro/grile" },
+            ],
+          }),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            name: title,
+            description,
+            url: "https://grileadmitere.ro/grile",
+            inLanguage: "ro-RO",
+            isPartOf: { "@type": "WebSite", name: "GrileAdmitere.ro", url: "https://grileadmitere.ro" },
+          }),
+        },
+      ],
+    };
+  },
   component: Page,
 });
 
@@ -35,10 +68,21 @@ function Page() {
     <div className="min-h-screen bg-background">
       <Header />
       <main className="container mx-auto px-4 py-10">
-        <h1 className="text-3xl font-bold">Toate universitățile</h1>
-        <p className="mt-2 text-muted-foreground">{unis.length} universități · alege una pentru a vedea materiile</p>
+        <nav aria-label="Breadcrumb" className="mb-3 text-xs text-muted-foreground">
+          <Link to="/" className="hover:underline">Acasă</Link>
+          <span className="mx-1">/</span>
+          <span>Grile Admitere</span>
+        </nav>
+        <h1 className="text-3xl font-bold">Grile Admitere 2026 — Toate Universitățile din România</h1>
+        <p className="mt-2 text-muted-foreground">
+          {unis.length} universități · grile admitere rezolvate pas cu pas pentru Medicină (UMF), Politehnică (UPB, UTCN), Drept, Informatică, ASE, UBB, UAIC și multe altele.
+        </p>
+        <p className="mt-2 max-w-3xl text-sm text-muted-foreground">
+          Alege universitatea ta și exersează gratuit cu mii de grile reale din anii precedenți, cu explicații detaliate pentru fiecare răspuns. Ideal pentru pregătirea admiterii 2026 la facultate.
+        </p>
         <Input className="mt-6 max-w-md" placeholder="Caută universitate sau oraș…" value={q} onChange={(e) => setQ(e.target.value)} />
         <AdSlot className="my-6" />
+        <h2 className="mb-3 text-lg font-semibold">Lista universităților</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((u: any) => (
             <Link key={u.id} to="/grile/$uniSlug" params={{ uniSlug: u.slug }}>
@@ -55,6 +99,11 @@ function Page() {
             </Link>
           ))}
         </div>
+        <section className="mt-10 max-w-3xl text-sm text-muted-foreground space-y-3">
+          <h2 className="text-lg font-semibold text-foreground">De ce să te pregătești cu GrileAdmitere.ro</h2>
+          <p>Platforma noastră adună grile reale de admitere de la cele mai importante universități din România. Fiecare grilă vine cu explicații pas cu pas, ca să înțelegi raționamentul, nu doar răspunsul corect.</p>
+          <p>Indiferent dacă vizezi Medicina la UMF Carol Davila, Informatica la Politehnică sau Drept la Universitatea București, găsești aici materialele de care ai nevoie pentru admitere 2026 — complet gratuit.</p>
+        </section>
       </main>
     </div>
   );

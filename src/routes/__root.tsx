@@ -12,6 +12,7 @@ import {
 import appCss from "../styles.css?url";
 import { AdScript, StickyBottomAd } from "@/components/AdSlot";
 import { Toaster } from "@/components/ui/sonner";
+import { ClientErrorReporter, reportClientError } from "@/components/ClientErrorReporter";
 
 function NotFoundComponent() {
   return (
@@ -38,6 +39,9 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
+  if (typeof window !== "undefined") {
+    reportClientError(error?.message || "Route error", { stack: error?.stack });
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -223,6 +227,7 @@ function RootComponent() {
       </div>
       <StickyBottomAd />
       <Toaster />
+      <ClientErrorReporter />
     </QueryClientProvider>
   );
 }

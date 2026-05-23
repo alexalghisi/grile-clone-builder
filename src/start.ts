@@ -1,8 +1,9 @@
 import { createStart, createMiddleware } from "@tanstack/react-start";
 
 import { renderErrorPage } from "./lib/error-page";
+import { sendErrorAlert } from "./lib/alert-email.server";
 
-const errorMiddleware = createMiddleware().server(async ({ next }) => {
+const errorMiddleware = createMiddleware().server(async ({ next, request }) => {
   try {
     return await next();
   } catch (error) {
@@ -10,6 +11,18 @@ const errorMiddleware = createMiddleware().server(async ({ next }) => {
       throw error;
     }
     console.error(error);
+    try {
+      const err = error as any;
+      const url = request ? new URL((request as Request).url).toString() : undefined;
+      // fire-and-forget so we don't block the error response
+      void sendErrorAlert({
+        source: "server",
+        message: err?.message ? String(err.message) : String(error),
+        url,
+        stack: err?.stack ? String(err.stack) : undefined,
+        userAgent: request?.headers?.get?.("user-agent") ?? undefined,
+      });
+    } catch {}
     return new Response(renderErrorPage(), {
       status: 500,
       headers: { "content-type": "text/html; charset=utf-8" },
