@@ -24,6 +24,7 @@ import { Route as QuizSlugRouteImport } from './routes/quiz.$slug'
 import { Route as GrileUniSlugRouteImport } from './routes/grile.$uniSlug'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
+import { Route as ApiPublicLogErrorRouteImport } from './routes/api/public/log-error'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
@@ -103,6 +104,11 @@ const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   path: '/lovable/email/suppression',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicLogErrorRoute = ApiPublicLogErrorRouteImport.update({
+  id: '/api/public/log-error',
+  path: '/api/public/log-error',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LovableEmailTransactionalSendRoute =
   LovableEmailTransactionalSendRouteImport.update({
     id: '/lovable/email/transactional/send',
@@ -137,6 +143,7 @@ export interface FileRoutesByFullPath {
   '/quiz/$slug': typeof QuizSlugRoute
   '/subiecte-bac/$materie': typeof SubiecteBacMaterieRoute
   '/grile/': typeof GrileIndexRoute
+  '/api/public/log-error': typeof ApiPublicLogErrorRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -157,6 +164,7 @@ export interface FileRoutesByTo {
   '/quiz/$slug': typeof QuizSlugRoute
   '/subiecte-bac/$materie': typeof SubiecteBacMaterieRoute
   '/grile': typeof GrileIndexRoute
+  '/api/public/log-error': typeof ApiPublicLogErrorRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -178,6 +186,7 @@ export interface FileRoutesById {
   '/quiz/$slug': typeof QuizSlugRoute
   '/subiecte-bac/$materie': typeof SubiecteBacMaterieRoute
   '/grile/': typeof GrileIndexRoute
+  '/api/public/log-error': typeof ApiPublicLogErrorRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -200,6 +209,7 @@ export interface FileRouteTypes {
     | '/quiz/$slug'
     | '/subiecte-bac/$materie'
     | '/grile/'
+    | '/api/public/log-error'
     | '/lovable/email/suppression'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
@@ -220,6 +230,7 @@ export interface FileRouteTypes {
     | '/quiz/$slug'
     | '/subiecte-bac/$materie'
     | '/grile'
+    | '/api/public/log-error'
     | '/lovable/email/suppression'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
@@ -240,6 +251,7 @@ export interface FileRouteTypes {
     | '/quiz/$slug'
     | '/subiecte-bac/$materie'
     | '/grile/'
+    | '/api/public/log-error'
     | '/lovable/email/suppression'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
@@ -260,6 +272,7 @@ export interface RootRouteChildren {
   GrileUniSlugRoute: typeof GrileUniSlugRoute
   QuizSlugRoute: typeof QuizSlugRoute
   GrileIndexRoute: typeof GrileIndexRoute
+  ApiPublicLogErrorRoute: typeof ApiPublicLogErrorRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
@@ -373,6 +386,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LovableEmailSuppressionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/log-error': {
+      id: '/api/public/log-error'
+      path: '/api/public/log-error'
+      fullPath: '/api/public/log-error'
+      preLoaderRoute: typeof ApiPublicLogErrorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lovable/email/transactional/send': {
       id: '/lovable/email/transactional/send'
       path: '/lovable/email/transactional/send'
@@ -423,6 +443,7 @@ const rootRouteChildren: RootRouteChildren = {
   GrileUniSlugRoute: GrileUniSlugRoute,
   QuizSlugRoute: QuizSlugRoute,
   GrileIndexRoute: GrileIndexRoute,
+  ApiPublicLogErrorRoute: ApiPublicLogErrorRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
