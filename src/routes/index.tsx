@@ -38,6 +38,41 @@ export const Route = createFileRoute("/")({
       { property: "og:url", content: "https://grileadmitere.ro/" },
     ],
     links: [{ rel: "canonical", href: "https://grileadmitere.ro/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: [
+            {
+              "@type": "Question",
+              name: "Cum mă pregătesc pentru admiterea la facultate 2026?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Pe GrileAdmitere.ro găsești 74.000+ grile rezolvate pas cu pas pentru UMF, UPB, UBB, ASE și 100+ universități, complet gratuit.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Grilele de admitere sunt gratuite?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Da, toate grilele de admitere și simulările BAC de pe GrileAdmitere.ro sunt 100% gratuite.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Pentru ce universități am grile?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Avem grile pentru UMF (București, Cluj, Iași, Timișoara), UPB, UBB, ASE, UAIC, UTCN și 100+ universități din România.",
+              },
+            },
+          ],
+        }),
+      },
+    ],
   }),
   component: Index,
 });
