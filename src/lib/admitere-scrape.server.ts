@@ -2,7 +2,7 @@ import { createClient } from '@supabase/supabase-js'
 
 const FIRECRAWL_API = 'https://api.firecrawl.dev/v2'
 const BUCKET = 'admitere-subiecte'
-const MAX_PDFS_PER_RUN = 15
+const MAX_PDFS_PER_RUN = 60
 const MAX_PDF_BYTES = 25 * 1024 * 1024
 
 const SUBJECT_HINTS: { slug: string; name: string; patterns: RegExp[] }[] = [
@@ -19,6 +19,27 @@ const SUBJECT_HINTS: { slug: string; name: string; patterns: RegExp[] }[] = [
   { slug: 'geografie', name: 'Geografie', patterns: [/geograf/i] },
   { slug: 'anatomie', name: 'Anatomie', patterns: [/anatom/i] },
 ]
+
+// Maps URL path segments to universities for multi-uni hubs like modinfo.ro
+// where one site hosts PDFs for many universities under /admitere/{seg}/...
+const MULTI_UNI_MAP: Record<string, { slug: string; name: string }> = {
+  buc: { slug: 'universitatea-bucuresti-fmi', name: 'Universitatea din București – FMI' },
+  cti: { slug: 'universitatea-bucuresti-cti', name: 'Universitatea din București – CTI (FMI)' },
+  iasi: { slug: 'universitatea-alexandru-ioan-cuza-iasi', name: 'Universitatea „Alexandru Ioan Cuza" Iași – Informatică' },
+  cluj: { slug: 'universitatea-babes-bolyai-cluj', name: 'Universitatea Babeș-Bolyai Cluj – FMI' },
+  uvt: { slug: 'universitatea-vest-timisoara', name: 'Universitatea de Vest din Timișoara – FMI' },
+  suceava: { slug: 'universitatea-stefan-cel-mare-suceava', name: 'Universitatea „Ștefan cel Mare" Suceava' },
+  upb: { slug: 'universitatea-politehnica-bucuresti', name: 'Universitatea Politehnica București' },
+  utcn: { slug: 'universitatea-tehnica-cluj-napoca', name: 'Universitatea Tehnică Cluj-Napoca' },
+  tuiasi: { slug: 'universitatea-tehnica-iasi', name: 'Universitatea Tehnică „Gheorghe Asachi" Iași' },
+}
+
+function detectUniFromUrl(url: string): { slug: string; name: string } | null {
+  const m = url.match(/\/admitere\/([a-z0-9-]+)\//i)
+  if (!m) return null
+  const key = m[1].toLowerCase()
+  return MULTI_UNI_MAP[key] ?? null
+}
 
 function getAdmin() {
   const url = process.env.SUPABASE_URL ?? import.meta.env.VITE_SUPABASE_URL
@@ -75,6 +96,29 @@ async function firecrawlMap(root: string): Promise<string[]> {
   return links.filter((l) => /\.pdf(\?|$)/i.test(l))
 }
 
+// Scrapes one HTML index page and returns every PDF link found on it.
+// Use for hub pages like https://www.modinfo.ro/admitere.php that list
+// all year/subject PDFs as anchors.
+async function firecrawlIndexPdfs(pageUrl: string): Promise<string[]> {
+  const key = process.env.FIRECRAWL_API_KEY
+  if (!key) throw new Error('FIRECRAWL_API_KEY missing')
+  const res = await fetch(`${FIRECRAWL_API}/scrape`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ url: pageUrl, formats: ['links'] }),
+  })
+  if (!res.ok) throw new Error(`Firecrawl scrape failed: ${res.status} ${await res.text()}`)
+  const json: any = await res.json()
+  const data = json?.data ?? json
+  const links: any[] = data?.links ?? []
+  const out = new Set<string>()
+  for (const l of links) {
+    const u = typeof l === 'string' ? l : l?.url
+    if (typeof u === 'string' && /\.pdf(\?|$)/i.test(u)) out.add(u)
+  }
+  return [...out]
+}
+
 async function downloadAndStore(supabase: any, pdfUrl: string, uniSlug: string): Promise<{ path: string; publicUrl: string; size: number } | null> {
   const res = await fetch(pdfUrl, { redirect: 'follow', headers: { 'User-Agent': 'GrileAdmitereBot/1.0' } })
   if (!res.ok) return null
@@ -128,13 +172,21 @@ export async function runScrapeBatch(): Promise<{ processed: number; sources: nu
     let errorMessage: string | null = null
 
     try {
-      const pdfs = await firecrawlMap(source.root_url)
+      const mode = (source.subject_hints as any)?.mode ?? 'map'
+      const pdfs =
+        mode === 'index'
+          ? await firecrawlIndexPdfs(source.root_url)
+          : await firecrawlMap(source.root_url)
+      const isMultiUni = (source.subject_hints as any)?.multi_uni === true
       discovered = pdfs.length
       const batch = pdfs.slice(0, MAX_PDFS_PER_RUN)
 
       for (const pdfUrl of batch) {
         try {
-          const stored = await downloadAndStore(supabase, pdfUrl, source.university_slug)
+          const uni = isMultiUni
+            ? detectUniFromUrl(pdfUrl) ?? { slug: source.university_slug, name: source.university_name }
+            : { slug: source.university_slug, name: source.university_name }
+          const stored = await downloadAndStore(supabase, pdfUrl, uni.slug)
           if (!stored) { failed += 1; continue }
           const subj = detectSubject(pdfUrl)
           const year = detectYear(pdfUrl) ?? new Date().getFullYear()
@@ -145,12 +197,12 @@ export async function runScrapeBatch(): Promise<{ processed: number; sources: nu
             pdfUrl.match(/[_-]var[_-]?([A-Za-z0-9]+)/i)?.[1] ??
             pdfUrl.match(/model[-_]?(\d+)/i)?.[1] ??
             null
-          const title = `Subiecte ${subj.name} ${source.university_name} ${year}${session ? ` — ${session}` : ''}${variant ? ` (varianta ${variant})` : ''}`
+          const title = `Subiecte ${subj.name} ${uni.name} ${year}${session ? ` — ${session}` : ''}${variant ? ` (varianta ${variant})` : ''}`
 
           await supabase.from('admitere_papers').upsert(
             {
-              university_slug: source.university_slug,
-              university_name: source.university_name,
+              university_slug: uni.slug,
+              university_name: uni.name,
               subject_slug: subj.slug,
               subject_name: subj.name,
               year,
