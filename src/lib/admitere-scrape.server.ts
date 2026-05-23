@@ -228,7 +228,7 @@ export async function runScrapeBatch(): Promise<{ processed: number; sources: nu
               source_url: pdfUrl,
               file_size_bytes: stored.size,
             },
-            { onConflict: 'university_slug,subject_slug,year,session,variant,paper_type' },
+            { onConflict: 'source_url' },
           )
           imported += 1
         } catch {
