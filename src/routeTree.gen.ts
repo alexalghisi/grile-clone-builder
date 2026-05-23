@@ -27,6 +27,7 @@ import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe
 import { Route as AdmitereUniSlugRouteImport } from './routes/admitere.$uniSlug'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicLogErrorRouteImport } from './routes/api/public/log-error'
+import { Route as AdmitereUniSlugMaterieSlugRouteImport } from './routes/admitere.$uniSlug.$materieSlug'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
@@ -123,6 +124,12 @@ const ApiPublicLogErrorRoute = ApiPublicLogErrorRouteImport.update({
   path: '/api/public/log-error',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdmitereUniSlugMaterieSlugRoute =
+  AdmitereUniSlugMaterieSlugRouteImport.update({
+    id: '/$materieSlug',
+    path: '/$materieSlug',
+    getParentRoute: () => AdmitereUniSlugRoute,
+  } as any)
 const LovableEmailTransactionalSendRoute =
   LovableEmailTransactionalSendRouteImport.update({
     id: '/lovable/email/transactional/send',
@@ -165,12 +172,13 @@ export interface FileRoutesByFullPath {
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
   '/subiecte-bac': typeof SubiecteBacRouteWithChildren
   '/tutoriale': typeof TutorialeRoute
-  '/admitere/$uniSlug': typeof AdmitereUniSlugRoute
+  '/admitere/$uniSlug': typeof AdmitereUniSlugRouteWithChildren
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/quiz/$slug': typeof QuizSlugRoute
   '/subiecte-bac/$materie': typeof SubiecteBacMaterieRoute
   '/grile/': typeof GrileIndexRoute
+  '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRoute
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/api/public/hooks/health-check': typeof ApiPublicHooksHealthCheckRoute
@@ -190,12 +198,13 @@ export interface FileRoutesByTo {
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
   '/subiecte-bac': typeof SubiecteBacRouteWithChildren
   '/tutoriale': typeof TutorialeRoute
-  '/admitere/$uniSlug': typeof AdmitereUniSlugRoute
+  '/admitere/$uniSlug': typeof AdmitereUniSlugRouteWithChildren
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/quiz/$slug': typeof QuizSlugRoute
   '/subiecte-bac/$materie': typeof SubiecteBacMaterieRoute
   '/grile': typeof GrileIndexRoute
+  '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRoute
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/api/public/hooks/health-check': typeof ApiPublicHooksHealthCheckRoute
@@ -216,12 +225,13 @@ export interface FileRoutesById {
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
   '/subiecte-bac': typeof SubiecteBacRouteWithChildren
   '/tutoriale': typeof TutorialeRoute
-  '/admitere/$uniSlug': typeof AdmitereUniSlugRoute
+  '/admitere/$uniSlug': typeof AdmitereUniSlugRouteWithChildren
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/quiz/$slug': typeof QuizSlugRoute
   '/subiecte-bac/$materie': typeof SubiecteBacMaterieRoute
   '/grile/': typeof GrileIndexRoute
+  '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRoute
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/api/public/hooks/health-check': typeof ApiPublicHooksHealthCheckRoute
@@ -249,6 +259,7 @@ export interface FileRouteTypes {
     | '/quiz/$slug'
     | '/subiecte-bac/$materie'
     | '/grile/'
+    | '/admitere/$uniSlug/$materieSlug'
     | '/api/public/log-error'
     | '/lovable/email/suppression'
     | '/api/public/hooks/health-check'
@@ -274,6 +285,7 @@ export interface FileRouteTypes {
     | '/quiz/$slug'
     | '/subiecte-bac/$materie'
     | '/grile'
+    | '/admitere/$uniSlug/$materieSlug'
     | '/api/public/log-error'
     | '/lovable/email/suppression'
     | '/api/public/hooks/health-check'
@@ -299,6 +311,7 @@ export interface FileRouteTypes {
     | '/quiz/$slug'
     | '/subiecte-bac/$materie'
     | '/grile/'
+    | '/admitere/$uniSlug/$materieSlug'
     | '/api/public/log-error'
     | '/lovable/email/suppression'
     | '/api/public/hooks/health-check'
@@ -460,6 +473,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicLogErrorRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admitere/$uniSlug/$materieSlug': {
+      id: '/admitere/$uniSlug/$materieSlug'
+      path: '/$materieSlug'
+      fullPath: '/admitere/$uniSlug/$materieSlug'
+      preLoaderRoute: typeof AdmitereUniSlugMaterieSlugRouteImport
+      parentRoute: typeof AdmitereUniSlugRoute
+    }
     '/lovable/email/transactional/send': {
       id: '/lovable/email/transactional/send'
       path: '/lovable/email/transactional/send'
@@ -498,12 +518,24 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AdmitereUniSlugRouteChildren {
+  AdmitereUniSlugMaterieSlugRoute: typeof AdmitereUniSlugMaterieSlugRoute
+}
+
+const AdmitereUniSlugRouteChildren: AdmitereUniSlugRouteChildren = {
+  AdmitereUniSlugMaterieSlugRoute: AdmitereUniSlugMaterieSlugRoute,
+}
+
+const AdmitereUniSlugRouteWithChildren = AdmitereUniSlugRoute._addFileChildren(
+  AdmitereUniSlugRouteChildren,
+)
+
 interface AdmitereRouteChildren {
-  AdmitereUniSlugRoute: typeof AdmitereUniSlugRoute
+  AdmitereUniSlugRoute: typeof AdmitereUniSlugRouteWithChildren
 }
 
 const AdmitereRouteChildren: AdmitereRouteChildren = {
-  AdmitereUniSlugRoute: AdmitereUniSlugRoute,
+  AdmitereUniSlugRoute: AdmitereUniSlugRouteWithChildren,
 }
 
 const AdmitereRouteWithChildren = AdmitereRoute._addFileChildren(
@@ -548,3 +580,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
