@@ -14,14 +14,25 @@ const ICONS: Record<string, string> = {
 export const Route = createFileRoute("/subiecte-bac")({
   head: () => ({
     meta: [
-      { title: "Subiecte BAC 2026 Rezolvate — Toate Materiile, Toți Anii (PDF)" },
+      { title: "Subiecte BAC 2026 Rezolvate — Toate Materiile (PDF)" },
       { name: "description", content: "Subiecte BAC oficiale 2001-2026 pentru matematică, română, biologie, chimie, fizică, engleză. PDF cu bareme rezolvate, variante și grile gratuite pentru Bacalaureat 2026." },
       { name: "keywords", content: "subiecte bac, bac 2026, bac matematica, bac romana, bac biologie, bac chimie, bac fizica, bareme bac, variante bac, pdf bac" },
-      { property: "og:title", content: "Subiecte BAC 2026 Rezolvate — Toate Materiile, Toți Anii (PDF)" },
+      { property: "og:title", content: "Subiecte BAC 2026 Rezolvate — Toate Materiile (PDF)" },
       { property: "og:description", content: "Arhiva completă subiecte BAC 2001-2026 cu PDF, bareme și rezolvări pentru toate materiile." },
       { property: "og:url", content: "https://grileadmitere.ro/subiecte-bac" },
     ],
     links: [{ rel: "canonical", href: "https://grileadmitere.ro/subiecte-bac" }],
+    scripts: [{
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        name: "Subiecte BAC 2026 Rezolvate — Arhiva Oficială",
+        description: "Colecție de subiecte BAC oficiale 2001-2026 pentru toate materiile, cu PDF, bareme și rezolvări.",
+        url: "https://grileadmitere.ro/subiecte-bac",
+        inLanguage: "ro-RO",
+      }),
+    }],
   }),
   loader: () => listBacSubjects(),
   component: Page,
