@@ -3,6 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { getQuiz, getNextSubjects } from "@/lib/db.functions";
+import { submitEmailLead } from "@/lib/leads.functions";
 import { supabase } from "@/integrations/supabase/client";
 import { Header } from "@/components/Header";
 import { AdSlot, AdLeaderboard } from "@/components/AdSlot";
@@ -66,14 +67,21 @@ function QuestionContent({ text }: { text: string }) {
 function EmailGate({ slug, onDone }: { slug: string; onDone: () => void }) {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const submitLead = useServerFn(submitEmailLead);
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     const v = email.trim();
     if (!/^\S+@\S+\.\S+$/.test(v)) { toast.error("Introdu un email valid"); return; }
     setLoading(true);
-    const { error } = await supabase.from("email_leads").insert({ email: v, source: "quiz_gate", quiz_slug: slug });
-    setLoading(false);
-    if (error && !String(error.message).toLowerCase().includes("duplicate")) {
+    try {
+      const res = await submitLead({ data: { email: v, quiz_slug: slug, source: "quiz_gate" } });
+      setLoading(false);
+      if (!res.ok) {
+        toast.error(res.reason || "Email invalid. Folosește o adresă reală.");
+        return;
+      }
+    } catch (err: any) {
+      setLoading(false);
       toast.error("Nu am putut salva emailul. Încearcă din nou.");
       return;
     }
