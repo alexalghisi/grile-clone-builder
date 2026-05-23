@@ -20,8 +20,21 @@ export const Route = createFileRoute("/grile/$uniSlug")({
         { property: "og:title", content: title },
         { property: "og:description", content: description },
         { property: "og:type", content: "article" },
+        { property: "og:url", content: `https://grileadmitere.ro/grile/${slug}` },
       ],
       links: [{ rel: "canonical", href: `https://grileadmitere.ro/grile/${slug}` }],
+      scripts: [{
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: title,
+          description,
+          url: `https://grileadmitere.ro/grile/${slug}`,
+          inLanguage: "ro-RO",
+          about: { "@type": "EducationalOrganization", name: slug.toUpperCase() },
+        }),
+      }],
     };
   },
   component: Page,
