@@ -6,7 +6,7 @@ import { Header } from "@/components/Header";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AdSlot, AdLeaderboard } from "@/components/AdSlot";
-import { BookOpen } from "lucide-react";
+import { BookOpen, Trophy, Sparkles, FileText } from "lucide-react";
 
 export const Route = createFileRoute("/grile/$uniSlug")({
   head: ({ params }) => {
@@ -86,7 +86,9 @@ function Page() {
         <AdSlot className="my-6" />
         <h2 className="mt-2 mb-3 text-lg font-semibold">Materii disponibile</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 mt-6">
-          {data.subjects.map((s: any) => (
+          {[...data.subjects]
+            .sort((a: any, b: any) => (b.question_count ?? 0) - (a.question_count ?? 0))
+            .map((s: any) => (
             <Link key={s.id} to="/quiz/$slug" params={{ slug: s.slug }}>
               <Card className="p-5 h-full transition hover:border-primary/40 hover:shadow">
                 <div className="flex items-start justify-between gap-2">
@@ -103,6 +105,26 @@ function Page() {
             </Link>
           ))}
         </div>
+        {/* Next-step CTAs to reduce bounce */}
+        <section className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {[
+            { to: "/simulare" as const, icon: Trophy, t: `Simulare ${data.short_name ?? data.name}`, d: "30 de grile cronometrate, format de examen real." },
+            { to: "/grila-zilei" as const, icon: Sparkles, t: "Grila zilei", d: "Exersează zilnic o întrebare nouă cu explicație." },
+            { to: "/subiecte-admitere" as const, icon: FileText, t: "Subiecte din anii precedenți", d: "Arhivă PDF cu bareme oficiale." },
+          ].map((c) => (
+            <Link key={c.t} to={c.to}>
+              <Card className="h-full p-5 transition hover:border-primary/40 hover:shadow-md">
+                <div className="flex items-start gap-3">
+                  <div className="rounded-md bg-primary/10 p-2"><c.icon className="h-4 w-4 text-primary" /></div>
+                  <div>
+                    <div className="font-semibold">{c.t}</div>
+                    <p className="mt-1 text-sm text-muted-foreground">{c.d}</p>
+                  </div>
+                </div>
+              </Card>
+            </Link>
+          ))}
+        </section>
         <section className="mt-10 max-w-3xl text-sm text-muted-foreground space-y-3">
           <h2 className="text-lg font-semibold text-foreground">Cum funcționează pregătirea pentru {data.short_name ?? data.name}</h2>
           <p>Alege o materie, rezolvă grilele cronometrat și primește explicații detaliate la fiecare răspuns. Statisticile tale rămân salvate, ca să vezi unde stai bine și unde trebuie să mai exersezi.</p>

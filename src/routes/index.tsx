@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { listUniversities } from "@/lib/db.functions";
+import { listUniversities, listPopularSubjects } from "@/lib/db.functions";
 import { Header } from "@/components/Header";
 import { AdSlot, AdLeaderboard } from "@/components/AdSlot";
 import { Card } from "@/components/ui/card";
@@ -26,6 +26,8 @@ import {
   CheckCircle2,
   Lightbulb,
   Target,
+  FileText,
+  Flame,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -80,6 +82,11 @@ export const Route = createFileRoute("/")({
 function Index() {
   const fn = useServerFn(listUniversities);
   const { data: unis = [] } = useQuery({ queryKey: ["unis"], queryFn: () => fn() });
+  const popFn = useServerFn(listPopularSubjects);
+  const { data: popular = [] } = useQuery({
+    queryKey: ["popular-subjects"],
+    queryFn: () => popFn({ data: { limit: 12 } }),
+  });
   const navigate = useNavigate();
   const [selected, setSelected] = useState<string>("");
 
@@ -167,6 +174,62 @@ function Index() {
 
       <main className="container mx-auto space-y-16 px-4 py-12">
         <AdLeaderboard className="my-2" />
+
+        {/* Popular subjects — quick-start deep links to reduce bounce */}
+        {popular.length > 0 && (
+          <section>
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <Badge variant="outline" className="mb-2"><Flame className="mr-1 h-3 w-3" /> Cele mai accesate</Badge>
+                <h2 className="text-2xl font-bold sm:text-3xl">Materii populare — Începe într-un click</h2>
+                <p className="mt-2 text-muted-foreground">Sari direct la grilele rezolvate cele mai cerute de candidați.</p>
+              </div>
+              <Link to="/grile" className="hidden sm:inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+                Vezi toate universitățile <ArrowRight className="h-3 w-3" />
+              </Link>
+            </div>
+            <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {popular.map((s: any) => (
+                <Link key={s.id} to="/quiz/$slug" params={{ slug: s.slug }}>
+                  <Card className="h-full p-4 transition hover:border-primary/40 hover:shadow-md">
+                    <div className="flex items-start gap-3">
+                      <div className="rounded-md bg-primary/10 p-2 mt-0.5"><BookOpen className="h-4 w-4 text-primary" /></div>
+                      <div className="min-w-0 flex-1">
+                        <div className="truncate font-semibold">{s.name}</div>
+                        <div className="text-xs text-muted-foreground truncate">
+                          {s.universities?.short_name ?? ""}{s.universities?.city ? ` · ${s.universities.city}` : ""}
+                        </div>
+                      </div>
+                      <Badge variant="secondary" className="shrink-0">{s.question_count}</Badge>
+                    </div>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Cross-link strip to reduce bounce */}
+        <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {[
+            { to: "/grila-zilei" as const, icon: Sparkles, t: "Grila zilei", d: "O întrebare nouă în fiecare zi, cu explicație." },
+            { to: "/simulare" as const, icon: Trophy, t: "Simulare cronometrată", d: "30 de grile în format de examen real." },
+            { to: "/subiecte-admitere" as const, icon: FileText, t: "Subiecte din anii precedenți", d: "Arhivă oficială cu bareme PDF." },
+          ].map((c) => (
+            <Link key={c.t} to={c.to}>
+              <Card className="h-full p-5 transition hover:border-primary/40 hover:shadow-md">
+                <div className="flex items-start gap-3">
+                  <div className="rounded-md bg-primary/10 p-2"><c.icon className="h-4 w-4 text-primary" /></div>
+                  <div>
+                    <div className="font-semibold">{c.t}</div>
+                    <p className="mt-1 text-sm text-muted-foreground">{c.d}</p>
+                  </div>
+                </div>
+              </Card>
+            </Link>
+          ))}
+        </section>
+
         <AdSlot />
 
         {/* Simulare */}
