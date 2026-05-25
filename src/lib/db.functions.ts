@@ -14,6 +14,19 @@ export const listUniversities = createServerFn({ method: "GET" }).handler(async 
   return (data ?? []).map((u: any) => ({ ...u, subject_count: counts[u.id] ?? 0 }));
 });
 
+export const listPopularSubjects = createServerFn({ method: "GET" })
+  .inputValidator((d: { limit?: number }) => ({ limit: d.limit ?? 12 }))
+  .handler(async ({ data }) => {
+    const sb = srv();
+    const { data: subs } = await sb
+      .from("subjects")
+      .select("id, slug, name, question_count, university_id, universities(slug, short_name, city)")
+      .gt("question_count", 0)
+      .order("question_count", { ascending: false })
+      .limit(data.limit);
+    return subs ?? [];
+  });
+
 export const getUniversity = createServerFn({ method: "GET" })
   .inputValidator((d: { slug: string }) => d)
   .handler(async ({ data }) => {
