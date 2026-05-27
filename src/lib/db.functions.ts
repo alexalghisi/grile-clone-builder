@@ -93,3 +93,33 @@ export const getNextSubjects = createServerFn({ method: "GET" })
     const fill = (others ?? []).filter((s: any) => !seen.has(s.id)).slice(0, Math.max(0, 4 - sameUni.length));
     return { next: sameUni[0] ?? fill[0] ?? null, recommendations: [...sameUni, ...fill].slice(0, 4) };
   });
+
+// ---- Simulări (cronometrate) -----------------------------------------------
+
+export const listSimulations = createServerFn({ method: "GET" }).handler(async () => {
+  const sb = srv();
+  const { data } = await sb
+    .from("simulations")
+    .select("id, slug, title, session, description, duration_minutes, total_questions, is_premium, universities(slug, short_name, name, city), subjects(slug, name)")
+    .order("created_at", { ascending: false });
+  return data ?? [];
+});
+
+export const getSimulation = createServerFn({ method: "GET" })
+  .inputValidator((d: { slug: string }) => d)
+  .handler(async ({ data }) => {
+    const sb = srv();
+    const { data: sim } = await sb
+      .from("simulations")
+      .select("id, slug, title, session, description, duration_minutes, total_questions, is_premium, universities(slug, short_name, name), subjects(slug, name)")
+      .eq("slug", data.slug)
+      .maybeSingle();
+    if (!sim) return null;
+    const { data: rows } = await sb
+      .from("simulation_questions")
+      .select("order_index, questions(id, question_text, options, correct_index, explanation, figure_url, solution_md, problem_number)")
+      .eq("simulation_id", sim.id)
+      .order("order_index", { ascending: true });
+    const questions = (rows ?? []).map((r: any) => r.questions).filter(Boolean);
+    return { simulation: sim, questions };
+  });
