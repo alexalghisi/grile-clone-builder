@@ -449,9 +449,13 @@ export type Database = {
           created_at: string
           difficulty: string | null
           explanation: string | null
+          figure_url: string | null
           id: string
           options: Json
+          problem_number: number | null
           question_text: string
+          session: string | null
+          solution_md: string | null
           subject_id: string
           year: number | null
         }
@@ -460,9 +464,13 @@ export type Database = {
           created_at?: string
           difficulty?: string | null
           explanation?: string | null
+          figure_url?: string | null
           id?: string
           options: Json
+          problem_number?: number | null
           question_text: string
+          session?: string | null
+          solution_md?: string | null
           subject_id: string
           year?: number | null
         }
@@ -471,9 +479,13 @@ export type Database = {
           created_at?: string
           difficulty?: string | null
           explanation?: string | null
+          figure_url?: string | null
           id?: string
           options?: Json
+          problem_number?: number | null
           question_text?: string
+          session?: string | null
+          solution_md?: string | null
           subject_id?: string
           year?: number | null
         }
@@ -587,6 +599,105 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      simulation_questions: {
+        Row: {
+          created_at: string
+          id: string
+          order_index: number
+          question_id: string
+          simulation_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          order_index?: number
+          question_id: string
+          simulation_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          order_index?: number
+          question_id?: string
+          simulation_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "simulation_questions_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "questions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "simulation_questions_simulation_id_fkey"
+            columns: ["simulation_id"]
+            isOneToOne: false
+            referencedRelation: "simulations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      simulations: {
+        Row: {
+          created_at: string
+          description: string | null
+          duration_minutes: number
+          id: string
+          is_premium: boolean
+          session: string | null
+          slug: string
+          subject_id: string | null
+          title: string
+          total_questions: number
+          university_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          duration_minutes?: number
+          id?: string
+          is_premium?: boolean
+          session?: string | null
+          slug: string
+          subject_id?: string | null
+          title: string
+          total_questions?: number
+          university_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          duration_minutes?: number
+          id?: string
+          is_premium?: boolean
+          session?: string | null
+          slug?: string
+          subject_id?: string | null
+          title?: string
+          total_questions?: number
+          university_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "simulations_subject_id_fkey"
+            columns: ["subject_id"]
+            isOneToOne: false
+            referencedRelation: "subjects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "simulations_university_id_fkey"
+            columns: ["university_id"]
+            isOneToOne: false
+            referencedRelation: "universities"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       subjects: {
         Row: {

@@ -1,124 +1,85 @@
 
-# Plan: Health-check + arhivă PDF admitere SEO
+# Plan refacere platformă (3 etape)
 
-## 1. Health-check periodic pe pagini-cheie
+Lucrăm în 3 loop-uri separate, în ordinea aleasă. Aceasta e o livrare mare — vreau să terminăm și să testăm fiecare etapă înainte de următoarea.
 
-Listă paginilor monitorizate (configurabilă în DB):
-- `/` (homepage)
-- `/grile` (lista universități)
-- `/subiecte-bac` (hub BAC)
-- `/grila-zilei`
-- 3 pagini reprezentative: `/grile/umf-bucuresti`, `/quiz/<slug-popular>`, `/subiecte-bac/matematica`
+---
 
-**Implementare:**
-- Tabel nou `health_checks` (url, expected_status, max_response_ms, enabled, last_status, last_checked_at, last_alert_at)
-- Server route `/api/public/hooks/health-check` care iterează URL-urile, face `fetch` cu timeout 8s și loghează rezultatul
-- Trigger eroare → `sendErrorAlert` (reutilizez infra existentă) dacă: status ≠ expected, sau response_ms > max_response_ms, sau eroare rețea
-- Throttle 30 min per URL ca să nu spam-uiesc inbox-ul când o pagină e jos câteva ore
-- `pg_cron` la fiecare 5 minute via `pg_net.http_post`
+## ETAPA 1 — Format grile conform admiterii reale (acest loop)
 
-## 2. Schema DB pentru subiecte admitere
+**Scop:** Grilele să arate ca subiectele reale UB/Politehnică: 6 variante, formule matematice, figuri, rezolvare pas-cu-pas, mod simulare cronometrat.
 
-Nou tabel `admitere_papers` (același pattern ca `bac_papers`):
-```
-id uuid pk
-university_slug text   -- ex: "umf-bucuresti"
-university_name text
-subject_slug text      -- ex: "biologie"
-subject_name text
-year int               -- 2001..2026
-session text           -- "iulie" / "septembrie" / null
-variant text           -- "varianta-1" / null
-paper_type text        -- "subiect" / "barem"
-title text
-description text
-pdf_url text           -- URL public Supabase Storage (bucketul nou "admitere-subiecte")
-storage_path text
-source_url text        -- de unde a fost scrapată
-file_size_bytes int
-page_count int
-ocr_text text          -- text extras pentru SEO + căutare
-created_at, updated_at
-UNIQUE(university_slug, subject_slug, year, session, variant, paper_type)
-```
+### 1.1. Schema DB (migrație)
+- `questions.options` rămâne `jsonb` — dar acceptăm 6 variante (A-F).
+- Nou: `questions.figure_url text NULL` — imagine/diagramă opțională în enunț.
+- Nou: `questions.solution_md text NULL` — rezolvare pas-cu-pas (markdown + LaTeX), separat de `explanation` (scurt).
+- Nou: `questions.session text NULL` — ex. "Admitere 2025", "Simulare 2026".
+- Nou: `questions.problem_number int NULL` — numerotare în cadrul sesiunii.
+- Nou: tabel `simulations` (id, university_id, subject_id, title, session, duration_minutes, total_questions, is_premium bool).
+- Nou: tabel `simulation_questions` (simulation_id, question_id, order_index).
+- Storage bucket nou: `question-figures` (public read).
+- **Ștergem grilele vechi** (clean slate, confirmat de tine).
 
-Index-uri: (university_slug, subject_slug), (year), gin pe ocr_text pentru căutare.
-Bucket public `admitere-subiecte` cu policy SELECT public, INSERT doar service-role.
+### 1.2. Rendering matematic + figuri
+- Adaug `katex` + `react-katex`. `QuestionContent` randează `$...$` (inline) și `$$...$$` (block).
+- Suport imagini în enunț prin `figure_url` (afișată sub enunț, max-h-96, lazy-load).
+- Rezolvarea pas-cu-pas la fel: markdown + KaTeX + imagini.
 
-## 3. Pipeline de scraping
+### 1.3. UI grilă (refăcut)
+- Format "Problema N." cu enunț bogat.
+- 6 butoane A) B) C) D) E) F) (sau 4 dacă întrebarea are 4 — flexibil).
+- După "Verifică": răspuns corect + secțiune "Rezolvare pas cu pas" expandabilă.
 
-**Sursa:** site-uri oficiale universități (admitere.umfcd.ro, admitere.upb.ro, etc.). Folosesc Firecrawl connector (deja disponibilă în Lovable) — robust pe JS-heavy sites și PDF-uri.
+### 1.4. Mod simulare cronometrat
+- Rută nouă: `/simulare/$slug` (cu `is_premium` flag în DB — gating real vine în Etapa 3).
+- Timer countdown (ex. 180 min), auto-submit la 0, scor instant, salvare în `attempts`.
+- Listă simulări pe `/simulare` (existentă — o refacem să citească din `simulations`).
 
-**Arhitectură:**
-- Tabel `scrape_sources` cu lista universităților + URL-uri root de scanat + selectori/patterns + status (queued/running/done/failed) + last_run_at
-- Tabel `scrape_jobs` per (uni, an, materie) cu status, retries, last_error
-- Server route `/api/public/hooks/scrape-admitere` (cron orar, procesează batch 5 surse pe rulare ca să rămână în budgetul Firecrawl)
-- Flow per sursă:
-  1. Firecrawl `map` pe root URL → găsește toate URL-urile cu pattern `/admitere/.../*.pdf`
-  2. Pentru fiecare PDF: download (fetch direct binar), upload în Supabase Storage `admitere-subiecte/{uni-slug}/{materie-slug}/{an}/{filename}.pdf`
-  3. Extract metadata: parsare nume fișier + path pentru (an, materie, sesiune, variantă) — fallback la OCR primele 2 pagini cu `pdf-parse` pentru a deduce contextul
-  4. Insert în `admitere_papers` cu ON CONFLICT DO UPDATE
-- Panou admin minim la `/admin/scraping` (visible doar pentru `has_role(admin)`) pentru: trigger manual sursă, vezi log job-uri, retry failed, marcaj PDF "invalid"
+### 1.5. Admin pentru grile noi
+- `/admin/questions/new` — formular cu: enunț (markdown+LaTeX cu preview), 6 variante, răspuns corect, rezolvare, upload figură în bucket, sesiune, materie.
+- Eu populez ~10-15 grile reale (UB MateInfo + Poli Info) ca seed, ca să vezi formatul live.
 
-**Realism:** majoritatea universităților nu au arhivă completă 2001-2026 online. Pipeline-ul va găsi tipic 2015-2026. Pentru anii vechi rămâne loc pentru upload manual prin admin (form simplu de upload + completare metadata).
+### Livrabile etapa 1
+- Schema migrată, grile vechi șterse.
+- Preview cu KaTeX funcțional + 6 variante + figuri + rezolvare.
+- Cel puțin 1 simulare funcțională cronometrată.
+- Admin de adăugare grile.
 
-## 4. Pagini SEO pentru subiecte admitere
+---
 
-URL: `/admitere/$uniSlug/$materieSlug/$an` (granular, maxim SEO)
+## ETAPA 2 — Redesign UI complet (loop următor)
 
-Plus pagini agregator:
-- `/admitere` — hub: listă universități cu număr subiecte
-- `/admitere/$uniSlug` — listă materii ale universității
-- `/admitere/$uniSlug/$materieSlug` — listă ani pentru (uni, materie)
-- `/admitere/$uniSlug/$materieSlug/$an` — pagina finală cu PDF embed + download + variante + barem
+Inspirație: admiterepoli.com.
+- Paletă albastru/indigo + accent (oklch tokens noi în `styles.css`).
+- Hero refăcut: propunere valoare clară + CTA dual (Vezi simulări / Începe gratuit).
+- Navigație topbar: Informații · Subiecte & Rezolvări · Resurse · Simulări · Video.
+- Dashboard cu sidebar (shadcn `Sidebar`): progres, simulări disponibile, status abonament.
+- Carduri cu shadow subtil, spațiere generoasă, animații discrete (fade/slide, fără over-the-top).
+- Mobil-first responsive.
 
-**Pe pagina finală (cea mai importantă SEO):**
-- `<h1>`: "Subiecte Admitere {Materie} {Universitate} {An} — Rezolvate"
-- Meta title <60 chars, description <160 chars
-- JSON-LD: `LearningResource` + `BreadcrumbList` + `Course` (about universitate)
-- Conținut text 300+ cuvinte: descriere structură proba, ce subiecte au căzut, link la varianta cu rezolvări (când există grile pe site), CTA către `/quiz/...` și `/meditatii`
-- PDF embed via `<object>` cu link de download
-- Text OCR (primele 800 caractere) afișat below-the-fold ca conținut indexabil
-- Internal linking: anii adiacenți, alte materii ale uni, alte universități cu aceeași materie
-- `og:image` generat dinamic via Supabase Storage (sau static placeholder per materie)
+La începutul Etapei 2 îți ofer 3 direcții vizuale (palete + tipografii + layout) ca să alegi vibe-ul.
 
-**Sitemap:** sitemap.xml extins cu toate URL-urile `/admitere/...` (pot fi 1000+ — fără probleme până la 50k per sitemap).
+---
 
-## 5. Tehnic — fișiere noi/modificate
+## ETAPA 3 — Plăți Stripe built-in + gating premium (loop final)
 
-```
-supabase/migrations/<timestamp>_admitere_arhiva.sql      # health_checks, admitere_papers, scrape_sources, scrape_jobs, bucket
-src/lib/admitere.functions.ts                            # serverFn list/get pentru pagini
-src/lib/admitere-scrape.server.ts                        # pipeline scraping
-src/lib/health-check.server.ts                           # logică monitorizare
-src/routes/api/public/hooks/health-check.ts              # cron endpoint
-src/routes/api/public/hooks/scrape-admitere.ts           # cron endpoint
-src/routes/admitere.index.tsx                            # hub
-src/routes/admitere.$uniSlug.tsx
-src/routes/admitere.$uniSlug.$materieSlug.tsx
-src/routes/admitere.$uniSlug.$materieSlug.$an.tsx        # pagina finală SEO
-src/routes/sitemap[.]xml.ts                              # extins cu admitere
-```
+- Rulez `recommend_payment_provider` → `enable_stripe_payments`.
+- Produse: **Premium lunar** (50 RON/lună recurent) + **Simulare unică** (30 RON one-time).
+- Pagină `/preturi` cu comparație Gratuit vs Premium + badge "Popular".
+- Gating: simulările/capitolele cu `is_premium=true` → modal elegant "Deblochează Premium".
+- Webhook Stripe → tabel `subscriptions` (user_id, status, plan, current_period_end).
+- Profil: status abonament, link "Anulează", istoric facturi (via Stripe Customer Portal).
 
-## 6. Pași execuție (în această ordine)
+---
 
-1. Conectez Firecrawl (necesar pentru scraping) — voi cere conectarea
-2. Migrație DB (toate tabelele + bucket + RLS + seed `health_checks` cu URL-urile inițiale)
-3. Health-check pipeline (server route + cron)
-4. Schelet pagini `/admitere/*` cu loaders care funcționează pe DB goală (afișează "în pregătire" elegant)
-5. Sitemap extins
-6. Pipeline scraping (server route + cron orar, batch mic)
-7. Panou admin minim
-8. Trigger primul run de scraping pentru 3-4 universități de test (UMF Buc, UMF Cluj, UPB, ASE)
+## Ce încep ACUM (Etapa 1)
 
-## 7. Ce iese din scope (pentru sesiuni viitoare)
+1. Migrație DB (coloane noi + tabele simulations + bucket + drop date vechi din `questions`/`attempts`).
+2. Instalez `katex` + `react-katex`.
+3. Refac `QuestionContent` cu KaTeX + figuri.
+4. Refac UI grilă pentru 6 variante + rezolvare.
+5. Construiesc `/simulare/$slug` cronometrat.
+6. Construiesc admin la `/admin/questions/new`.
+7. Seed cu 10-15 grile reale (UB MateInfo + Politehnică Info).
 
-- Rezolvări detaliate ale subiectelor (asta presupune muncă editorială serioasă, nu scraping)
-- OCR full pe toate PDF-urile (rulez doar pe primele 2 pagini pentru metadata; full OCR ar fi cron separat)
-- Generare automată de quiz-uri din PDF-uri
-- Comparator subiecte între ani
-
-## Costuri/limite de știut
-
-- Firecrawl: cu plan-ul standard ar trebui să acopere ~500-1000 PDF-uri/lună. Pentru arhivă completă va dura câteva săptămâni de rulare cron.
-- Storage Supabase: ~1-5MB per PDF × ~5000 PDF-uri = ~15GB. În planul Lovable Cloud actual e OK, dar de monitorizat.
+**Confirmi planul și începem cu Etapa 1?** După ce o termin și o validezi în preview, trecem la Etapa 2 (redesign).
