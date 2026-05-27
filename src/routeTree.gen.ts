@@ -21,6 +21,7 @@ import { Route as AdmitereRouteImport } from './routes/admitere'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GrileIndexRouteImport } from './routes/grile.index'
 import { Route as SubiecteBacMaterieRouteImport } from './routes/subiecte-bac.$materie'
+import { Route as SimulareSlugRouteImport } from './routes/simulare.$slug'
 import { Route as QuizSlugRouteImport } from './routes/quiz.$slug'
 import { Route as GrileUniSlugRouteImport } from './routes/grile.$uniSlug'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
@@ -29,6 +30,7 @@ import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicLogErrorRouteImport } from './routes/api/public/log-error'
 import { Route as AdmitereUniSlugMaterieSlugRouteImport } from './routes/admitere.$uniSlug.$materieSlug'
+import { Route as AdminQuestionsNewRouteImport } from './routes/admin.questions.new'
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
@@ -96,6 +98,11 @@ const SubiecteBacMaterieRoute = SubiecteBacMaterieRouteImport.update({
   path: '/$materie',
   getParentRoute: () => SubiecteBacRoute,
 } as any)
+const SimulareSlugRoute = SimulareSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => SimulareRoute,
+} as any)
 const QuizSlugRoute = QuizSlugRouteImport.update({
   id: '/quiz/$slug',
   path: '/quiz/$slug',
@@ -137,6 +144,11 @@ const AdmitereUniSlugMaterieSlugRoute =
     path: '/$materieSlug',
     getParentRoute: () => AdmitereUniSlugRoute,
   } as any)
+const AdminQuestionsNewRoute = AdminQuestionsNewRouteImport.update({
+  id: '/admin/questions/new',
+  path: '/admin/questions/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LovableEmailTransactionalSendRoute =
   LovableEmailTransactionalSendRouteImport.update({
     id: '/lovable/email/transactional/send',
@@ -180,7 +192,7 @@ export interface FileRoutesByFullPath {
   '/autentificare': typeof AutentificareRoute
   '/feedback': typeof FeedbackRoute
   '/grila-zilei': typeof GrilaZileiRoute
-  '/simulare': typeof SimulareRoute
+  '/simulare': typeof SimulareRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
   '/subiecte-bac': typeof SubiecteBacRouteWithChildren
@@ -190,8 +202,10 @@ export interface FileRoutesByFullPath {
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/quiz/$slug': typeof QuizSlugRoute
+  '/simulare/$slug': typeof SimulareSlugRoute
   '/subiecte-bac/$materie': typeof SubiecteBacMaterieRoute
   '/grile/': typeof GrileIndexRoute
+  '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
@@ -208,7 +222,7 @@ export interface FileRoutesByTo {
   '/autentificare': typeof AutentificareRoute
   '/feedback': typeof FeedbackRoute
   '/grila-zilei': typeof GrilaZileiRoute
-  '/simulare': typeof SimulareRoute
+  '/simulare': typeof SimulareRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
   '/subiecte-bac': typeof SubiecteBacRouteWithChildren
@@ -218,8 +232,10 @@ export interface FileRoutesByTo {
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/quiz/$slug': typeof QuizSlugRoute
+  '/simulare/$slug': typeof SimulareSlugRoute
   '/subiecte-bac/$materie': typeof SubiecteBacMaterieRoute
   '/grile': typeof GrileIndexRoute
+  '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
@@ -237,7 +253,7 @@ export interface FileRoutesById {
   '/autentificare': typeof AutentificareRoute
   '/feedback': typeof FeedbackRoute
   '/grila-zilei': typeof GrilaZileiRoute
-  '/simulare': typeof SimulareRoute
+  '/simulare': typeof SimulareRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
   '/subiecte-bac': typeof SubiecteBacRouteWithChildren
@@ -247,8 +263,10 @@ export interface FileRoutesById {
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/quiz/$slug': typeof QuizSlugRoute
+  '/simulare/$slug': typeof SimulareSlugRoute
   '/subiecte-bac/$materie': typeof SubiecteBacMaterieRoute
   '/grile/': typeof GrileIndexRoute
+  '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
@@ -277,8 +295,10 @@ export interface FileRouteTypes {
     | '/email/unsubscribe'
     | '/grile/$uniSlug'
     | '/quiz/$slug'
+    | '/simulare/$slug'
     | '/subiecte-bac/$materie'
     | '/grile/'
+    | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
     | '/api/public/log-error'
     | '/lovable/email/suppression'
@@ -305,8 +325,10 @@ export interface FileRouteTypes {
     | '/email/unsubscribe'
     | '/grile/$uniSlug'
     | '/quiz/$slug'
+    | '/simulare/$slug'
     | '/subiecte-bac/$materie'
     | '/grile'
+    | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
     | '/api/public/log-error'
     | '/lovable/email/suppression'
@@ -333,8 +355,10 @@ export interface FileRouteTypes {
     | '/email/unsubscribe'
     | '/grile/$uniSlug'
     | '/quiz/$slug'
+    | '/simulare/$slug'
     | '/subiecte-bac/$materie'
     | '/grile/'
+    | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
     | '/api/public/log-error'
     | '/lovable/email/suppression'
@@ -352,7 +376,7 @@ export interface RootRouteChildren {
   AutentificareRoute: typeof AutentificareRoute
   FeedbackRoute: typeof FeedbackRoute
   GrilaZileiRoute: typeof GrilaZileiRoute
-  SimulareRoute: typeof SimulareRoute
+  SimulareRoute: typeof SimulareRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SubiecteAdmitereRoute: typeof SubiecteAdmitereRoute
   SubiecteBacRoute: typeof SubiecteBacRouteWithChildren
@@ -362,6 +386,7 @@ export interface RootRouteChildren {
   GrileUniSlugRoute: typeof GrileUniSlugRoute
   QuizSlugRoute: typeof QuizSlugRoute
   GrileIndexRoute: typeof GrileIndexRoute
+  AdminQuestionsNewRoute: typeof AdminQuestionsNewRoute
   ApiPublicLogErrorRoute: typeof ApiPublicLogErrorRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
   ApiPublicHooksHealthCheckRoute: typeof ApiPublicHooksHealthCheckRoute
@@ -457,6 +482,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SubiecteBacMaterieRouteImport
       parentRoute: typeof SubiecteBacRoute
     }
+    '/simulare/$slug': {
+      id: '/simulare/$slug'
+      path: '/$slug'
+      fullPath: '/simulare/$slug'
+      preLoaderRoute: typeof SimulareSlugRouteImport
+      parentRoute: typeof SimulareRoute
+    }
     '/quiz/$slug': {
       id: '/quiz/$slug'
       path: '/quiz/$slug'
@@ -512,6 +544,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admitere/$uniSlug/$materieSlug'
       preLoaderRoute: typeof AdmitereUniSlugMaterieSlugRouteImport
       parentRoute: typeof AdmitereUniSlugRoute
+    }
+    '/admin/questions/new': {
+      id: '/admin/questions/new'
+      path: '/admin/questions/new'
+      fullPath: '/admin/questions/new'
+      preLoaderRoute: typeof AdminQuestionsNewRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/lovable/email/transactional/send': {
       id: '/lovable/email/transactional/send'
@@ -596,6 +635,18 @@ const AdmitereRouteWithChildren = AdmitereRoute._addFileChildren(
   AdmitereRouteChildren,
 )
 
+interface SimulareRouteChildren {
+  SimulareSlugRoute: typeof SimulareSlugRoute
+}
+
+const SimulareRouteChildren: SimulareRouteChildren = {
+  SimulareSlugRoute: SimulareSlugRoute,
+}
+
+const SimulareRouteWithChildren = SimulareRoute._addFileChildren(
+  SimulareRouteChildren,
+)
+
 interface SubiecteBacRouteChildren {
   SubiecteBacMaterieRoute: typeof SubiecteBacMaterieRoute
 }
@@ -614,7 +665,7 @@ const rootRouteChildren: RootRouteChildren = {
   AutentificareRoute: AutentificareRoute,
   FeedbackRoute: FeedbackRoute,
   GrilaZileiRoute: GrilaZileiRoute,
-  SimulareRoute: SimulareRoute,
+  SimulareRoute: SimulareRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SubiecteAdmitereRoute: SubiecteAdmitereRoute,
   SubiecteBacRoute: SubiecteBacRouteWithChildren,
@@ -624,6 +675,7 @@ const rootRouteChildren: RootRouteChildren = {
   GrileUniSlugRoute: GrileUniSlugRoute,
   QuizSlugRoute: QuizSlugRoute,
   GrileIndexRoute: GrileIndexRoute,
+  AdminQuestionsNewRoute: AdminQuestionsNewRoute,
   ApiPublicLogErrorRoute: ApiPublicLogErrorRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
   ApiPublicHooksHealthCheckRoute: ApiPublicHooksHealthCheckRoute,
@@ -635,13 +687,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

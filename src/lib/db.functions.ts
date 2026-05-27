@@ -45,8 +45,9 @@ export const getQuiz = createServerFn({ method: "GET" })
     if (!s) return null;
     const { data: qs } = await sb
       .from("questions")
-      .select("id, question_text, options, correct_index, explanation, difficulty")
+      .select("id, question_text, options, correct_index, explanation, difficulty, figure_url, solution_md, session, problem_number")
       .eq("subject_id", s.id)
+      .order("problem_number", { ascending: true, nullsFirst: false })
       .limit(2000);
     return { subject: s, questions: qs ?? [] };
   });
@@ -57,7 +58,7 @@ export const simulationQuestions = createServerFn({ method: "GET" })
     const sb = srv();
     const { data: qs } = await sb
       .from("questions")
-      .select("id, question_text, options, correct_index, explanation")
+      .select("id, question_text, options, correct_index, explanation, figure_url, solution_md")
       .limit(data.count * 5);
     const shuffled = (qs ?? []).sort(() => Math.random() - 0.5).slice(0, data.count);
     return shuffled;
@@ -91,4 +92,34 @@ export const getNextSubjects = createServerFn({ method: "GET" })
     const seen = new Set<string>([data.currentSubjectId, ...sameUni.map((x: any) => x.id)]);
     const fill = (others ?? []).filter((s: any) => !seen.has(s.id)).slice(0, Math.max(0, 4 - sameUni.length));
     return { next: sameUni[0] ?? fill[0] ?? null, recommendations: [...sameUni, ...fill].slice(0, 4) };
+  });
+
+// ---- Simulări (cronometrate) -----------------------------------------------
+
+export const listSimulations = createServerFn({ method: "GET" }).handler(async () => {
+  const sb = srv();
+  const { data } = await sb
+    .from("simulations")
+    .select("id, slug, title, session, description, duration_minutes, total_questions, is_premium, universities(slug, short_name, name, city), subjects(slug, name)")
+    .order("created_at", { ascending: false });
+  return data ?? [];
+});
+
+export const getSimulation = createServerFn({ method: "GET" })
+  .inputValidator((d: { slug: string }) => d)
+  .handler(async ({ data }) => {
+    const sb = srv();
+    const { data: sim } = await sb
+      .from("simulations")
+      .select("id, slug, title, session, description, duration_minutes, total_questions, is_premium, universities(slug, short_name, name), subjects(slug, name)")
+      .eq("slug", data.slug)
+      .maybeSingle();
+    if (!sim) return null;
+    const { data: rows } = await sb
+      .from("simulation_questions")
+      .select("order_index, questions(id, question_text, options, correct_index, explanation, figure_url, solution_md, problem_number)")
+      .eq("simulation_id", sim.id)
+      .order("order_index", { ascending: true });
+    const questions = (rows ?? []).map((r: any) => r.questions).filter(Boolean);
+    return { simulation: sim, questions };
   });
