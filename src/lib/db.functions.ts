@@ -45,8 +45,9 @@ export const getQuiz = createServerFn({ method: "GET" })
     if (!s) return null;
     const { data: qs } = await sb
       .from("questions")
-      .select("id, question_text, options, correct_index, explanation, difficulty")
+      .select("id, question_text, options, correct_index, explanation, difficulty, figure_url, solution_md, session, problem_number")
       .eq("subject_id", s.id)
+      .order("problem_number", { ascending: true, nullsFirst: false })
       .limit(2000);
     return { subject: s, questions: qs ?? [] };
   });
@@ -57,7 +58,7 @@ export const simulationQuestions = createServerFn({ method: "GET" })
     const sb = srv();
     const { data: qs } = await sb
       .from("questions")
-      .select("id, question_text, options, correct_index, explanation")
+      .select("id, question_text, options, correct_index, explanation, figure_url, solution_md")
       .limit(data.count * 5);
     const shuffled = (qs ?? []).sort(() => Math.random() - 0.5).slice(0, data.count);
     return shuffled;
