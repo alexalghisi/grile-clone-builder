@@ -1,22 +1,20 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-import { simulationQuestions } from "@/lib/db.functions";
+import { listSimulations } from "@/lib/db.functions";
 import { Header } from "@/components/Header";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { AdSlot } from "@/components/AdSlot";
-import { Trophy, Clock } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Trophy, Clock, Lock, ArrowRight } from "lucide-react";
 
 export const Route = createFileRoute("/simulare")({
   head: () => ({
     meta: [
-      { title: "Simulare Admitere 2026 — Test Cronometrat Gratuit | GrileAdmitere.ro" },
-      { name: "description", content: "Simulare admitere 2026 cu 30 de grile cronometrate, în format identic cu examenul real. UPB, UBB, UMF, ASE și 100+ universități. Gratis." },
+      { title: "Simulări Admitere 2026 — Format Real Cronometrat | GrileAdmitere.ro" },
+      { name: "description", content: "Simulări admitere 2026 cronometrate, cu 6 variante de răspuns A-F, formule matematice și figuri, în format identic cu examenul real UPB/UB." },
       { property: "og:title", content: "Simulare Admitere 2026 — Test Cronometrat Gratuit" },
-      { property: "og:description", content: "30 de grile cronometrate, feedback instant și explicații detaliate la fiecare greșeală." },
+      { property: "og:description", content: "Simulări cronometrate în format real, feedback instant și rezolvare pas cu pas." },
     ],
     links: [{ rel: "canonical", href: "https://grileadmitere.ro/simulare" }],
   }),
@@ -24,76 +22,56 @@ export const Route = createFileRoute("/simulare")({
 });
 
 function Page() {
-  const fn = useServerFn(simulationQuestions);
-  const [started, setStarted] = useState(false);
-  const { data: qs = [], refetch } = useQuery({ queryKey: ["sim"], queryFn: () => fn({ data: { count: 30 } }), enabled: started });
-  const [idx, setIdx] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, number>>({});
-  const [done, setDone] = useState(false);
-  const [seconds, setSeconds] = useState(1800);
+  const fn = useServerFn(listSimulations);
+  const { data: sims = [], isLoading } = useQuery({
+    queryKey: ["simulations"],
+    queryFn: () => fn(),
+    staleTime: 5 * 60 * 1000,
+  });
 
-  useEffect(() => {
-    if (!started || done) return;
-    const t = setInterval(() => setSeconds((s) => { if (s <= 1) { setDone(true); return 0; } return s - 1; }), 1000);
-    return () => clearInterval(t);
-  }, [started, done]);
-
-  if (!started) return (
-    <div className="min-h-screen bg-background"><Header />
-      <main className="container mx-auto max-w-2xl px-4 py-16 text-center">
-        <Trophy className="mx-auto h-12 w-12 text-primary" />
-        <h1 className="mt-4 text-3xl font-bold">Simulare admitere</h1>
-        <p className="mt-2 text-muted-foreground">30 de grile aleatorii · 30 minute · evaluare la final.</p>
-        <Button size="lg" className="mt-6" onClick={() => { setStarted(true); refetch(); }}>Începe simularea</Button>
-        <AdSlot className="my-8" />
-      </main>
-    </div>
-  );
-
-  if (!qs.length) return <div className="min-h-screen bg-background"><Header /><div className="container py-10">Se încarcă…</div></div>;
-
-  if (done) {
-    const score = qs.reduce((acc: number, q: any) => acc + (answers[q.id] === q.correct_index ? 1 : 0), 0);
-    return (
-      <div className="min-h-screen bg-background"><Header />
-        <main className="container mx-auto max-w-xl px-4 py-10 text-center">
-          <Card className="p-8">
-            <h1 className="text-2xl font-bold">Simulare terminată</h1>
-            <div className="my-6 text-5xl font-bold text-primary">{score}/{qs.length}</div>
-            <Button onClick={() => { setStarted(false); setDone(false); setIdx(0); setAnswers({}); setSeconds(1800); }}>Încă o dată</Button>
-          </Card>
-        </main>
-      </div>
-    );
-  }
-
-  const q: any = qs[idx];
   return (
     <div className="min-h-screen bg-background"><Header />
-      <main className="container mx-auto max-w-3xl px-4 py-8">
-        <div className="mb-2 flex items-center justify-between text-sm">
-          <span>Simulare</span>
-          <span className="flex items-center gap-1 text-muted-foreground"><Clock className="h-4 w-4" />{Math.floor(seconds/60)}:{String(seconds%60).padStart(2,"0")}</span>
+      <main className="container mx-auto max-w-5xl px-4 py-12">
+        <div className="text-center mb-10">
+          <Trophy className="mx-auto h-12 w-12 text-primary" />
+          <h1 className="mt-4 text-3xl md:text-4xl font-bold">Simulări admitere 2026</h1>
+          <p className="mt-2 text-muted-foreground max-w-xl mx-auto">
+            Format real: 6 variante A–F, formule matematice, figuri, cronometru. Rezolvare pas cu pas la final.
+          </p>
         </div>
-        <Progress value={((idx + 1) / qs.length) * 100} className="mb-6" />
-        <Card className="p-6">
-          <div className="text-sm text-muted-foreground mb-2">Întrebarea {idx + 1} / {qs.length}</div>
-          <div className="text-base font-medium whitespace-pre-wrap">{q.question_text}</div>
-          <div className="mt-4 space-y-2">
-            {q.options.map((opt: string, i: number) => (
-              <button key={i} onClick={() => setAnswers({ ...answers, [q.id]: i })}
-                className={`w-full rounded-md border p-3 text-left text-sm transition ${answers[q.id] === i ? "border-primary bg-primary/5" : "hover:border-primary/40"}`}>
-                <span className="mr-2 font-semibold">{String.fromCharCode(65 + i)}.</span>{opt}
-              </button>
+
+        {isLoading ? (
+          <div className="text-center text-muted-foreground py-12">Se încarcă simulările…</div>
+        ) : sims.length === 0 ? (
+          <Card className="p-12 text-center">
+            <p className="text-muted-foreground">Simulările sunt în pregătire. Revino curând!</p>
+          </Card>
+        ) : (
+          <div className="grid gap-4 md:grid-cols-2">
+            {sims.map((s: any) => (
+              <Card key={s.id} className="p-6 transition hover:border-primary/40 hover:shadow-md">
+                <div className="flex items-start justify-between gap-2 mb-2">
+                  <div className="flex flex-wrap items-center gap-2">
+                    {s.universities?.short_name && <Badge variant="outline">{s.universities.short_name}</Badge>}
+                    {s.session && <Badge variant="secondary">{s.session}</Badge>}
+                  </div>
+                  {s.is_premium && (
+                    <Badge className="bg-amber-500 text-white"><Lock className="mr-1 h-3 w-3" />Premium</Badge>
+                  )}
+                </div>
+                <h2 className="text-lg font-bold">{s.title}</h2>
+                {s.description && <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{s.description}</p>}
+                <div className="mt-4 flex items-center gap-4 text-sm text-muted-foreground">
+                  <span className="flex items-center gap-1"><Clock className="h-4 w-4" />{s.duration_minutes} min</span>
+                  <span className="flex items-center gap-1"><Trophy className="h-4 w-4" />{s.total_questions} probleme</span>
+                </div>
+                <Link to="/simulare/$slug" params={{ slug: s.slug }} className="mt-4 block">
+                  <Button className="w-full">Începe <ArrowRight className="ml-2 h-4 w-4" /></Button>
+                </Link>
+              </Card>
             ))}
           </div>
-          <div className="mt-6 flex justify-between">
-            <Button variant="ghost" disabled={idx === 0} onClick={() => setIdx(idx - 1)}>Înapoi</Button>
-            {idx < qs.length - 1
-              ? <Button onClick={() => setIdx(idx + 1)}>Următoarea →</Button>
-              : <Button onClick={() => setDone(true)}>Termină</Button>}
-          </div>
-        </Card>
+        )}
       </main>
     </div>
   );
