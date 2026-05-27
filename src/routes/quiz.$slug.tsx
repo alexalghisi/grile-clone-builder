@@ -13,56 +13,10 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle2, XCircle, Clock, RotateCcw, ArrowRight, Sparkles, BookOpen } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { toast } from "sonner";
+import { QuestionContent } from "@/components/QuestionContent";
 
 const EMAIL_GATE_KEY = "ga_email_captured_v1";
-
-function QuestionContent({ text }: { text: string }) {
-  return (
-    <div className="max-w-none [&_p]:my-0 [&_p]:leading-relaxed [&_pre]:my-2 [&_code]:font-mono [&_ul]:my-2 [&_ul]:pl-5 [&_ul]:list-disc [&_ol]:my-2 [&_ol]:pl-5 [&_ol]:list-decimal">
-      <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
-        components={{
-          code({ inline, className, children, ...props }: any) {
-            const match = /language-(\w+)/.exec(className || "");
-            const lang = match?.[1] || "cpp";
-            const value = String(children).replace(/\n$/, "");
-            if (!inline && (value.includes("\n") || match)) {
-              return (
-                <div className="my-3 overflow-hidden rounded-lg border border-border bg-[#282c34] text-sm shadow-sm">
-                  <div className="flex items-center justify-between bg-black/40 px-3 py-1.5 text-[10px] uppercase tracking-wider text-zinc-300">
-                    <span>{lang}</span>
-                    <span className="opacity-60">cod</span>
-                  </div>
-                  <SyntaxHighlighter
-                    language={lang}
-                    style={oneDark}
-                    PreTag="div"
-                    customStyle={{ margin: 0, padding: "0.85rem 1rem", background: "transparent", fontSize: "0.85rem" }}
-                    codeTagProps={{ style: { fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" } }}
-                  >
-                    {value}
-                  </SyntaxHighlighter>
-                </div>
-              );
-            }
-            return (
-              <code className="rounded bg-muted px-1.5 py-0.5 text-[0.85em] text-foreground" {...props}>
-                {children}
-              </code>
-            );
-          },
-        }}
-      >
-        {text}
-      </ReactMarkdown>
-    </div>
-  );
-}
 
 function EmailGate({ slug, onDone }: { slug: string; onDone: () => void }) {
   const [email, setEmail] = useState("");
@@ -155,7 +109,17 @@ export const Route = createFileRoute("/quiz/$slug")({
   component: Page,
 });
 
-type Q = { id: string; question_text: string; options: string[]; correct_index: number; explanation: string | null; difficulty?: string | null };
+type Q = {
+  id: string;
+  question_text: string;
+  options: string[];
+  correct_index: number;
+  explanation: string | null;
+  solution_md?: string | null;
+  figure_url?: string | null;
+  problem_number?: number | null;
+  difficulty?: string | null;
+};
 
 function Page() {
   const { slug } = Route.useParams();
@@ -309,8 +273,8 @@ function Page() {
                     {ok ? <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5" /> : <XCircle className="h-5 w-5 text-destructive mt-0.5" />}
                     <div className="flex-1">
                       <div className="text-sm font-medium">
-                        <span className="mr-1 font-semibold">{i + 1}.</span>
-                        <QuestionContent text={qq.question_text} />
+                      <span className="mr-1 font-semibold">Problema {qq.problem_number ?? i + 1}.</span>
+                      <QuestionContent text={qq.question_text} figureUrl={qq.figure_url} />
                       </div>
                       <div className="mt-2 text-xs text-muted-foreground">Corect: {String.fromCharCode(65 + qq.correct_index)}. {qq.options[qq.correct_index]}</div>
                       {qq.explanation && <div className="mt-2 text-xs text-foreground/80">{qq.explanation}</div>}
@@ -349,10 +313,10 @@ function Page() {
           }`}
         >
           <div className="mb-3 flex items-center gap-2 flex-wrap">
-            <Badge variant="secondary">Întrebarea {idx + 1} / {questions.length}</Badge>
+            <Badge variant="secondary">Problema {q.problem_number ?? idx + 1} / {questions.length}</Badge>
           </div>
-          <div className="text-base font-medium">
-            <QuestionContent text={q.question_text} />
+          <div className="text-base font-medium leading-relaxed">
+            <QuestionContent text={q.question_text} figureUrl={q.figure_url} />
           </div>
           <div className="mt-5 space-y-2">
             {q.options.map((opt, i) => {
@@ -367,9 +331,12 @@ function Page() {
                   key={i}
                   disabled={isRevealed}
                   onClick={() => setAnswers({ ...answers, [q.id]: i })}
-                  className={`w-full rounded-md border p-3 text-left text-sm transition ${cls}`}
+                  className={`flex w-full items-start gap-3 rounded-md border p-3 text-left text-sm transition ${cls}`}
                 >
-                  <span className="mr-2 font-semibold">{String.fromCharCode(65 + i)}.</span>{opt}
+                  <span className="font-bold text-primary">{String.fromCharCode(65 + i)})</span>
+                  <span className="flex-1">
+                    <QuestionContent text={opt} className="[&_p]:my-0" />
+                  </span>
                 </button>
               );
             })}
@@ -392,14 +359,18 @@ function Page() {
               <div className="mb-2">
                 <span className="font-medium">Răspunsul corect: </span>
                 <span className="font-semibold text-green-700 dark:text-green-400">
-                  {String.fromCharCode(65 + q.correct_index)}. {q.options[q.correct_index]}
+                  {String.fromCharCode(65 + q.correct_index)}) {q.options[q.correct_index]}
                 </span>
               </div>
               <div className="mt-3 border-t pt-3">
-                <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Explicație / Rezolvare</div>
-                <div className="whitespace-pre-wrap text-foreground/90">
-                  {q.explanation?.trim() || "Nu există o explicație detaliată pentru această grilă. Răspunsul corect este marcat mai sus."}
-                </div>
+                <div className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Rezolvare pas cu pas</div>
+                {q.solution_md?.trim() ? (
+                  <QuestionContent text={q.solution_md} />
+                ) : q.explanation?.trim() ? (
+                  <div className="whitespace-pre-wrap text-foreground/90">{q.explanation}</div>
+                ) : (
+                  <div className="text-muted-foreground italic">Rezolvarea detaliată va fi adăugată curând. Răspunsul corect este marcat mai sus.</div>
+                )}
               </div>
             </div>
           )}
