@@ -11,7 +11,7 @@ import { Trophy, Clock, Lock, ArrowRight } from "lucide-react";
 export const Route = createFileRoute("/simulare")({
   head: () => ({
     meta: [
-      { title: "Simulări Admitere 2026 — Format Real Cronometrat | GrileAdmitere.ro" },
+      { title: "Simulări Admitere 2026 — Format Real Cronometrat" },
       { name: "description", content: "Simulări admitere 2026 cronometrate, cu 6 variante de răspuns A-F, formule matematice și figuri, în format identic cu examenul real UPB/UB." },
       { property: "og:title", content: "Simulare Admitere 2026 — Test Cronometrat Gratuit" },
       { property: "og:description", content: "Simulări cronometrate în format real, feedback instant și rezolvare pas cu pas." },
