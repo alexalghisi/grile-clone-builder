@@ -20,7 +20,6 @@ import {
   BookOpen,
   Trophy,
   ArrowRight,
-  Star,
   Sparkles,
   Timer,
   CheckCircle2,
@@ -94,81 +93,87 @@ function Index() {
     <div className="min-h-screen bg-background">
       <Header />
 
-      {/* Hero */}
-      <section className="relative overflow-hidden border-b border-border bg-gradient-to-br from-primary/10 via-background to-background">
-        <div className="container mx-auto px-4 py-12 sm:py-20 text-center">
-          <Badge variant="secondary" className="mb-5 inline-flex items-center gap-1.5">
-            <Sparkles className="h-3.5 w-3.5" /> Sesiunea de Admitere 2026
-          </Badge>
-          <h1 className="mx-auto max-w-4xl text-4xl font-bold tracking-tight text-foreground sm:text-6xl">
-            Grile Admitere 2026{" "}
-            <span className="bg-gradient-to-r from-primary to-sky-400 bg-clip-text text-transparent">
-              cu Explicații Pas cu Pas
-            </span>
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-base sm:text-lg text-muted-foreground">
-            Singurul site de <strong className="text-foreground">grile online</strong> care îți arată{" "}
-            <strong className="text-foreground">DE CE ai greșit</strong> și îți oferă{" "}
-            <strong className="text-foreground">rezolvarea completă pas cu pas</strong> — grile cu explicații detaliate pentru fiecare greșeală.
-          </p>
-          <p className="mx-auto mt-3 max-w-2xl text-sm sm:text-base text-muted-foreground">
-            <strong className="text-foreground">Grile admitere</strong>, <strong className="text-foreground">grile medicină</strong> și grile BAC 2026 — UPB, UBB, UTCN, UMF, UAIC, ASE, UPT și 100+ universități din România.
-          </p>
-          <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-amber-300/40 bg-amber-50 px-4 py-2 text-sm font-medium text-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
-            <Star className="h-4 w-4 fill-current" />
-            Grile cu explicații detaliate — nu doar răspunsul corect!
+      {/* Hero — split layout, navy gradient */}
+      <section className="relative overflow-hidden border-b border-border">
+        <div className="pointer-events-none absolute inset-0 -z-10 bg-[var(--gradient-soft)]" />
+        <div className="pointer-events-none absolute -top-32 -right-32 -z-10 h-[28rem] w-[28rem] rounded-full bg-primary-glow/15 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-40 -left-20 -z-10 h-[24rem] w-[24rem] rounded-full bg-primary/10 blur-3xl" />
+
+        <div className="container mx-auto grid items-center gap-10 px-4 py-14 sm:py-20 lg:grid-cols-[1.05fr_1fr]">
+          <div>
+            <Badge variant="secondary" className="mb-5 inline-flex items-center gap-1.5 rounded-full border border-primary/15 bg-primary/5 px-3 py-1 text-primary">
+              <Sparkles className="h-3.5 w-3.5" /> Sesiunea Admitere 2026
+            </Badge>
+            <h1 className="max-w-2xl text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+              Pregătire <span className="bg-[var(--gradient-hero)] bg-clip-text text-transparent">serioasă</span> pentru admiterea la facultate.
+            </h1>
+            <p className="mt-6 max-w-xl text-base sm:text-lg leading-relaxed text-muted-foreground">
+              Grile reale UPB, UMF, UBB, ASE și 100+ universități — cu <strong className="text-foreground">rezolvare completă pas cu pas</strong>, formule LaTeX și simulări cronometrate în format de examen.
+            </p>
+
+            <div className="mt-8 flex flex-wrap items-center gap-3">
+              <Link to="/simulare">
+                <Button size="lg" className="h-12 bg-[var(--gradient-hero)] px-6 text-base shadow-[var(--shadow-glow)] hover:opacity-95">
+                  <Trophy className="mr-2 h-4 w-4" /> Începe o simulare
+                </Button>
+              </Link>
+              <Link to="/grile">
+                <Button size="lg" variant="outline" className="h-12 px-6 text-base">
+                  Vezi grile pe materii <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
+              <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="h-4 w-4 text-[oklch(0.62_0.16_155)]" /> 100% gratuit</span>
+              <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="h-4 w-4 text-[oklch(0.62_0.16_155)]" /> Rezolvări pas cu pas</span>
+              <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="h-4 w-4 text-[oklch(0.62_0.16_155)]" /> Format examen real</span>
+            </div>
           </div>
 
-          {/* Începe acum card */}
-          <Card className="mx-auto mt-10 max-w-xl p-6 text-left shadow-sm">
+          {/* Quick start card */}
+          <Card className="relative w-full max-w-md justify-self-center p-6 shadow-[var(--shadow-elegant)] sm:p-7 lg:justify-self-end">
             <div className="flex items-center gap-3">
-              <div className="rounded-xl bg-primary/10 p-2.5">
-                <BookOpen className="h-5 w-5 text-primary" />
+              <div className="grid h-10 w-10 place-items-center rounded-xl bg-[var(--gradient-hero)] text-white shadow-[var(--shadow-glow)]">
+                <BookOpen className="h-5 w-5" />
               </div>
               <div>
-                <div className="font-semibold">Începe acum</div>
-                <div className="text-xs text-muted-foreground">Selectează universitatea dorită</div>
+                <div className="font-semibold">Începe în 10 secunde</div>
+                <div className="text-xs text-muted-foreground">Alege universitatea ta</div>
               </div>
             </div>
             <div className="mt-5 space-y-2">
               <label className="text-sm font-medium">Universitate</label>
               <Select value={selected} onValueChange={setSelected}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Alege universitatea" />
-                </SelectTrigger>
+                <SelectTrigger className="w-full h-11"><SelectValue placeholder="ex. UPB — Informatică" /></SelectTrigger>
                 <SelectContent className="max-h-80">
                   {unis.map((u: any) => (
-                    <SelectItem key={u.id} value={u.slug}>
-                      {u.short_name} — {u.city}
-                    </SelectItem>
+                    <SelectItem key={u.id} value={u.slug}>{u.short_name} — {u.city}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
             <Button
-              className="mt-5 w-full"
-              size="lg"
+              className="mt-5 w-full h-11 bg-[var(--gradient-hero)] shadow-[var(--shadow-glow)] hover:opacity-95"
               disabled={!selected}
               onClick={() => navigate({ to: "/grile/$uniSlug", params: { uniSlug: selected } })}
             >
-              Începe Testul <ArrowRight className="ml-2 h-4 w-4" />
+              Începe testul <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
-          </Card>
 
-          {/* Stats */}
-          <div className="mx-auto mt-12 grid max-w-3xl grid-cols-2 gap-6 sm:grid-cols-4">
-            {[
-              { v: "74k+", l: "Întrebări" },
-              { v: `${unis.length}+`, l: "Universități" },
-              { v: "10k+", l: "Utilizatori" },
-              { v: "95%", l: "Satisfacție" },
-            ].map((s) => (
-              <div key={s.l}>
-                <div className="text-2xl font-bold text-primary sm:text-3xl">{s.v}</div>
-                <div className="text-xs text-muted-foreground sm:text-sm">{s.l}</div>
-              </div>
-            ))}
-          </div>
+            <div className="mt-6 grid grid-cols-3 gap-3 border-t border-border pt-5 text-center">
+              {[
+                { v: "74k+", l: "Grile" },
+                { v: `${unis.length || 100}+`, l: "Universități" },
+                { v: "10k+", l: "Studenți" },
+              ].map((s) => (
+                <div key={s.l}>
+                  <div className="text-xl font-bold text-foreground">{s.v}</div>
+                  <div className="text-[11px] uppercase tracking-wider text-muted-foreground">{s.l}</div>
+                </div>
+              ))}
+            </div>
+          </Card>
         </div>
       </section>
 

@@ -2,18 +2,16 @@ import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { GraduationCap, LogOut, Menu } from "lucide-react";
+import { GraduationCap, LogOut, Menu, ArrowRight } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 const NAV = [
-  { to: "/", label: "Acasă" },
   { to: "/grile", label: "Grile" },
-  { to: "/subiecte-bac", label: "Subiecte BAC" },
-  { to: "/admitere", label: "Subiecte Admitere" },
-  { to: "/tutoriale", label: "Tutoriale" },
-  { to: "/simulare", label: "Simulare" },
-  { to: "/grila-zilei", label: "Grila Zilei" },
-  { to: "/feedback", label: "Feedback" },
+  { to: "/simulare", label: "Simulări" },
+  { to: "/admitere", label: "Subiecte admitere" },
+  { to: "/subiecte-bac", label: "BAC" },
+  { to: "/tutoriale", label: "Resurse" },
+  { to: "/grila-zilei", label: "Grila zilei" },
 ] as const;
 
 export function Header() {
@@ -27,15 +25,22 @@ export function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border bg-background/80 backdrop-blur">
-      <div className="container mx-auto flex h-14 items-center justify-between gap-2 px-4">
+    <header className="sticky top-0 z-40 w-full border-b border-border/70 bg-background/85 backdrop-blur-md">
+      <div className="container mx-auto flex h-16 items-center justify-between gap-3 px-4">
         <Link to="/" className="flex items-center gap-2 font-bold text-foreground">
-          <GraduationCap className="h-6 w-6 text-primary" />
-          <span>GrileAdmitere</span>
+          <span className="grid h-9 w-9 place-items-center rounded-lg bg-[var(--gradient-hero)] text-white shadow-[var(--shadow-glow)]">
+            <GraduationCap className="h-5 w-5" />
+          </span>
+          <span className="text-base tracking-tight">GrileAdmitere<span className="text-primary-glow">.ro</span></span>
         </Link>
-        <nav className="hidden gap-5 lg:flex text-sm">
+        <nav className="hidden gap-1 lg:flex text-sm">
           {NAV.map((n) => (
-            <Link key={n.to} to={n.to} activeOptions={{ exact: n.to === "/" }} className="text-muted-foreground hover:text-foreground" activeProps={{ className: "text-foreground font-medium" }}>
+            <Link
+              key={n.to}
+              to={n.to}
+              className="rounded-md px-3 py-2 text-muted-foreground transition hover:bg-accent hover:text-foreground"
+              activeProps={{ className: "rounded-md px-3 py-2 bg-accent text-foreground font-semibold" }}
+            >
               {n.label}
             </Link>
           ))}
@@ -49,9 +54,16 @@ export function Header() {
               </Button>
             </>
           ) : (
-            <Link to="/autentificare">
-              <Button size="sm">Autentificare</Button>
-            </Link>
+            <>
+              <Link to="/autentificare" className="hidden sm:block">
+                <Button size="sm" variant="ghost">Conectare</Button>
+              </Link>
+              <Link to="/autentificare">
+                <Button size="sm" className="bg-[var(--gradient-hero)] shadow-[var(--shadow-glow)] hover:opacity-95">
+                  Începe gratuit <ArrowRight className="ml-1 h-3.5 w-3.5" />
+                </Button>
+              </Link>
+            </>
           )}
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
