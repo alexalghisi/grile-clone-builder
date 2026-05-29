@@ -20,7 +20,6 @@ import {
   BookOpen,
   Trophy,
   ArrowRight,
-  Star,
   Sparkles,
   Timer,
   CheckCircle2,
