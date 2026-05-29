@@ -14,6 +14,7 @@ import { Route as SubiecteBacRouteImport } from './routes/subiecte-bac'
 import { Route as SubiecteAdmitereRouteImport } from './routes/subiecte-admitere'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SimulareRouteImport } from './routes/simulare'
+import { Route as PreturiRouteImport } from './routes/preturi'
 import { Route as GrilaZileiRouteImport } from './routes/grila-zilei'
 import { Route as FeedbackRouteImport } from './routes/feedback'
 import { Route as AutentificareRouteImport } from './routes/autentificare'
@@ -34,6 +35,7 @@ import { Route as AdminQuestionsNewRouteImport } from './routes/admin.questions.
 import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
+import { Route as ApiPublicPaymentsWebhookRouteImport } from './routes/api/public/payments/webhook'
 import { Route as ApiPublicHooksScrapeAdmitereRouteImport } from './routes/api/public/hooks/scrape-admitere'
 import { Route as ApiPublicHooksHealthCheckRouteImport } from './routes/api/public/hooks/health-check'
 import { Route as AdmitereUniSlugMaterieSlugAnRouteImport } from './routes/admitere.$uniSlug.$materieSlug.$an'
@@ -61,6 +63,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const SimulareRoute = SimulareRouteImport.update({
   id: '/simulare',
   path: '/simulare',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PreturiRoute = PreturiRouteImport.update({
+  id: '/preturi',
+  path: '/preturi',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GrilaZileiRoute = GrilaZileiRouteImport.update({
@@ -167,6 +174,12 @@ const LovableEmailQueueProcessRoute =
     path: '/lovable/email/queue/process',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicPaymentsWebhookRoute =
+  ApiPublicPaymentsWebhookRouteImport.update({
+    id: '/api/public/payments/webhook',
+    path: '/api/public/payments/webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicHooksScrapeAdmitereRoute =
   ApiPublicHooksScrapeAdmitereRouteImport.update({
     id: '/api/public/hooks/scrape-admitere',
@@ -192,6 +205,7 @@ export interface FileRoutesByFullPath {
   '/autentificare': typeof AutentificareRoute
   '/feedback': typeof FeedbackRoute
   '/grila-zilei': typeof GrilaZileiRoute
+  '/preturi': typeof PreturiRoute
   '/simulare': typeof SimulareRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
@@ -212,6 +226,7 @@ export interface FileRoutesByFullPath {
   '/admitere/$uniSlug/$materieSlug/$an': typeof AdmitereUniSlugMaterieSlugAnRoute
   '/api/public/hooks/health-check': typeof ApiPublicHooksHealthCheckRoute
   '/api/public/hooks/scrape-admitere': typeof ApiPublicHooksScrapeAdmitereRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
@@ -222,6 +237,7 @@ export interface FileRoutesByTo {
   '/autentificare': typeof AutentificareRoute
   '/feedback': typeof FeedbackRoute
   '/grila-zilei': typeof GrilaZileiRoute
+  '/preturi': typeof PreturiRoute
   '/simulare': typeof SimulareRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
@@ -242,6 +258,7 @@ export interface FileRoutesByTo {
   '/admitere/$uniSlug/$materieSlug/$an': typeof AdmitereUniSlugMaterieSlugAnRoute
   '/api/public/hooks/health-check': typeof ApiPublicHooksHealthCheckRoute
   '/api/public/hooks/scrape-admitere': typeof ApiPublicHooksScrapeAdmitereRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
@@ -253,6 +270,7 @@ export interface FileRoutesById {
   '/autentificare': typeof AutentificareRoute
   '/feedback': typeof FeedbackRoute
   '/grila-zilei': typeof GrilaZileiRoute
+  '/preturi': typeof PreturiRoute
   '/simulare': typeof SimulareRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
@@ -273,6 +291,7 @@ export interface FileRoutesById {
   '/admitere/$uniSlug/$materieSlug/$an': typeof AdmitereUniSlugMaterieSlugAnRoute
   '/api/public/hooks/health-check': typeof ApiPublicHooksHealthCheckRoute
   '/api/public/hooks/scrape-admitere': typeof ApiPublicHooksScrapeAdmitereRoute
+  '/api/public/payments/webhook': typeof ApiPublicPaymentsWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
   '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
@@ -285,6 +304,7 @@ export interface FileRouteTypes {
     | '/autentificare'
     | '/feedback'
     | '/grila-zilei'
+    | '/preturi'
     | '/simulare'
     | '/sitemap.xml'
     | '/subiecte-admitere'
@@ -305,6 +325,7 @@ export interface FileRouteTypes {
     | '/admitere/$uniSlug/$materieSlug/$an'
     | '/api/public/hooks/health-check'
     | '/api/public/hooks/scrape-admitere'
+    | '/api/public/payments/webhook'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
     | '/lovable/email/transactional/send'
@@ -315,6 +336,7 @@ export interface FileRouteTypes {
     | '/autentificare'
     | '/feedback'
     | '/grila-zilei'
+    | '/preturi'
     | '/simulare'
     | '/sitemap.xml'
     | '/subiecte-admitere'
@@ -335,6 +357,7 @@ export interface FileRouteTypes {
     | '/admitere/$uniSlug/$materieSlug/$an'
     | '/api/public/hooks/health-check'
     | '/api/public/hooks/scrape-admitere'
+    | '/api/public/payments/webhook'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
     | '/lovable/email/transactional/send'
@@ -345,6 +368,7 @@ export interface FileRouteTypes {
     | '/autentificare'
     | '/feedback'
     | '/grila-zilei'
+    | '/preturi'
     | '/simulare'
     | '/sitemap.xml'
     | '/subiecte-admitere'
@@ -365,6 +389,7 @@ export interface FileRouteTypes {
     | '/admitere/$uniSlug/$materieSlug/$an'
     | '/api/public/hooks/health-check'
     | '/api/public/hooks/scrape-admitere'
+    | '/api/public/payments/webhook'
     | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
     | '/lovable/email/transactional/send'
@@ -376,6 +401,7 @@ export interface RootRouteChildren {
   AutentificareRoute: typeof AutentificareRoute
   FeedbackRoute: typeof FeedbackRoute
   GrilaZileiRoute: typeof GrilaZileiRoute
+  PreturiRoute: typeof PreturiRoute
   SimulareRoute: typeof SimulareRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SubiecteAdmitereRoute: typeof SubiecteAdmitereRoute
@@ -391,6 +417,7 @@ export interface RootRouteChildren {
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
   ApiPublicHooksHealthCheckRoute: typeof ApiPublicHooksHealthCheckRoute
   ApiPublicHooksScrapeAdmitereRoute: typeof ApiPublicHooksScrapeAdmitereRoute
+  ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
   LovableEmailTransactionalSendRoute: typeof LovableEmailTransactionalSendRoute
@@ -431,6 +458,13 @@ declare module '@tanstack/react-router' {
       path: '/simulare'
       fullPath: '/simulare'
       preLoaderRoute: typeof SimulareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/preturi': {
+      id: '/preturi'
+      path: '/preturi'
+      fullPath: '/preturi'
+      preLoaderRoute: typeof PreturiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/grila-zilei': {
@@ -573,6 +607,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LovableEmailQueueProcessRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/payments/webhook': {
+      id: '/api/public/payments/webhook'
+      path: '/api/public/payments/webhook'
+      fullPath: '/api/public/payments/webhook'
+      preLoaderRoute: typeof ApiPublicPaymentsWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/hooks/scrape-admitere': {
       id: '/api/public/hooks/scrape-admitere'
       path: '/api/public/hooks/scrape-admitere'
@@ -665,6 +706,7 @@ const rootRouteChildren: RootRouteChildren = {
   AutentificareRoute: AutentificareRoute,
   FeedbackRoute: FeedbackRoute,
   GrilaZileiRoute: GrilaZileiRoute,
+  PreturiRoute: PreturiRoute,
   SimulareRoute: SimulareRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SubiecteAdmitereRoute: SubiecteAdmitereRoute,
@@ -680,6 +722,7 @@ const rootRouteChildren: RootRouteChildren = {
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
   ApiPublicHooksHealthCheckRoute: ApiPublicHooksHealthCheckRoute,
   ApiPublicHooksScrapeAdmitereRoute: ApiPublicHooksScrapeAdmitereRoute,
+  ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
   LovableEmailTransactionalSendRoute: LovableEmailTransactionalSendRoute,

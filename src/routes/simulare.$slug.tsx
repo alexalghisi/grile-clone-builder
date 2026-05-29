@@ -11,6 +11,11 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { QuestionContent } from "@/components/QuestionContent";
 import { Clock, CheckCircle2, XCircle, Trophy, Lock, AlertTriangle } from "lucide-react";
+import { useSubscription } from "@/hooks/useSubscription";
+import { UpgradeModal } from "@/components/UpgradeModal";
+import { StripeEmbeddedCheckout } from "@/components/StripeEmbeddedCheckout";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/simulare/$slug")({
   head: ({ params }) => {
@@ -53,6 +58,18 @@ function Page() {
   const [done, setDone] = useState(false);
   const [seconds, setSeconds] = useState(0);
   const [showReview, setShowReview] = useState<string | null>(null);
+  const { isActive: isPremium, userId } = useSubscription();
+  const [hasOneTime, setHasOneTime] = useState(false);
+  const [upgradeOpen, setUpgradeOpen] = useState(false);
+  const [oneTimeOpen, setOneTimeOpen] = useState(false);
+  const [email, setEmail] = useState<string | undefined>();
+
+  useEffect(() => {
+    if (!userId) return;
+    supabase.auth.getUser().then(({ data }) => setEmail(data.user?.email ?? undefined));
+    supabase.from("simulation_purchases").select("id").eq("user_id", userId).eq("simulation_slug", slug).limit(1)
+      .then(({ data }) => setHasOneTime(!!data && data.length > 0));
+  }, [userId, slug]);
 
   const questions = useMemo(() => (data?.questions ?? []) as Q[], [data]);
   const sim = data?.simulation as any;
@@ -111,6 +128,7 @@ function Page() {
 
   // Pre-start screen
   if (!started && !done) {
+    const locked = sim.is_premium && !isPremium && !hasOneTime;
     return (
       <div className="min-h-screen bg-background"><Header />
         <main className="container mx-auto max-w-2xl px-4 py-12">
@@ -138,15 +156,55 @@ function Page() {
               <strong>Reguli:</strong> simularea este cronometrată. La final primești scorul și poți revedea fiecare problemă cu rezolvarea pas cu pas. Nu poți să o pauzezi.
             </div>
 
-            <Button
-              size="lg"
-              className="mt-6 w-full"
-              disabled={!questions.length}
-              onClick={() => setStarted(true)}
-            >
-              {questions.length ? "Începe simularea" : "Nu sunt încă probleme adăugate"}
-            </Button>
+            {locked ? (
+              <div className="mt-6 space-y-3">
+                <Button
+                  size="lg"
+                  className="w-full bg-[var(--gradient-hero)] shadow-[var(--shadow-glow)] hover:opacity-95"
+                  onClick={() => userId ? setUpgradeOpen(true) : (window.location.href = "/autentificare")}
+                >
+                  <Sparkles className="mr-2 h-4 w-4" /> Deblochează Premium (50 RON/lună)
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => userId ? setOneTimeOpen(true) : (window.location.href = "/autentificare")}
+                >
+                  Sau plătește 30 RON doar pentru această simulare
+                </Button>
+              </div>
+            ) : (
+              <Button
+                size="lg"
+                className="mt-6 w-full"
+                disabled={!questions.length}
+                onClick={() => setStarted(true)}
+              >
+                {questions.length ? "Începe simularea" : "Nu sunt încă probleme adăugate"}
+              </Button>
+            )}
           </Card>
+
+          <UpgradeModal open={upgradeOpen} onClose={() => setUpgradeOpen(false)} />
+          <Dialog open={oneTimeOpen} onOpenChange={setOneTimeOpen}>
+            <DialogContent className="max-w-2xl p-0 overflow-hidden">
+              <DialogHeader className="px-6 pt-6 pb-2">
+                <DialogTitle>Cumpără această simulare (30 RON)</DialogTitle>
+              </DialogHeader>
+              <div className="p-2">
+                {oneTimeOpen && userId && (
+                  <StripeEmbeddedCheckout
+                    priceId="single_simulation_ron"
+                    userId={userId}
+                    customerEmail={email}
+                    simulationSlug={slug}
+                    returnUrl={`${window.location.origin}/simulare/${slug}?purchased=1`}
+                  />
+                )}
+              </div>
+            </DialogContent>
+          </Dialog>
         </main>
       </div>
     );

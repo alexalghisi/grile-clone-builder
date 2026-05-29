@@ -11,7 +11,7 @@ const NAV = [
   { to: "/admitere", label: "Subiecte admitere" },
   { to: "/subiecte-bac", label: "BAC" },
   { to: "/tutoriale", label: "Resurse" },
-  { to: "/grila-zilei", label: "Grila zilei" },
+  { to: "/preturi", label: "Prețuri" },
 ] as const;
 
 export function Header() {
