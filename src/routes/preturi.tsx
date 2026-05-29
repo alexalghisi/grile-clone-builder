@@ -99,7 +99,7 @@ function PricingPage() {
 
           {/* Premium */}
           <Card className="relative p-7 border-primary/40 shadow-[var(--shadow-elegant)]">
-            <Badge className="absolute -top-3 right-6 bg-[var(--gradient-hero)] text-white shadow-[var(--shadow-glow)]">
+            <Badge className="absolute -top-3 right-6 [background-image:var(--gradient-hero)] text-white shadow-[var(--shadow-glow)]">
               <Crown className="mr-1 h-3 w-3" /> Popular
             </Badge>
             <div className="text-sm font-semibold uppercase tracking-wider text-primary">Premium</div>
@@ -112,7 +112,7 @@ function PricingPage() {
               <Button className="mt-5 w-full h-11" disabled>Ești deja Premium ✓</Button>
             ) : (
               <Button
-                className="mt-5 w-full h-11 bg-[var(--gradient-hero)] shadow-[var(--shadow-glow)] hover:opacity-95"
+                className="mt-5 w-full h-11 [background-image:var(--gradient-hero)] shadow-[var(--shadow-glow)] hover:opacity-95"
                 onClick={startCheckout}
               >
                 Devino Premium

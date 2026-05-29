@@ -15,7 +15,7 @@ export function UpgradeModal({ open, onClose, title, description }: Props) {
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <div className="mx-auto mb-3 grid h-12 w-12 place-items-center rounded-full bg-[var(--gradient-hero)] text-white shadow-[var(--shadow-glow)]">
+          <div className="mx-auto mb-3 grid h-12 w-12 place-items-center rounded-full [background-image:var(--gradient-hero)] text-white shadow-[var(--shadow-glow)]">
             <Lock className="h-5 w-5" />
           </div>
           <DialogTitle className="text-center text-xl">
@@ -38,7 +38,7 @@ export function UpgradeModal({ open, onClose, title, description }: Props) {
           ))}
         </ul>
         <Link to="/preturi" onClick={onClose}>
-          <Button className="w-full h-11 bg-[var(--gradient-hero)] shadow-[var(--shadow-glow)] hover:opacity-95">
+          <Button className="w-full h-11 [background-image:var(--gradient-hero)] shadow-[var(--shadow-glow)] hover:opacity-95">
             Vezi planurile Premium
           </Button>
         </Link>
