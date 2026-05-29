@@ -22,6 +22,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/simulare", changefreq: "weekly", priority: "0.8" },
           { path: "/subiecte-bac", changefreq: "weekly", priority: "0.7" },
           { path: "/subiecte-admitere", changefreq: "weekly", priority: "0.7" },
+          { path: "/admitere", changefreq: "weekly", priority: "0.8" },
           { path: "/tutoriale", changefreq: "weekly", priority: "0.6" },
           { path: "/feedback", changefreq: "monthly", priority: "0.3" },
           { path: "/autentificare", changefreq: "monthly", priority: "0.3" },
@@ -37,6 +38,9 @@ export const Route = createFileRoute("/sitemap.xml")({
         const { data: bacSubjects } = await supabaseAdmin
           .from("bac_papers")
           .select("subject_slug");
+        const { data: admitereRows } = await supabaseAdmin
+          .from("admitere_papers")
+          .select("university_slug, subject_slug");
 
         const uniEntries: SitemapEntry[] = (unis ?? []).map((u: any) => ({
           path: `/grile/${u.slug}`,
@@ -56,7 +60,31 @@ export const Route = createFileRoute("/sitemap.xml")({
           priority: "0.7",
         }));
 
-        const all = [...staticEntries, ...uniEntries, ...quizEntries, ...bacSubjectEntries];
+        const admitereUniSet = new Set<string>();
+        const admitereSubjectSet = new Set<string>();
+        for (const r of (admitereRows ?? []) as Array<{ university_slug: string; subject_slug: string }>) {
+          admitereUniSet.add(r.university_slug);
+          admitereSubjectSet.add(`${r.university_slug}/${r.subject_slug}`);
+        }
+        const admitereUniEntries: SitemapEntry[] = Array.from(admitereUniSet).map((slug) => ({
+          path: `/admitere/${slug}`,
+          changefreq: "monthly",
+          priority: "0.6",
+        }));
+        const admitereSubjEntries: SitemapEntry[] = Array.from(admitereSubjectSet).map((p) => ({
+          path: `/admitere/${p}`,
+          changefreq: "monthly",
+          priority: "0.6",
+        }));
+
+        const all = [
+          ...staticEntries,
+          ...uniEntries,
+          ...quizEntries,
+          ...bacSubjectEntries,
+          ...admitereUniEntries,
+          ...admitereSubjEntries,
+        ];
         const urls = all.map((e) =>
           [
             `  <url>`,

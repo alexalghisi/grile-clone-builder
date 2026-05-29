@@ -86,7 +86,7 @@ export function StickyBottomAd() {
   return (
     <div className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 shadow-lg">
       <div className="relative mx-auto flex items-center justify-center py-1">
-        <span className="absolute left-2 top-1 text-[9px] uppercase tracking-wider text-muted-foreground/70">Reclamă</span>
+        <span className="absolute left-2 top-1 text-[9px] uppercase tracking-wider text-muted-foreground">Reclamă</span>
         <div className="md:hidden"><AdsterraBanner adKey="1d52bf344109233191b521892428281b" width={320} height={50} /></div>
         <div className="hidden md:block"><AdsterraBanner adKey="abd8df0c76ef871bb2f3a6bdfda2a972" width={728} height={90} /></div>
       </div>
