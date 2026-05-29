@@ -15,7 +15,7 @@ export const Route = createFileRoute("/subiecte-bac")({
   head: () => ({
     meta: [
       { title: "Subiecte BAC 2026 Rezolvate — Toate Materiile (PDF)" },
-      { name: "description", content: "Subiecte BAC oficiale 2001-2026 pentru matematică, română, biologie, chimie, fizică, engleză. PDF cu bareme rezolvate, variante și grile gratuite pentru Bacalaureat 2026." },
+      { name: "description", content: "Subiecte BAC 2001-2026: matematică, română, biologie, chimie, fizică. PDF cu bareme și variante gratuite." },
       { name: "keywords", content: "subiecte bac, bac 2026, bac matematica, bac romana, bac biologie, bac chimie, bac fizica, bareme bac, variante bac, pdf bac" },
       { property: "og:title", content: "Subiecte BAC 2026 Rezolvate — Toate Materiile (PDF)" },
       { property: "og:description", content: "Arhiva completă subiecte BAC 2001-2026 cu PDF, bareme și rezolvări pentru toate materiile." },
