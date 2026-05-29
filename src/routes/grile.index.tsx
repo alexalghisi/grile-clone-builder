@@ -11,9 +11,9 @@ import { AdSlot } from "@/components/AdSlot";
 
 export const Route = createFileRoute("/grile/")({
   head: () => {
-    const title = "Grile Admitere 2026 — Toate Universitățile din România | GrileAdmitere.ro";
+    const title = "Grile Admitere 2026 — Toate Universitățile";
     const description =
-      "Toate universitățile din România cu grile admitere 2026 rezolvate pas cu pas: UMF (București, Cluj, Iași, Timișoara), UPB, UBB, ASE, UAIC, UTCN și 100+ facultăți. Gratuit.";
+      "Grile admitere 2026 rezolvate pas cu pas: UMF, UPB, UBB, ASE, UAIC, UTCN și 100+ facultăți din România. Gratuit.";
     return {
       meta: [
         { title },
