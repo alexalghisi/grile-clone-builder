@@ -8,8 +8,8 @@ import { listAdmitereUniversities } from "@/lib/admitere.functions";
 
 export const Route = createFileRoute("/admitere")({
   head: () => {
-    const title = "Subiecte Admitere 2001-2026 — Toate Facultățile (PDF) | GrileAdmitere";
-    const description = "Arhiva completă cu subiecte admitere PDF pentru toate facultățile din România: UMF, Politehnică, ASE, UBB, UAIC. Toate materiile, toți anii 2001-2026, gratuit.";
+    const title = "Subiecte Admitere 2001-2026 — Toate Facultățile";
+    const description = "Arhivă cu subiecte admitere PDF pentru facultățile din România: UMF, Politehnică, ASE, UBB, UAIC. Toate materiile, gratuit.";
     return {
       meta: [
         { title },
