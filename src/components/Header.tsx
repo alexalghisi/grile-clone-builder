@@ -28,7 +28,7 @@ export function Header() {
     <header className="sticky top-0 z-40 w-full border-b border-border/70 bg-background/85 backdrop-blur-md">
       <div className="container mx-auto flex h-16 items-center justify-between gap-3 px-4">
         <Link to="/" className="flex items-center gap-2 font-bold text-foreground">
-          <span className="grid h-9 w-9 place-items-center rounded-lg bg-[var(--gradient-hero)] text-white shadow-[var(--shadow-glow)]">
+          <span className="grid h-9 w-9 place-items-center rounded-lg [background-image:var(--gradient-hero)] text-white shadow-[var(--shadow-glow)]">
             <GraduationCap className="h-5 w-5" />
           </span>
           <span className="text-base tracking-tight">GrileAdmitere<span className="text-primary-glow">.ro</span></span>
@@ -59,7 +59,7 @@ export function Header() {
                 <Button size="sm" variant="ghost">Conectare</Button>
               </Link>
               <Link to="/autentificare">
-                <Button size="sm" className="bg-[var(--gradient-hero)] shadow-[var(--shadow-glow)] hover:opacity-95">
+                <Button size="sm" className="[background-image:var(--gradient-hero)] shadow-[var(--shadow-glow)] hover:opacity-95">
                   Începe gratuit <ArrowRight className="ml-1 h-3.5 w-3.5" />
                 </Button>
               </Link>

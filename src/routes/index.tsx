@@ -95,7 +95,7 @@ function Index() {
 
       {/* Hero — split layout, navy gradient */}
       <section className="relative overflow-hidden border-b border-border">
-        <div className="pointer-events-none absolute inset-0 -z-10 bg-[var(--gradient-soft)]" />
+        <div className="pointer-events-none absolute inset-0 -z-10 [background-image:var(--gradient-soft)]" />
         <div className="pointer-events-none absolute -top-32 -right-32 -z-10 h-[28rem] w-[28rem] rounded-full bg-primary-glow/15 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-40 -left-20 -z-10 h-[24rem] w-[24rem] rounded-full bg-primary/10 blur-3xl" />
 
@@ -105,7 +105,7 @@ function Index() {
               <Sparkles className="h-3.5 w-3.5" /> Sesiunea Admitere 2026
             </Badge>
             <h1 className="max-w-2xl text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-5xl lg:text-6xl">
-              Pregătire <span className="bg-[var(--gradient-hero)] bg-clip-text text-transparent">serioasă</span> pentru admiterea la facultate.
+              Pregătire <span className="[background-image:var(--gradient-hero)] bg-clip-text text-transparent">serioasă</span> pentru admiterea la facultate.
             </h1>
             <p className="mt-6 max-w-xl text-base sm:text-lg leading-relaxed text-muted-foreground">
               Grile reale UPB, UMF, UBB, ASE și 100+ universități — cu <strong className="text-foreground">rezolvare completă pas cu pas</strong>, formule LaTeX și simulări cronometrate în format de examen.
@@ -113,7 +113,7 @@ function Index() {
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link to="/simulare">
-                <Button size="lg" className="h-12 bg-[var(--gradient-hero)] px-6 text-base shadow-[var(--shadow-glow)] hover:opacity-95">
+                <Button size="lg" className="h-12 [background-image:var(--gradient-hero)] px-6 text-base shadow-[var(--shadow-glow)] hover:opacity-95">
                   <Trophy className="mr-2 h-4 w-4" /> Începe o simulare
                 </Button>
               </Link>
@@ -134,7 +134,7 @@ function Index() {
           {/* Quick start card */}
           <Card className="relative w-full max-w-md justify-self-center p-6 shadow-[var(--shadow-elegant)] sm:p-7 lg:justify-self-end">
             <div className="flex items-center gap-3">
-              <div className="grid h-10 w-10 place-items-center rounded-xl bg-[var(--gradient-hero)] text-white shadow-[var(--shadow-glow)]">
+              <div className="grid h-10 w-10 place-items-center rounded-xl [background-image:var(--gradient-hero)] text-white shadow-[var(--shadow-glow)]">
                 <BookOpen className="h-5 w-5" />
               </div>
               <div>
@@ -154,7 +154,7 @@ function Index() {
               </Select>
             </div>
             <Button
-              className="mt-5 w-full h-11 bg-[var(--gradient-hero)] shadow-[var(--shadow-glow)] hover:opacity-95"
+              className="mt-5 w-full h-11 [background-image:var(--gradient-hero)] shadow-[var(--shadow-glow)] hover:opacity-95"
               disabled={!selected}
               onClick={() => navigate({ to: "/grile/$uniSlug", params: { uniSlug: selected } })}
             >

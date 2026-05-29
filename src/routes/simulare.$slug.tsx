@@ -160,7 +160,7 @@ function Page() {
               <div className="mt-6 space-y-3">
                 <Button
                   size="lg"
-                  className="w-full bg-[var(--gradient-hero)] shadow-[var(--shadow-glow)] hover:opacity-95"
+                  className="w-full [background-image:var(--gradient-hero)] shadow-[var(--shadow-glow)] hover:opacity-95"
                   onClick={() => userId ? setUpgradeOpen(true) : (window.location.href = "/autentificare")}
                 >
                   <Sparkles className="mr-2 h-4 w-4" /> Deblochează Premium (50 RON/lună)
