@@ -335,17 +335,25 @@ function Page() {
           </div>
           <div className="mt-5 space-y-2">
             {q.options.map((opt, i) => {
-              const isCorrect = i === q.correct_index;
-              const isSel = sel === i;
+              const isCorrect = correct.includes(i);
+              const isSel = selectedIndices.includes(i);
               const cls = isRevealed
                 ? isCorrect ? "border-green-600 bg-green-50 dark:bg-green-950/30"
                 : isSel ? "border-destructive bg-destructive/10" : "opacity-60"
                 : isSel ? "border-primary" : "hover:border-primary/40";
+              const chooseAnswer = () => {
+                if (!isMulti) {
+                  setAnswers({ ...answers, [q.id]: i });
+                  return;
+                }
+                const next = isSel ? selectedIndices.filter((value) => value !== i) : [...selectedIndices, i];
+                setAnswers({ ...answers, [q.id]: next });
+              };
               return (
                 <button
                   key={i}
                   disabled={isRevealed}
-                  onClick={() => setAnswers({ ...answers, [q.id]: i })}
+                  onClick={chooseAnswer}
                   className={`flex w-full items-start gap-3 rounded-md border p-3 text-left text-sm transition ${cls}`}
                 >
                   <span className="font-bold text-primary">{String.fromCharCode(65 + i)})</span>
@@ -374,7 +382,7 @@ function Page() {
               <div className="mb-2">
                 <span className="font-medium">Răspunsul corect: </span>
                 <span className="font-semibold text-green-700 dark:text-green-400">
-                  {String.fromCharCode(65 + q.correct_index)}) {q.options[q.correct_index]}
+                  {correct.map((answerIndex) => `${String.fromCharCode(65 + answerIndex)}) ${q.options[answerIndex]}`).join(" · ")}
                 </span>
               </div>
               <div className="mt-3 border-t pt-3">
@@ -393,7 +401,7 @@ function Page() {
           <div className="mt-6 flex justify-between">
             <Button variant="ghost" disabled={idx === 0} onClick={() => setIdx(idx - 1)}>Înapoi</Button>
             {!isRevealed ? (
-              <Button disabled={sel === undefined} onClick={() => setRevealed({ ...revealed, [q.id]: true })}>Verifică</Button>
+              <Button disabled={!selectedIndices.length} onClick={() => setRevealed({ ...revealed, [q.id]: true })}>Verifică</Button>
             ) : idx < questions.length - 1 ? (
               <Button onClick={() => setIdx(idx + 1)}>Următoarea →</Button>
             ) : (
