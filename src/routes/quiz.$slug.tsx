@@ -114,11 +114,20 @@ type Q = {
   question_text: string;
   options: string[];
   correct_index: number;
+  correct_indices?: number[];
   explanation: string | null;
   solution_md?: string | null;
   figure_url?: string | null;
   problem_number?: number | null;
   difficulty?: string | null;
+};
+
+const getCorrectIndices = (q: Q) => q.correct_indices?.length ? q.correct_indices : [q.correct_index];
+const getAnswerIndices = (answer: number | number[] | undefined) => Array.isArray(answer) ? answer : answer === undefined ? [] : [answer];
+const sameAnswers = (answer: number | number[] | undefined, correct: number[]) => {
+  const picked = getAnswerIndices(answer).sort((a, b) => a - b);
+  const expected = [...correct].sort((a, b) => a - b);
+  return picked.length === expected.length && picked.every((value, index) => value === expected[index]);
 };
 
 function Page() {
@@ -160,7 +169,7 @@ function Page() {
   }, [nextData, queryClient, fn, nextFn]);
 
   const [idx, setIdx] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, number>>({});
+  const [answers, setAnswers] = useState<Record<string, number | number[]>>({});
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
   const [done, setDone] = useState(false);
   const [seconds, setSeconds] = useState(0);
@@ -176,7 +185,7 @@ function Page() {
 
   useEffect(() => {
     if (done && data?.subject) {
-      const score = questions.reduce((acc, qq) => acc + (answers[qq.id] === qq.correct_index ? 1 : 0), 0);
+      const score = questions.reduce((acc, qq) => acc + (sameAnswers(answers[qq.id], getCorrectIndices(qq)) ? 1 : 0), 0);
       supabase.auth.getUser().then(({ data: u }) => {
         if (u.user) {
           supabase.from("attempts").insert({
@@ -200,7 +209,7 @@ function Page() {
   }
 
   if (done) {
-    const score = questions.reduce((acc, qq) => acc + (answers[qq.id] === qq.correct_index ? 1 : 0), 0);
+    const score = questions.reduce((acc, qq) => acc + (sameAnswers(answers[qq.id], getCorrectIndices(qq)) ? 1 : 0), 0);
     const pct = Math.round((score / questions.length) * 100);
     const next = nextData?.next;
     const recs = nextData?.recommendations ?? [];
