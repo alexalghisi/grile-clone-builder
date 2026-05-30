@@ -239,7 +239,7 @@ function Page() {
               </div>
               <div className="mt-2 text-lg font-bold">{next.name}</div>
               <div className="text-sm text-muted-foreground">
-                {(next as any).universities?.short_name ?? ""} · {next.question_count} grile
+                {(next as any).universities?.short_name ?? ""} · pregătire recomandată
               </div>
               <Link to="/quiz/$slug" params={{ slug: next.slug }} className="mt-4 block">
                 <Button size="lg" className="w-full">
@@ -261,7 +261,7 @@ function Page() {
                         <div className="flex-1 min-w-0">
                           <div className="text-sm font-semibold truncate">{r.name}</div>
                           <div className="text-xs text-muted-foreground truncate">
-                            {r.universities?.short_name ?? ""} · {r.question_count} grile
+                            {r.universities?.short_name ?? ""} · grile recomandate
                           </div>
                         </div>
                       </div>
@@ -275,7 +275,8 @@ function Page() {
           <AdSlot className="my-6" />
           <div className="space-y-3">
             {questions.map((qq, i) => {
-              const ok = answers[qq.id] === qq.correct_index;
+              const correct = getCorrectIndices(qq);
+              const ok = sameAnswers(answers[qq.id], correct);
               return (
                 <Card key={qq.id} className="p-4">
                   <div className="flex items-start gap-2">
@@ -285,7 +286,9 @@ function Page() {
                       <span className="mr-1 font-semibold">Problema {qq.problem_number ?? i + 1}.</span>
                       <QuestionContent text={qq.question_text} figureUrl={qq.figure_url} />
                       </div>
-                      <div className="mt-2 text-xs text-muted-foreground">Corect: {String.fromCharCode(65 + qq.correct_index)}. {qq.options[qq.correct_index]}</div>
+                      <div className="mt-2 text-xs text-muted-foreground">
+                        Corect: {correct.map((answerIndex) => `${String.fromCharCode(65 + answerIndex)}. ${qq.options[answerIndex]}`).join(" · ")}
+                      </div>
                       {qq.explanation && <div className="mt-2 text-xs text-foreground/80">{qq.explanation}</div>}
                     </div>
                   </div>
@@ -300,8 +303,11 @@ function Page() {
 
   const isRevealed = revealed[q.id];
   const sel = answers[q.id];
-  const isWrong = isRevealed && sel !== q.correct_index;
-  const isRight = isRevealed && sel === q.correct_index;
+  const correct = getCorrectIndices(q);
+  const selectedIndices = getAnswerIndices(sel);
+  const isMulti = correct.length > 1;
+  const isWrong = isRevealed && !sameAnswers(sel, correct);
+  const isRight = isRevealed && sameAnswers(sel, correct);
 
   return (
     <div className="min-h-screen bg-background">
