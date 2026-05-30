@@ -6,11 +6,11 @@ function srv() {
 }
 
 function normalizeGrila(row: any, index: number) {
-  const entries = Array.isArray(row.variante)
+  const entries: Array<[string, unknown]> = Array.isArray(row.variante)
     ? row.variante.map((value: unknown, i: number) => [String.fromCharCode(65 + i), value])
     : Object.entries(row.variante ?? {});
-  const sorted = entries.sort(([a], [b]) => String(a).localeCompare(String(b), "ro", { sensitivity: "base" }));
-  const keys = sorted.map(([key]) => String(key));
+  const sorted = entries.sort(([a], [b]) => a.localeCompare(b, "ro", { sensitivity: "base" }));
+  const keys = sorted.map(([key]) => key);
   const options = sorted.map(([, value]) => String(value));
   const correctLetters = String(row.raspuns_corect ?? "").replace(/[^a-zA-Z]/g, "").split("");
   const correctIndices = correctLetters
