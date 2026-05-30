@@ -114,11 +114,20 @@ type Q = {
   question_text: string;
   options: string[];
   correct_index: number;
+  correct_indices?: number[];
   explanation: string | null;
   solution_md?: string | null;
   figure_url?: string | null;
   problem_number?: number | null;
   difficulty?: string | null;
+};
+
+const getCorrectIndices = (q: Q) => q.correct_indices?.length ? q.correct_indices : [q.correct_index];
+const getAnswerIndices = (answer: number | number[] | undefined) => Array.isArray(answer) ? answer : answer === undefined ? [] : [answer];
+const sameAnswers = (answer: number | number[] | undefined, correct: number[]) => {
+  const picked = getAnswerIndices(answer).sort((a, b) => a - b);
+  const expected = [...correct].sort((a, b) => a - b);
+  return picked.length === expected.length && picked.every((value, index) => value === expected[index]);
 };
 
 function Page() {
@@ -160,7 +169,7 @@ function Page() {
   }, [nextData, queryClient, fn, nextFn]);
 
   const [idx, setIdx] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, number>>({});
+  const [answers, setAnswers] = useState<Record<string, number | number[]>>({});
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
   const [done, setDone] = useState(false);
   const [seconds, setSeconds] = useState(0);
@@ -176,7 +185,7 @@ function Page() {
 
   useEffect(() => {
     if (done && data?.subject) {
-      const score = questions.reduce((acc, qq) => acc + (answers[qq.id] === qq.correct_index ? 1 : 0), 0);
+      const score = questions.reduce((acc, qq) => acc + (sameAnswers(answers[qq.id], getCorrectIndices(qq)) ? 1 : 0), 0);
       supabase.auth.getUser().then(({ data: u }) => {
         if (u.user) {
           supabase.from("attempts").insert({
@@ -200,7 +209,7 @@ function Page() {
   }
 
   if (done) {
-    const score = questions.reduce((acc, qq) => acc + (answers[qq.id] === qq.correct_index ? 1 : 0), 0);
+    const score = questions.reduce((acc, qq) => acc + (sameAnswers(answers[qq.id], getCorrectIndices(qq)) ? 1 : 0), 0);
     const pct = Math.round((score / questions.length) * 100);
     const next = nextData?.next;
     const recs = nextData?.recommendations ?? [];
@@ -230,7 +239,7 @@ function Page() {
               </div>
               <div className="mt-2 text-lg font-bold">{next.name}</div>
               <div className="text-sm text-muted-foreground">
-                {(next as any).universities?.short_name ?? ""} · {next.question_count} grile
+                {(next as any).universities?.short_name ?? ""} · pregătire recomandată
               </div>
               <Link to="/quiz/$slug" params={{ slug: next.slug }} className="mt-4 block">
                 <Button size="lg" className="w-full">
@@ -252,7 +261,7 @@ function Page() {
                         <div className="flex-1 min-w-0">
                           <div className="text-sm font-semibold truncate">{r.name}</div>
                           <div className="text-xs text-muted-foreground truncate">
-                            {r.universities?.short_name ?? ""} · {r.question_count} grile
+                            {r.universities?.short_name ?? ""} · grile recomandate
                           </div>
                         </div>
                       </div>
@@ -266,7 +275,8 @@ function Page() {
           <AdSlot className="my-6" />
           <div className="space-y-3">
             {questions.map((qq, i) => {
-              const ok = answers[qq.id] === qq.correct_index;
+              const correct = getCorrectIndices(qq);
+              const ok = sameAnswers(answers[qq.id], correct);
               return (
                 <Card key={qq.id} className="p-4">
                   <div className="flex items-start gap-2">
@@ -276,7 +286,9 @@ function Page() {
                       <span className="mr-1 font-semibold">Problema {qq.problem_number ?? i + 1}.</span>
                       <QuestionContent text={qq.question_text} figureUrl={qq.figure_url} />
                       </div>
-                      <div className="mt-2 text-xs text-muted-foreground">Corect: {String.fromCharCode(65 + qq.correct_index)}. {qq.options[qq.correct_index]}</div>
+                      <div className="mt-2 text-xs text-muted-foreground">
+                        Corect: {correct.map((answerIndex) => `${String.fromCharCode(65 + answerIndex)}. ${qq.options[answerIndex]}`).join(" · ")}
+                      </div>
                       {qq.explanation && <div className="mt-2 text-xs text-foreground/80">{qq.explanation}</div>}
                     </div>
                   </div>
@@ -291,8 +303,11 @@ function Page() {
 
   const isRevealed = revealed[q.id];
   const sel = answers[q.id];
-  const isWrong = isRevealed && sel !== q.correct_index;
-  const isRight = isRevealed && sel === q.correct_index;
+  const correct = getCorrectIndices(q);
+  const selectedIndices = getAnswerIndices(sel);
+  const isMulti = correct.length > 1;
+  const isWrong = isRevealed && !sameAnswers(sel, correct);
+  const isRight = isRevealed && sameAnswers(sel, correct);
 
   return (
     <div className="min-h-screen bg-background">
@@ -320,17 +335,25 @@ function Page() {
           </div>
           <div className="mt-5 space-y-2">
             {q.options.map((opt, i) => {
-              const isCorrect = i === q.correct_index;
-              const isSel = sel === i;
+              const isCorrect = correct.includes(i);
+              const isSel = selectedIndices.includes(i);
               const cls = isRevealed
                 ? isCorrect ? "border-green-600 bg-green-50 dark:bg-green-950/30"
                 : isSel ? "border-destructive bg-destructive/10" : "opacity-60"
                 : isSel ? "border-primary" : "hover:border-primary/40";
+              const chooseAnswer = () => {
+                if (!isMulti) {
+                  setAnswers({ ...answers, [q.id]: i });
+                  return;
+                }
+                const next = isSel ? selectedIndices.filter((value) => value !== i) : [...selectedIndices, i];
+                setAnswers({ ...answers, [q.id]: next });
+              };
               return (
                 <button
                   key={i}
                   disabled={isRevealed}
-                  onClick={() => setAnswers({ ...answers, [q.id]: i })}
+                  onClick={chooseAnswer}
                   className={`flex w-full items-start gap-3 rounded-md border p-3 text-left text-sm transition ${cls}`}
                 >
                   <span className="font-bold text-primary">{String.fromCharCode(65 + i)})</span>
@@ -359,7 +382,7 @@ function Page() {
               <div className="mb-2">
                 <span className="font-medium">Răspunsul corect: </span>
                 <span className="font-semibold text-green-700 dark:text-green-400">
-                  {String.fromCharCode(65 + q.correct_index)}) {q.options[q.correct_index]}
+                  {correct.map((answerIndex) => `${String.fromCharCode(65 + answerIndex)}) ${q.options[answerIndex]}`).join(" · ")}
                 </span>
               </div>
               <div className="mt-3 border-t pt-3">
@@ -378,7 +401,7 @@ function Page() {
           <div className="mt-6 flex justify-between">
             <Button variant="ghost" disabled={idx === 0} onClick={() => setIdx(idx - 1)}>Înapoi</Button>
             {!isRevealed ? (
-              <Button disabled={sel === undefined} onClick={() => setRevealed({ ...revealed, [q.id]: true })}>Verifică</Button>
+              <Button disabled={!selectedIndices.length} onClick={() => setRevealed({ ...revealed, [q.id]: true })}>Verifică</Button>
             ) : idx < questions.length - 1 ? (
               <Button onClick={() => setIdx(idx + 1)}>Următoarea →</Button>
             ) : (

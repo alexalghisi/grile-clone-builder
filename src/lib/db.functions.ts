@@ -5,6 +5,32 @@ function srv() {
   return supabaseAdmin;
 }
 
+function normalizeGrila(row: any, index: number) {
+  const entries: Array<[string, unknown]> = Array.isArray(row.variante)
+    ? row.variante.map((value: unknown, i: number) => [String.fromCharCode(65 + i), value])
+    : Object.entries(row.variante ?? {});
+  const sorted = entries.sort(([a], [b]) => a.localeCompare(b, "ro", { sensitivity: "base" }));
+  const keys = sorted.map(([key]) => key);
+  const options = sorted.map(([, value]) => String(value));
+  const correctLetters = String(row.raspuns_corect ?? "").replace(/[^a-zA-Z]/g, "").split("");
+  const correctIndices = correctLetters
+    .map((letter) => keys.findIndex((key) => key.toLowerCase() === letter.toLowerCase()))
+    .filter((idx) => idx >= 0);
+
+  return {
+    id: row.id,
+    question_text: row.intrebare,
+    options,
+    correct_index: correctIndices[0] ?? 0,
+    correct_indices: correctIndices.length ? correctIndices : [0],
+    explanation: row.explicatie,
+    solution_md: row.explicatie,
+    figure_url: null,
+    difficulty: row.dificultate,
+    problem_number: index + 1,
+  };
+}
+
 export const listUniversities = createServerFn({ method: "GET" }).handler(async () => {
   const sb = srv();
   const { data } = await sb.from("universities").select("id, slug, short_name, name, city, description").order("short_name");
@@ -43,6 +69,16 @@ export const getQuiz = createServerFn({ method: "GET" })
     const sb = srv();
     const { data: s } = await sb.from("subjects").select("*, universities(slug, short_name, name)").eq("slug", data.slug).maybeSingle();
     if (!s) return null;
+    const { data: grileRows } = await sb
+      .from("grile")
+      .select("id, intrebare, variante, raspuns_corect, explicatie, dificultate, created_at")
+      .eq("universitate", (s as any).universities?.name ?? "")
+      .eq("materie", s.name)
+      .order("created_at", { ascending: true })
+      .limit(2000);
+    if (grileRows?.length) {
+      return { subject: s, questions: grileRows.map(normalizeGrila) };
+    }
     const { data: qs } = await sb
       .from("questions")
       .select("id, question_text, options, correct_index, explanation, difficulty, figure_url, solution_md, session, problem_number")
@@ -76,7 +112,6 @@ export const getNextSubjects = createServerFn({ method: "GET" })
         .select("id, slug, name, question_count, university_id, universities(slug, short_name, name)")
         .eq("university_id", data.universityId)
         .neq("id", data.currentSubjectId)
-        .gt("question_count", 0)
         .order("name")
         .limit(3);
       sameUni = s ?? [];
@@ -86,8 +121,7 @@ export const getNextSubjects = createServerFn({ method: "GET" })
       .from("subjects")
       .select("id, slug, name, question_count, university_id, universities(slug, short_name, name)")
       .neq("id", data.currentSubjectId)
-      .gt("question_count", 0)
-      .order("question_count", { ascending: false })
+      .order("name")
       .limit(8);
     const seen = new Set<string>([data.currentSubjectId, ...sameUni.map((x: any) => x.id)]);
     const fill = (others ?? []).filter((s: any) => !seen.has(s.id)).slice(0, Math.max(0, 4 - sameUni.length));

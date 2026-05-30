@@ -51,7 +51,7 @@ export const Route = createFileRoute("/")({
               name: "Cum mă pregătesc pentru admiterea la facultate 2026?",
               acceptedAnswer: {
                 "@type": "Answer",
-                text: "Pe GrileAdmitere.ro găsești 74.000+ grile rezolvate pas cu pas pentru UMF, UPB, UBB, ASE și 100+ universități, complet gratuit.",
+                text: "Pe GrileAdmitere.ro găsești multe grile rezolvate pas cu pas pentru UMF, UPB, UBB, ASE și 100+ universități, complet gratuit.",
               },
             },
             {
@@ -163,7 +163,7 @@ function Index() {
 
             <div className="mt-6 grid grid-cols-3 gap-3 border-t border-border pt-5 text-center">
               {[
-                { v: "74k+", l: "Grile" },
+                { v: "Greu", l: "Nivel" },
                 { v: `${unis.length || 100}+`, l: "Universități" },
                 { v: "10k+", l: "Studenți" },
               ].map((s) => (
@@ -205,7 +205,7 @@ function Index() {
                           {s.universities?.short_name ?? ""}{s.universities?.city ? ` · ${s.universities.city}` : ""}
                         </div>
                       </div>
-                      <Badge variant="secondary" className="shrink-0">{s.question_count}</Badge>
+                      <Badge variant="secondary" className="shrink-0">Start</Badge>
                     </div>
                   </Card>
                 </Link>
