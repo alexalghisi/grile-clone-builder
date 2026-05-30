@@ -4,7 +4,6 @@ import { useQuery } from "@tanstack/react-query";
 import { getUniversity } from "@/lib/db.functions";
 import { Header } from "@/components/Header";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { AdSlot, AdLeaderboard } from "@/components/AdSlot";
 import { BookOpen, Trophy, Sparkles, FileText } from "lucide-react";
 
@@ -77,7 +76,7 @@ function Page() {
           <span>{data.short_name ?? uniSlug.toUpperCase()}</span>
         </nav>
         <h1 className="mt-2 text-3xl font-bold">Grile Admitere {data.short_name ?? data.name} 2026 — Rezolvate Pas cu Pas</h1>
-        <p className="text-muted-foreground">{data.city} · {data.subjects.length} materii · pregătire gratuită pentru admitere</p>
+        <p className="text-muted-foreground">{data.city} · pregătire gratuită pentru admitere</p>
         {data.description && <p className="mt-4 max-w-2xl text-sm text-muted-foreground">{data.description}</p>}
         <p className="mt-3 max-w-3xl text-sm text-muted-foreground">
           Exersează gratuit cu grilele de admitere {data.short_name ?? data.name} din anii precedenți. Fiecare materie are sute de întrebări cu explicații detaliate, ideal pentru a-ți crește scorul la admiterea 2026.
@@ -87,7 +86,7 @@ function Page() {
         <h2 className="mt-2 mb-3 text-lg font-semibold">Materii disponibile</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 mt-6">
           {[...data.subjects]
-            .sort((a: any, b: any) => (b.question_count ?? 0) - (a.question_count ?? 0))
+            .sort((a: any, b: any) => String(a.name).localeCompare(String(b.name), "ro"))
             .map((s: any) => (
             <Link key={s.id} to="/quiz/$slug" params={{ slug: s.slug }}>
               <Card className="p-5 h-full transition hover:border-primary/40 hover:shadow">
@@ -99,7 +98,6 @@ function Page() {
                       <div className="text-xs text-muted-foreground">{s.slug}</div>
                     </div>
                   </div>
-                  <Badge variant="secondary">{s.question_count} grile</Badge>
                 </div>
               </Card>
             </Link>
