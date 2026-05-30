@@ -332,6 +332,51 @@ export type Database = {
         }
         Relationships: []
       }
+      grile: {
+        Row: {
+          created_at: string
+          dificultate: string
+          explicatie: string | null
+          facultate: string
+          id: string
+          intrebare: string
+          materie: string
+          raspuns_corect: string
+          referinta_programa: string | null
+          sursa: string | null
+          universitate: string
+          variante: Json
+        }
+        Insert: {
+          created_at?: string
+          dificultate?: string
+          explicatie?: string | null
+          facultate: string
+          id?: string
+          intrebare: string
+          materie: string
+          raspuns_corect: string
+          referinta_programa?: string | null
+          sursa?: string | null
+          universitate: string
+          variante: Json
+        }
+        Update: {
+          created_at?: string
+          dificultate?: string
+          explicatie?: string | null
+          facultate?: string
+          id?: string
+          intrebare?: string
+          materie?: string
+          raspuns_corect?: string
+          referinta_programa?: string | null
+          sursa?: string | null
+          universitate?: string
+          variante?: Json
+        }
+        Relationships: []
+      }
       health_checks: {
         Row: {
           consecutive_failures: number
