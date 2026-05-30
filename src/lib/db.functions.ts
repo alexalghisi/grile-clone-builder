@@ -112,7 +112,6 @@ export const getNextSubjects = createServerFn({ method: "GET" })
         .select("id, slug, name, question_count, university_id, universities(slug, short_name, name)")
         .eq("university_id", data.universityId)
         .neq("id", data.currentSubjectId)
-        .gt("question_count", 0)
         .order("name")
         .limit(3);
       sameUni = s ?? [];
@@ -122,8 +121,7 @@ export const getNextSubjects = createServerFn({ method: "GET" })
       .from("subjects")
       .select("id, slug, name, question_count, university_id, universities(slug, short_name, name)")
       .neq("id", data.currentSubjectId)
-      .gt("question_count", 0)
-      .order("question_count", { ascending: false })
+      .order("name")
       .limit(8);
     const seen = new Set<string>([data.currentSubjectId, ...sameUni.map((x: any) => x.id)]);
     const fill = (others ?? []).filter((s: any) => !seen.has(s.id)).slice(0, Math.max(0, 4 - sameUni.length));
