@@ -76,16 +76,14 @@ export const getQuiz = createServerFn({ method: "GET" })
       .eq("materie", s.name)
       .order("created_at", { ascending: true })
       .limit(2000);
-    if (grileRows?.length) {
-      return { subject: s, questions: grileRows.map(normalizeGrila) };
-    }
     const { data: qs } = await sb
       .from("questions")
       .select("id, question_text, options, correct_index, explanation, difficulty, figure_url, solution_md, session, problem_number")
       .eq("subject_id", s.id)
       .order("problem_number", { ascending: true, nullsFirst: false })
       .limit(2000);
-    return { subject: s, questions: qs ?? [] };
+    const normalizedGrile = (grileRows ?? []).map(normalizeGrila);
+    return { subject: s, questions: [...normalizedGrile, ...(qs ?? [])] };
   });
 
 export const simulationQuestions = createServerFn({ method: "GET" })
