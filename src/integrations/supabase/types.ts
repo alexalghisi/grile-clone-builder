@@ -141,6 +141,7 @@ export type Database = {
           id: string
           paper_type: string
           pdf_url: string | null
+          profil: string | null
           session: string
           slug: string
           source_url: string | null
@@ -158,6 +159,7 @@ export type Database = {
           id?: string
           paper_type?: string
           pdf_url?: string | null
+          profil?: string | null
           session?: string
           slug: string
           source_url?: string | null
@@ -175,6 +177,7 @@ export type Database = {
           id?: string
           paper_type?: string
           pdf_url?: string | null
+          profil?: string | null
           session?: string
           slug?: string
           source_url?: string | null
