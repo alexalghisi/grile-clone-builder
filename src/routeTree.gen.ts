@@ -21,7 +21,6 @@ import { Route as AutentificareRouteImport } from './routes/autentificare'
 import { Route as AdmitereRouteImport } from './routes/admitere'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GrileIndexRouteImport } from './routes/grile.index'
-import { Route as SubiecteBacMaterieRouteImport } from './routes/subiecte-bac.$materie'
 import { Route as SimulareSlugRouteImport } from './routes/simulare.$slug'
 import { Route as QuizSlugRouteImport } from './routes/quiz.$slug'
 import { Route as GrileUniSlugRouteImport } from './routes/grile.$uniSlug'
@@ -99,11 +98,6 @@ const GrileIndexRoute = GrileIndexRouteImport.update({
   id: '/grile/',
   path: '/grile/',
   getParentRoute: () => rootRouteImport,
-} as any)
-const SubiecteBacMaterieRoute = SubiecteBacMaterieRouteImport.update({
-  id: '/$materie',
-  path: '/$materie',
-  getParentRoute: () => SubiecteBacRoute,
 } as any)
 const SimulareSlugRoute = SimulareSlugRouteImport.update({
   id: '/$slug',
@@ -209,7 +203,7 @@ export interface FileRoutesByFullPath {
   '/simulare': typeof SimulareRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
-  '/subiecte-bac': typeof SubiecteBacRouteWithChildren
+  '/subiecte-bac': typeof SubiecteBacRoute
   '/tutoriale': typeof TutorialeRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admitere/$uniSlug': typeof AdmitereUniSlugRouteWithChildren
@@ -217,7 +211,6 @@ export interface FileRoutesByFullPath {
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/quiz/$slug': typeof QuizSlugRoute
   '/simulare/$slug': typeof SimulareSlugRoute
-  '/subiecte-bac/$materie': typeof SubiecteBacMaterieRoute
   '/grile/': typeof GrileIndexRoute
   '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
@@ -241,7 +234,7 @@ export interface FileRoutesByTo {
   '/simulare': typeof SimulareRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
-  '/subiecte-bac': typeof SubiecteBacRouteWithChildren
+  '/subiecte-bac': typeof SubiecteBacRoute
   '/tutoriale': typeof TutorialeRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admitere/$uniSlug': typeof AdmitereUniSlugRouteWithChildren
@@ -249,7 +242,6 @@ export interface FileRoutesByTo {
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/quiz/$slug': typeof QuizSlugRoute
   '/simulare/$slug': typeof SimulareSlugRoute
-  '/subiecte-bac/$materie': typeof SubiecteBacMaterieRoute
   '/grile': typeof GrileIndexRoute
   '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
@@ -274,7 +266,7 @@ export interface FileRoutesById {
   '/simulare': typeof SimulareRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
-  '/subiecte-bac': typeof SubiecteBacRouteWithChildren
+  '/subiecte-bac': typeof SubiecteBacRoute
   '/tutoriale': typeof TutorialeRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admitere/$uniSlug': typeof AdmitereUniSlugRouteWithChildren
@@ -282,7 +274,6 @@ export interface FileRoutesById {
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/quiz/$slug': typeof QuizSlugRoute
   '/simulare/$slug': typeof SimulareSlugRoute
-  '/subiecte-bac/$materie': typeof SubiecteBacMaterieRoute
   '/grile/': typeof GrileIndexRoute
   '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
@@ -316,7 +307,6 @@ export interface FileRouteTypes {
     | '/grile/$uniSlug'
     | '/quiz/$slug'
     | '/simulare/$slug'
-    | '/subiecte-bac/$materie'
     | '/grile/'
     | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
@@ -348,7 +338,6 @@ export interface FileRouteTypes {
     | '/grile/$uniSlug'
     | '/quiz/$slug'
     | '/simulare/$slug'
-    | '/subiecte-bac/$materie'
     | '/grile'
     | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
@@ -380,7 +369,6 @@ export interface FileRouteTypes {
     | '/grile/$uniSlug'
     | '/quiz/$slug'
     | '/simulare/$slug'
-    | '/subiecte-bac/$materie'
     | '/grile/'
     | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
@@ -405,7 +393,7 @@ export interface RootRouteChildren {
   SimulareRoute: typeof SimulareRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SubiecteAdmitereRoute: typeof SubiecteAdmitereRoute
-  SubiecteBacRoute: typeof SubiecteBacRouteWithChildren
+  SubiecteBacRoute: typeof SubiecteBacRoute
   TutorialeRoute: typeof TutorialeRoute
   AdminLeadsRoute: typeof AdminLeadsRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
@@ -508,13 +496,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/grile/'
       preLoaderRoute: typeof GrileIndexRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/subiecte-bac/$materie': {
-      id: '/subiecte-bac/$materie'
-      path: '/$materie'
-      fullPath: '/subiecte-bac/$materie'
-      preLoaderRoute: typeof SubiecteBacMaterieRouteImport
-      parentRoute: typeof SubiecteBacRoute
     }
     '/simulare/$slug': {
       id: '/simulare/$slug'
@@ -688,18 +669,6 @@ const SimulareRouteWithChildren = SimulareRoute._addFileChildren(
   SimulareRouteChildren,
 )
 
-interface SubiecteBacRouteChildren {
-  SubiecteBacMaterieRoute: typeof SubiecteBacMaterieRoute
-}
-
-const SubiecteBacRouteChildren: SubiecteBacRouteChildren = {
-  SubiecteBacMaterieRoute: SubiecteBacMaterieRoute,
-}
-
-const SubiecteBacRouteWithChildren = SubiecteBacRoute._addFileChildren(
-  SubiecteBacRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdmitereRoute: AdmitereRouteWithChildren,
@@ -710,7 +679,7 @@ const rootRouteChildren: RootRouteChildren = {
   SimulareRoute: SimulareRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SubiecteAdmitereRoute: SubiecteAdmitereRoute,
-  SubiecteBacRoute: SubiecteBacRouteWithChildren,
+  SubiecteBacRoute: SubiecteBacRoute,
   TutorialeRoute: TutorialeRoute,
   AdminLeadsRoute: AdminLeadsRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
@@ -730,3 +699,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
