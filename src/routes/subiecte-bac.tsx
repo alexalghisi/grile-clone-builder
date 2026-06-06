@@ -60,10 +60,11 @@ function Page() {
   const [profil, setProfil] = useState<string>("");
   const [q, setQ] = useState("");
 
-  const { data: filters = initial.filters } = useQuery<Filters>({
+  const filters: Filters = (initial.filters as unknown as Filters);
+  const { data: filtersData = filters } = useQuery<Filters>({
     queryKey: ["bac-filters"],
     queryFn: () => getSubiecteBacFilters() as unknown as Promise<Filters>,
-    initialData: initial.filters,
+    initialData: filters,
   });
 
   const { data: rows = [] } = useQuery<Row[]>({
@@ -114,14 +115,14 @@ function Page() {
                 <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Caută după titlu sau cuvânt cheie…" className="pl-9" />
               </div>
             </div>
-            <FilterSelect label="An" value={an} onChange={setAn} options={filters.years.map((y) => ({ value: String(y), label: String(y) }))} />
-            <FilterSelect label="Materie" value={materie} onChange={setMaterie} options={filters.materii.map((m) => ({ value: m.slug, label: m.name }))} />
+            <FilterSelect label="An" value={an} onChange={setAn} options={filtersData.years.map((y: number) => ({ value: String(y), label: String(y) }))} />
+            <FilterSelect label="Materie" value={materie} onChange={setMaterie} options={filtersData.materii.map((m: { slug: string; name: string }) => ({ value: m.slug, label: m.name }))} />
             <FilterSelect label="Sesiune" value={sesiune} onChange={setSesiune} options={SESIUNI} />
           </div>
           <div className="mt-3 flex flex-wrap items-center gap-3">
-            {filters.profile.length > 0 && (
+            {filtersData.profile.length > 0 && (
               <div className="min-w-[180px]">
-                <FilterSelect label="Profil" value={profil} onChange={setProfil} options={filters.profile.map((p) => ({ value: p, label: p }))} />
+                <FilterSelect label="Profil" value={profil} onChange={setProfil} options={filtersData.profile.map((p: string) => ({ value: p, label: p }))} />
               </div>
             )}
             {activeCount > 0 && (
