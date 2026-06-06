@@ -21,12 +21,12 @@ import { Route as AutentificareRouteImport } from './routes/autentificare'
 import { Route as AdmitereRouteImport } from './routes/admitere'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as GrileIndexRouteImport } from './routes/grile.index'
-import { Route as SubiecteBacMaterieRouteImport } from './routes/subiecte-bac.$materie'
 import { Route as SimulareSlugRouteImport } from './routes/simulare.$slug'
 import { Route as QuizSlugRouteImport } from './routes/quiz.$slug'
 import { Route as GrileUniSlugRouteImport } from './routes/grile.$uniSlug'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as AdmitereUniSlugRouteImport } from './routes/admitere.$uniSlug'
+import { Route as AdminSubiecteBacRouteImport } from './routes/admin.subiecte-bac'
 import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicLogErrorRouteImport } from './routes/api/public/log-error'
@@ -100,11 +100,6 @@ const GrileIndexRoute = GrileIndexRouteImport.update({
   path: '/grile/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SubiecteBacMaterieRoute = SubiecteBacMaterieRouteImport.update({
-  id: '/$materie',
-  path: '/$materie',
-  getParentRoute: () => SubiecteBacRoute,
-} as any)
 const SimulareSlugRoute = SimulareSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -129,6 +124,11 @@ const AdmitereUniSlugRoute = AdmitereUniSlugRouteImport.update({
   id: '/$uniSlug',
   path: '/$uniSlug',
   getParentRoute: () => AdmitereRoute,
+} as any)
+const AdminSubiecteBacRoute = AdminSubiecteBacRouteImport.update({
+  id: '/admin/subiecte-bac',
+  path: '/admin/subiecte-bac',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminLeadsRoute = AdminLeadsRouteImport.update({
   id: '/admin/leads',
@@ -209,15 +209,15 @@ export interface FileRoutesByFullPath {
   '/simulare': typeof SimulareRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
-  '/subiecte-bac': typeof SubiecteBacRouteWithChildren
+  '/subiecte-bac': typeof SubiecteBacRoute
   '/tutoriale': typeof TutorialeRoute
   '/admin/leads': typeof AdminLeadsRoute
+  '/admin/subiecte-bac': typeof AdminSubiecteBacRoute
   '/admitere/$uniSlug': typeof AdmitereUniSlugRouteWithChildren
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/quiz/$slug': typeof QuizSlugRoute
   '/simulare/$slug': typeof SimulareSlugRoute
-  '/subiecte-bac/$materie': typeof SubiecteBacMaterieRoute
   '/grile/': typeof GrileIndexRoute
   '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
@@ -241,15 +241,15 @@ export interface FileRoutesByTo {
   '/simulare': typeof SimulareRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
-  '/subiecte-bac': typeof SubiecteBacRouteWithChildren
+  '/subiecte-bac': typeof SubiecteBacRoute
   '/tutoriale': typeof TutorialeRoute
   '/admin/leads': typeof AdminLeadsRoute
+  '/admin/subiecte-bac': typeof AdminSubiecteBacRoute
   '/admitere/$uniSlug': typeof AdmitereUniSlugRouteWithChildren
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/quiz/$slug': typeof QuizSlugRoute
   '/simulare/$slug': typeof SimulareSlugRoute
-  '/subiecte-bac/$materie': typeof SubiecteBacMaterieRoute
   '/grile': typeof GrileIndexRoute
   '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
@@ -274,15 +274,15 @@ export interface FileRoutesById {
   '/simulare': typeof SimulareRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
-  '/subiecte-bac': typeof SubiecteBacRouteWithChildren
+  '/subiecte-bac': typeof SubiecteBacRoute
   '/tutoriale': typeof TutorialeRoute
   '/admin/leads': typeof AdminLeadsRoute
+  '/admin/subiecte-bac': typeof AdminSubiecteBacRoute
   '/admitere/$uniSlug': typeof AdmitereUniSlugRouteWithChildren
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/quiz/$slug': typeof QuizSlugRoute
   '/simulare/$slug': typeof SimulareSlugRoute
-  '/subiecte-bac/$materie': typeof SubiecteBacMaterieRoute
   '/grile/': typeof GrileIndexRoute
   '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
@@ -311,12 +311,12 @@ export interface FileRouteTypes {
     | '/subiecte-bac'
     | '/tutoriale'
     | '/admin/leads'
+    | '/admin/subiecte-bac'
     | '/admitere/$uniSlug'
     | '/email/unsubscribe'
     | '/grile/$uniSlug'
     | '/quiz/$slug'
     | '/simulare/$slug'
-    | '/subiecte-bac/$materie'
     | '/grile/'
     | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
@@ -343,12 +343,12 @@ export interface FileRouteTypes {
     | '/subiecte-bac'
     | '/tutoriale'
     | '/admin/leads'
+    | '/admin/subiecte-bac'
     | '/admitere/$uniSlug'
     | '/email/unsubscribe'
     | '/grile/$uniSlug'
     | '/quiz/$slug'
     | '/simulare/$slug'
-    | '/subiecte-bac/$materie'
     | '/grile'
     | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
@@ -375,12 +375,12 @@ export interface FileRouteTypes {
     | '/subiecte-bac'
     | '/tutoriale'
     | '/admin/leads'
+    | '/admin/subiecte-bac'
     | '/admitere/$uniSlug'
     | '/email/unsubscribe'
     | '/grile/$uniSlug'
     | '/quiz/$slug'
     | '/simulare/$slug'
-    | '/subiecte-bac/$materie'
     | '/grile/'
     | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
@@ -405,9 +405,10 @@ export interface RootRouteChildren {
   SimulareRoute: typeof SimulareRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SubiecteAdmitereRoute: typeof SubiecteAdmitereRoute
-  SubiecteBacRoute: typeof SubiecteBacRouteWithChildren
+  SubiecteBacRoute: typeof SubiecteBacRoute
   TutorialeRoute: typeof TutorialeRoute
   AdminLeadsRoute: typeof AdminLeadsRoute
+  AdminSubiecteBacRoute: typeof AdminSubiecteBacRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   GrileUniSlugRoute: typeof GrileUniSlugRoute
   QuizSlugRoute: typeof QuizSlugRoute
@@ -509,13 +510,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GrileIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/subiecte-bac/$materie': {
-      id: '/subiecte-bac/$materie'
-      path: '/$materie'
-      fullPath: '/subiecte-bac/$materie'
-      preLoaderRoute: typeof SubiecteBacMaterieRouteImport
-      parentRoute: typeof SubiecteBacRoute
-    }
     '/simulare/$slug': {
       id: '/simulare/$slug'
       path: '/$slug'
@@ -550,6 +544,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admitere/$uniSlug'
       preLoaderRoute: typeof AdmitereUniSlugRouteImport
       parentRoute: typeof AdmitereRoute
+    }
+    '/admin/subiecte-bac': {
+      id: '/admin/subiecte-bac'
+      path: '/admin/subiecte-bac'
+      fullPath: '/admin/subiecte-bac'
+      preLoaderRoute: typeof AdminSubiecteBacRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/admin/leads': {
       id: '/admin/leads'
@@ -688,18 +689,6 @@ const SimulareRouteWithChildren = SimulareRoute._addFileChildren(
   SimulareRouteChildren,
 )
 
-interface SubiecteBacRouteChildren {
-  SubiecteBacMaterieRoute: typeof SubiecteBacMaterieRoute
-}
-
-const SubiecteBacRouteChildren: SubiecteBacRouteChildren = {
-  SubiecteBacMaterieRoute: SubiecteBacMaterieRoute,
-}
-
-const SubiecteBacRouteWithChildren = SubiecteBacRoute._addFileChildren(
-  SubiecteBacRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdmitereRoute: AdmitereRouteWithChildren,
@@ -710,9 +699,10 @@ const rootRouteChildren: RootRouteChildren = {
   SimulareRoute: SimulareRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SubiecteAdmitereRoute: SubiecteAdmitereRoute,
-  SubiecteBacRoute: SubiecteBacRouteWithChildren,
+  SubiecteBacRoute: SubiecteBacRoute,
   TutorialeRoute: TutorialeRoute,
   AdminLeadsRoute: AdminLeadsRoute,
+  AdminSubiecteBacRoute: AdminSubiecteBacRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   GrileUniSlugRoute: GrileUniSlugRoute,
   QuizSlugRoute: QuizSlugRoute,
