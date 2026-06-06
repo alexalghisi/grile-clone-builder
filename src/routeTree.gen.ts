@@ -26,6 +26,7 @@ import { Route as QuizSlugRouteImport } from './routes/quiz.$slug'
 import { Route as GrileUniSlugRouteImport } from './routes/grile.$uniSlug'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as AdmitereUniSlugRouteImport } from './routes/admitere.$uniSlug'
+import { Route as AdminSubiecteBacRouteImport } from './routes/admin.subiecte-bac'
 import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicLogErrorRouteImport } from './routes/api/public/log-error'
@@ -124,6 +125,11 @@ const AdmitereUniSlugRoute = AdmitereUniSlugRouteImport.update({
   path: '/$uniSlug',
   getParentRoute: () => AdmitereRoute,
 } as any)
+const AdminSubiecteBacRoute = AdminSubiecteBacRouteImport.update({
+  id: '/admin/subiecte-bac',
+  path: '/admin/subiecte-bac',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminLeadsRoute = AdminLeadsRouteImport.update({
   id: '/admin/leads',
   path: '/admin/leads',
@@ -206,6 +212,7 @@ export interface FileRoutesByFullPath {
   '/subiecte-bac': typeof SubiecteBacRoute
   '/tutoriale': typeof TutorialeRoute
   '/admin/leads': typeof AdminLeadsRoute
+  '/admin/subiecte-bac': typeof AdminSubiecteBacRoute
   '/admitere/$uniSlug': typeof AdmitereUniSlugRouteWithChildren
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
@@ -237,6 +244,7 @@ export interface FileRoutesByTo {
   '/subiecte-bac': typeof SubiecteBacRoute
   '/tutoriale': typeof TutorialeRoute
   '/admin/leads': typeof AdminLeadsRoute
+  '/admin/subiecte-bac': typeof AdminSubiecteBacRoute
   '/admitere/$uniSlug': typeof AdmitereUniSlugRouteWithChildren
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
@@ -269,6 +277,7 @@ export interface FileRoutesById {
   '/subiecte-bac': typeof SubiecteBacRoute
   '/tutoriale': typeof TutorialeRoute
   '/admin/leads': typeof AdminLeadsRoute
+  '/admin/subiecte-bac': typeof AdminSubiecteBacRoute
   '/admitere/$uniSlug': typeof AdmitereUniSlugRouteWithChildren
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
@@ -302,6 +311,7 @@ export interface FileRouteTypes {
     | '/subiecte-bac'
     | '/tutoriale'
     | '/admin/leads'
+    | '/admin/subiecte-bac'
     | '/admitere/$uniSlug'
     | '/email/unsubscribe'
     | '/grile/$uniSlug'
@@ -333,6 +343,7 @@ export interface FileRouteTypes {
     | '/subiecte-bac'
     | '/tutoriale'
     | '/admin/leads'
+    | '/admin/subiecte-bac'
     | '/admitere/$uniSlug'
     | '/email/unsubscribe'
     | '/grile/$uniSlug'
@@ -364,6 +375,7 @@ export interface FileRouteTypes {
     | '/subiecte-bac'
     | '/tutoriale'
     | '/admin/leads'
+    | '/admin/subiecte-bac'
     | '/admitere/$uniSlug'
     | '/email/unsubscribe'
     | '/grile/$uniSlug'
@@ -396,6 +408,7 @@ export interface RootRouteChildren {
   SubiecteBacRoute: typeof SubiecteBacRoute
   TutorialeRoute: typeof TutorialeRoute
   AdminLeadsRoute: typeof AdminLeadsRoute
+  AdminSubiecteBacRoute: typeof AdminSubiecteBacRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   GrileUniSlugRoute: typeof GrileUniSlugRoute
   QuizSlugRoute: typeof QuizSlugRoute
@@ -531,6 +544,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admitere/$uniSlug'
       preLoaderRoute: typeof AdmitereUniSlugRouteImport
       parentRoute: typeof AdmitereRoute
+    }
+    '/admin/subiecte-bac': {
+      id: '/admin/subiecte-bac'
+      path: '/admin/subiecte-bac'
+      fullPath: '/admin/subiecte-bac'
+      preLoaderRoute: typeof AdminSubiecteBacRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/admin/leads': {
       id: '/admin/leads'
@@ -682,6 +702,7 @@ const rootRouteChildren: RootRouteChildren = {
   SubiecteBacRoute: SubiecteBacRoute,
   TutorialeRoute: TutorialeRoute,
   AdminLeadsRoute: AdminLeadsRoute,
+  AdminSubiecteBacRoute: AdminSubiecteBacRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   GrileUniSlugRoute: GrileUniSlugRoute,
   QuizSlugRoute: QuizSlugRoute,
