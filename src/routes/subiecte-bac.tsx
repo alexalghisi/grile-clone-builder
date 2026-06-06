@@ -35,7 +35,22 @@ export const Route = createFileRoute("/subiecte-bac")({
   component: Page,
 });
 
-type Row = Awaited<ReturnType<typeof listSubiecteBac>>[number];
+type Row = {
+  id: string;
+  year: number;
+  session: string;
+  subject_slug: string;
+  subject_name: string;
+  profil: string | null;
+  paper_type: string;
+  title: string;
+  pdf_url: string | null;
+  storage_path: string | null;
+  source_url: string | null;
+  variant: string | null;
+  description: string | null;
+};
+type Filters = { years: number[]; sessions: string[]; materii: { slug: string; name: string }[]; profile: string[] };
 
 function Page() {
   const initial = Route.useLoaderData();
@@ -45,13 +60,13 @@ function Page() {
   const [profil, setProfil] = useState<string>("");
   const [q, setQ] = useState("");
 
-  const { data: filters = initial.filters } = useQuery({
+  const { data: filters = initial.filters } = useQuery<Filters>({
     queryKey: ["bac-filters"],
-    queryFn: () => getSubiecteBacFilters(),
+    queryFn: () => getSubiecteBacFilters() as unknown as Promise<Filters>,
     initialData: initial.filters,
   });
 
-  const { data: rows = [] } = useQuery({
+  const { data: rows = [] } = useQuery<Row[]>({
     queryKey: ["bac-rows", an, materie, sesiune, profil, q],
     queryFn: () =>
       listSubiecteBac({
@@ -62,13 +77,13 @@ function Page() {
           profil: profil || null,
           q: q || null,
         },
-      }),
+      }) as unknown as Promise<Row[]>,
     initialData: initial.rows,
   });
 
   const grupate = useMemo(() => {
     const map = new Map<string, Row[]>();
-    rows.forEach((r) => {
+    rows.forEach((r: Row) => {
       const key = `${r.year}|${r.session}|${r.subject_slug}|${r.profil ?? ""}|${r.variant ?? ""}`;
       const list = map.get(key) ?? [];
       list.push(r);
