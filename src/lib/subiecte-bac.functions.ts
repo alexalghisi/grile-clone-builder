@@ -146,3 +146,128 @@ export const adminDeleteSubiectBac = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
+
+// ---------- BULK IMPORT ----------
+
+const MATERII_MAP: Array<{ re: RegExp; name: string; slug: string }> = [
+  { re: /e[_\-\s]?a[_\-\s]|limba[_\-\s]?(si[_\-\s]?literatura[_\-\s]?)?romana|romana/i, name: "Limba și literatura română", slug: "romana" },
+  { re: /matemati[ck]a?[_\-\s]?m[_\-\s]?mate[_\-\s]?info|m[_\-\s]?mate[_\-\s]?info|mate_info|m1\b/i, name: "Matematică M_mate-info", slug: "matematica-mate-info" },
+  { re: /matemati[ck]a?[_\-\s]?m[_\-\s]?st[_\-\s]?nat|m[_\-\s]?st[_\-\s]?nat|m2\b/i, name: "Matematică M_șt-nat", slug: "matematica-st-nat" },
+  { re: /matemati[ck]a?[_\-\s]?m[_\-\s]?tehnologic|m[_\-\s]?tehnologic|m3\b/i, name: "Matematică M_tehnologic", slug: "matematica-tehnologic" },
+  { re: /matemati[ck]a?[_\-\s]?m[_\-\s]?pedagogic|m[_\-\s]?pedagogic/i, name: "Matematică M_pedagogic", slug: "matematica-pedagogic" },
+  { re: /matemati[ck]/i, name: "Matematică", slug: "matematica" },
+  { re: /istorie/i, name: "Istorie", slug: "istorie" },
+  { re: /geografie/i, name: "Geografie", slug: "geografie" },
+  { re: /biologie[_\-\s]?vegetala?[_\-\s]?animala?|bio[_\-\s]?veg/i, name: "Biologie vegetală și animală", slug: "biologie-vegetala-animala" },
+  { re: /anatomie|biologie[_\-\s]?(11|12)|biologie/i, name: "Biologie (Anatomie)", slug: "biologie-anatomie" },
+  { re: /fizica/i, name: "Fizică", slug: "fizica" },
+  { re: /chimie[_\-\s]?organica/i, name: "Chimie organică", slug: "chimie-organica" },
+  { re: /chimie[_\-\s]?anorganica|chimie/i, name: "Chimie anorganică", slug: "chimie-anorganica" },
+  { re: /informatica[_\-\s]?c\+\+|c_?\+\+|cpp|informatica/i, name: "Informatică (C/C++)", slug: "informatica" },
+  { re: /logica|filosofie|economie|psihologie|sociologie/i, name: "Socio-umane", slug: "socio-umane" },
+  { re: /engleza|franceza|germana|spaniola|italiana|maghiara|rusa|portugheza/i, name: "Limbă modernă", slug: "limba-moderna" },
+];
+
+function detectFromText(text: string) {
+  const t = decodeURIComponent(text);
+  const lower = t.toLowerCase();
+  // year
+  const yearMatch = lower.match(/(20[12]\d)/);
+  const year = yearMatch ? Number(yearMatch[1]) : null;
+  // session
+  let session: string | null = null;
+  if (/simulare/.test(lower)) session = "simulare";
+  else if (/(august|septembrie|toamna)/.test(lower)) session = "august-septembrie";
+  else if (/(rezerva|rezerv[ăa])/.test(lower)) session = "rezerva";
+  else if (/(iunie|iulie|vara|sesiune[_\-\s]?i)/.test(lower)) session = "iunie-iulie";
+  // type
+  const paperType = /(barem|baremul|raspunsuri|rezolvari)/.test(lower) ? "barem" : "subiect";
+  // variant
+  const varMatch = lower.match(/(?:var|varianta|model)[_\-\s]*([0-9]{1,2}|model)/);
+  const variant = varMatch ? varMatch[1] : null;
+  // profil
+  let profil: string | null = null;
+  if (/mate[_\-\s]?info/.test(lower)) profil = "mate-info";
+  else if (/st[_\-\s]?nat|stiinte[_\-\s]?ale[_\-\s]?naturii/.test(lower)) profil = "științe ale naturii";
+  else if (/uman/.test(lower)) profil = "uman";
+  else if (/real/.test(lower)) profil = "real";
+  else if (/tehnologic/.test(lower)) profil = "tehnologic";
+  else if (/pedagogic/.test(lower)) profil = "pedagogic";
+  // materie
+  const m = MATERII_MAP.find((x) => x.re.test(lower));
+  const subject = m ? { name: m.name, slug: m.slug } : null;
+  return { year, session, paperType, variant, profil, subject };
+}
+
+const BulkInput = z.object({
+  urls: z.array(z.string().url().max(2000)).min(1).max(200),
+  rehost: z.boolean().optional().default(true),
+  defaultYear: z.number().int().min(2000).max(2030).optional().nullable(),
+  defaultSession: z.enum(SESIUNI).optional().nullable(),
+});
+
+export const adminBulkImportBac = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((i) => BulkInput.parse(i))
+  .handler(async ({ data, context }) => {
+    await assertAdmin(context.userId);
+    const results: Array<{ url: string; ok: boolean; message: string; id?: string }> = [];
+    for (const url of data.urls) {
+      try {
+        const filename = decodeURIComponent(url.split("?")[0].split("/").pop() || "subiect.pdf");
+        const det = detectFromText(filename + " " + url);
+        const year = det.year ?? data.defaultYear ?? null;
+        const session = det.session ?? data.defaultSession ?? null;
+        if (!year) throw new Error("An nedetectat");
+        if (!session) throw new Error("Sesiune nedetectată");
+        if (!det.subject) throw new Error("Materie nedetectată");
+
+        let pdf_url: string = url;
+        let storage_path: string | null = null;
+        if (data.rehost) {
+          const res = await fetch(url, { headers: { "user-agent": "Mozilla/5.0 GrileAdmitereBot/1.0" } });
+          if (!res.ok) throw new Error(`Download ${res.status}`);
+          const ct = res.headers.get("content-type") || "";
+          if (!ct.includes("pdf") && !filename.toLowerCase().endsWith(".pdf")) throw new Error("Nu e PDF");
+          const buf = Buffer.from(await res.arrayBuffer());
+          if (buf.length > 25_000_000) throw new Error("PDF >25MB");
+          const safe = filename.replace(/[^a-zA-Z0-9._-]/g, "_");
+          const path = `${year}/${det.subject.slug}/${Date.now()}-${safe}`;
+          const up = await supabaseAdmin.storage.from("bac-subiecte").upload(path, buf, {
+            contentType: "application/pdf", upsert: false,
+          });
+          if (up.error) throw new Error(up.error.message);
+          const { data: pub } = supabaseAdmin.storage.from("bac-subiecte").getPublicUrl(path);
+          pdf_url = pub.publicUrl;
+          storage_path = path;
+        }
+
+        const sesLabel = SESIUNI_LABELS[session] ?? session;
+        const title = `BAC ${det.subject.name} — ${sesLabel} ${year}${det.profil ? " · " + det.profil : ""}${det.variant ? " · varianta " + det.variant : ""} (${det.paperType === "barem" ? "barem" : "subiect oficial"})`;
+        const baseSlug = slugify(`${det.subject.slug}-${year}-${session}-${det.paperType}${det.profil ? "-" + det.profil : ""}${det.variant ? "-v" + det.variant : ""}`);
+        let slug = baseSlug;
+        for (let i = 2; i < 50; i++) {
+          const { data: exists } = await supabaseAdmin.from("bac_papers").select("id").eq("slug", slug).maybeSingle();
+          if (!exists) break;
+          slug = `${baseSlug}-${i}`;
+        }
+        const { data: row, error } = await supabaseAdmin.from("bac_papers").insert({
+          year, session, subject_slug: det.subject.slug, subject_name: det.subject.name,
+          profil: det.profil, paper_type: det.paperType, title, slug,
+          pdf_url, storage_path, source_url: url, variant: det.variant, description: null,
+        }).select("id").single();
+        if (error) throw new Error(error.message);
+        results.push({ url, ok: true, message: `${det.subject.name} ${year} ${session} ${det.paperType}`, id: row.id });
+      } catch (e: any) {
+        results.push({ url, ok: false, message: e?.message || "Eroare" });
+      }
+    }
+    return { results, ok: results.filter(r => r.ok).length, fail: results.filter(r => !r.ok).length };
+  });
+
+const SESIUNI_LABELS: Record<string, string> = {
+  "simulare": "Simulare",
+  "iunie-iulie": "Iunie–Iulie",
+  "august-septembrie": "August–Septembrie",
+  "rezerva": "Sesiunea de rezervă",
+};
