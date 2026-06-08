@@ -18,6 +18,7 @@ import {
   adminDeleteSubiectBac,
   adminUploadBacPdf,
   listSubiecteBac,
+  adminBulkImportBac,
 } from "@/lib/subiecte-bac.functions";
 
 export const Route = createFileRoute("/admin/subiecte-bac")({
@@ -58,6 +59,7 @@ function Page() {
   const createFn = useServerFn(adminCreateSubiectBac);
   const uploadFn = useServerFn(adminUploadBacPdf);
   const deleteFn = useServerFn(adminDeleteSubiectBac);
+  const bulkFn = useServerFn(adminBulkImportBac);
 
   const { data: rows = [] } = useQuery({
     enabled: ready,
@@ -133,6 +135,33 @@ function Page() {
       qc.invalidateQueries({ queryKey: ["bac-filters"] });
       qc.invalidateQueries({ queryKey: ["bac-rows"] });
     } catch (e: any) { toast.error(e.message); }
+  };
+
+  const [bulkUrls, setBulkUrls] = useState("");
+  const [bulkRehost, setBulkRehost] = useState(true);
+  const [bulkYear, setBulkYear] = useState<string>("");
+  const [bulkSession, setBulkSession] = useState<string>("");
+  const [bulkBusy, setBulkBusy] = useState(false);
+  const [bulkResults, setBulkResults] = useState<Array<{ url: string; ok: boolean; message: string }>>([]);
+
+  const handleBulk = async () => {
+    const urls = bulkUrls.split(/\s+/).map((s) => s.trim()).filter((s) => /^https?:\/\//.test(s));
+    if (urls.length === 0) { toast.error("Lipsesc URL-uri valide"); return; }
+    setBulkBusy(true); setBulkResults([]);
+    try {
+      const res: any = await bulkFn({ data: {
+        urls, rehost: bulkRehost,
+        defaultYear: bulkYear ? Number(bulkYear) : null,
+        defaultSession: (bulkSession || null) as any,
+      } });
+      setBulkResults(res.results);
+      toast.success(`Import: ${res.ok} OK · ${res.fail} eșuate`);
+      qc.invalidateQueries({ queryKey: ["admin-bac-rows"] });
+      qc.invalidateQueries({ queryKey: ["bac-filters"] });
+      qc.invalidateQueries({ queryKey: ["bac-rows"] });
+    } catch (e: any) {
+      toast.error(e.message || "Import eșuat");
+    } finally { setBulkBusy(false); }
   };
 
   if (!ready) return null;
