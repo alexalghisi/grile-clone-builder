@@ -18,6 +18,7 @@ import {
   adminDeleteSubiectBac,
   adminUploadBacPdf,
   listSubiecteBac,
+  adminBulkImportBac,
 } from "@/lib/subiecte-bac.functions";
 
 export const Route = createFileRoute("/admin/subiecte-bac")({
@@ -58,6 +59,7 @@ function Page() {
   const createFn = useServerFn(adminCreateSubiectBac);
   const uploadFn = useServerFn(adminUploadBacPdf);
   const deleteFn = useServerFn(adminDeleteSubiectBac);
+  const bulkFn = useServerFn(adminBulkImportBac);
 
   const { data: rows = [] } = useQuery({
     enabled: ready,
@@ -135,6 +137,33 @@ function Page() {
     } catch (e: any) { toast.error(e.message); }
   };
 
+  const [bulkUrls, setBulkUrls] = useState("");
+  const [bulkRehost, setBulkRehost] = useState(true);
+  const [bulkYear, setBulkYear] = useState<string>("");
+  const [bulkSession, setBulkSession] = useState<string>("");
+  const [bulkBusy, setBulkBusy] = useState(false);
+  const [bulkResults, setBulkResults] = useState<Array<{ url: string; ok: boolean; message: string }>>([]);
+
+  const handleBulk = async () => {
+    const urls = bulkUrls.split(/\s+/).map((s) => s.trim()).filter((s) => /^https?:\/\//.test(s));
+    if (urls.length === 0) { toast.error("Lipsesc URL-uri valide"); return; }
+    setBulkBusy(true); setBulkResults([]);
+    try {
+      const res: any = await bulkFn({ data: {
+        urls, rehost: bulkRehost,
+        defaultYear: bulkYear ? Number(bulkYear) : null,
+        defaultSession: (bulkSession || null) as any,
+      } });
+      setBulkResults(res.results);
+      toast.success(`Import: ${res.ok} OK · ${res.fail} eșuate`);
+      qc.invalidateQueries({ queryKey: ["admin-bac-rows"] });
+      qc.invalidateQueries({ queryKey: ["bac-filters"] });
+      qc.invalidateQueries({ queryKey: ["bac-rows"] });
+    } catch (e: any) {
+      toast.error(e.message || "Import eșuat");
+    } finally { setBulkBusy(false); }
+  };
+
   if (!ready) return null;
 
   return (
@@ -208,6 +237,60 @@ function Page() {
             </Button>
             {uploading && <span className="text-sm text-muted-foreground"><Upload className="inline h-3 w-3 animate-pulse" /> Se încarcă PDF-ul…</span>}
           </div>
+        </Card>
+
+        <Card className="mt-6 p-5">
+          <h2 className="text-lg font-semibold">Import în masă (URL-uri)</h2>
+          <p className="text-sm text-muted-foreground">Lipește mai multe URL-uri oficiale (subiecte.edu.ro, variante.edu.ro, mateinfo.ro etc.) — câte unul pe linie. Sistemul detectează automat materia, anul, sesiunea, varianta și tipul (subiect/barem), descarcă PDF-ul și îl rehostează la noi pentru SEO și monetizare.</p>
+          <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div className="md:col-span-3">
+              <Label>URL-uri PDF (unul pe linie)</Label>
+              <Textarea value={bulkUrls} onChange={(e) => setBulkUrls(e.target.value)} rows={8}
+                placeholder={"https://subiecte.edu.ro/2024/bacalaureat/.../E_c_matematica_M_mate-info_2024_var_01_LRO.pdf\nhttps://subiecte.edu.ro/2024/bacalaureat/.../E_c_matematica_M_mate-info_2024_var_01_LRO_bar.pdf"} />
+            </div>
+            <div>
+              <Label>An implicit (dacă lipsește din URL)</Label>
+              <Select value={bulkYear || "__none"} onValueChange={(v) => setBulkYear(v === "__none" ? "" : v)}>
+                <SelectTrigger><SelectValue placeholder="Detectează din URL" /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="__none">Detectează din URL</SelectItem>
+                  {ANI.map((y) => <SelectItem key={y} value={String(y)}>{y}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            <div>
+              <Label>Sesiune implicită</Label>
+              <Select value={bulkSession || "__none"} onValueChange={(v) => setBulkSession(v === "__none" ? "" : v)}>
+                <SelectTrigger><SelectValue placeholder="Detectează din URL" /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="__none">Detectează din URL</SelectItem>
+                  {SESIUNI.map((s) => <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex items-end">
+              <label className="flex items-center gap-2 text-sm">
+                <input type="checkbox" checked={bulkRehost} onChange={(e) => setBulkRehost(e.target.checked)} />
+                Rehost PDF la noi (recomandat)
+              </label>
+            </div>
+          </div>
+          <div className="mt-4 flex gap-2">
+            <Button onClick={handleBulk} disabled={bulkBusy}>
+              <Upload className="mr-1 h-4 w-4" />{bulkBusy ? "Se importă…" : "Importă"}
+            </Button>
+          </div>
+          {bulkResults.length > 0 && (
+            <div className="mt-4 max-h-80 overflow-auto rounded border text-xs">
+              {bulkResults.map((r, i) => (
+                <div key={i} className={`flex gap-2 border-b p-2 ${r.ok ? "" : "bg-destructive/10"}`}>
+                  <span className={r.ok ? "text-green-600" : "text-destructive"}>{r.ok ? "OK" : "ERR"}</span>
+                  <span className="truncate">{r.message}</span>
+                  <span className="ml-auto truncate text-muted-foreground max-w-md">{r.url}</span>
+                </div>
+              ))}
+            </div>
+          )}
         </Card>
 
         <Card className="mt-6 p-5">
