@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { Header } from "@/components/Header";
@@ -18,16 +19,77 @@ const SESIUNI = [
 ];
 
 export const Route = createFileRoute("/subiecte-bac")({
-  head: () => ({
-    meta: [
-      { title: "Subiecte Bacalaureat 2010–2026 — Arhivă oficială PDF" },
-      { name: "description", content: "Arhivă cu subiecte și bareme oficiale de Bacalaureat 2010–2026, pentru toate materiile și sesiunile. Caută, filtrează, descarcă PDF." },
-      { property: "og:title", content: "Subiecte Bacalaureat 2010–2026 — Arhivă oficială PDF" },
-      { property: "og:description", content: "Subiecte și bareme BAC 2010–2026, toate materiile și sesiunile. Filtre după an, materie, sesiune și profil." },
-      { property: "og:url", content: "https://grileadmitere.ro/subiecte-bac" },
-    ],
-    links: [{ rel: "canonical", href: "https://grileadmitere.ro/subiecte-bac" }],
-  }),
+  head: () => {
+    const title = "Subiecte Bacalaureat 2010–2026 — Arhivă Oficială PDF (Subiecte + Bareme)";
+    const description = "Subiecte și bareme Bacalaureat 2010–2026 — Română, Matematică M1/M2/M3, Istorie, Biologie, Fizică, Chimie, Geografie, Informatică, Socio-umane. Simulare, iunie–iulie, august–septembrie, rezervă. PDF oficial, gratuit.";
+    const url = "https://grileadmitere.ro/subiecte-bac";
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { name: "keywords", content: "subiecte bac, subiecte bacalaureat 2026, bareme bacalaureat, subiecte bac romana, subiecte bac matematica, subiecte bac istorie, subiecte bac biologie, subiecte bac fizica, subiecte bac chimie, subiecte bac geografie, subiecte bac informatica, simulare bac, subiecte edu ro, variante bac PDF" },
+        { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
+        { name: "author", content: "GrileAdmitere.ro" },
+        { httpEquiv: "Content-Language", content: "ro-RO" },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:url", content: url },
+        { property: "og:type", content: "website" },
+        { property: "og:locale", content: "ro_RO" },
+        { property: "og:site_name", content: "GrileAdmitere.ro" },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              { "@type": "ListItem", position: 1, name: "Acasă", item: "https://grileadmitere.ro/" },
+              { "@type": "ListItem", position: 2, name: "Subiecte Bacalaureat", item: url },
+            ],
+          }),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            name: title,
+            description,
+            url,
+            inLanguage: "ro-RO",
+            isPartOf: { "@type": "WebSite", name: "GrileAdmitere.ro", url: "https://grileadmitere.ro" },
+            about: [
+              "Bacalaureat România", "Subiecte BAC", "Bareme BAC",
+              "Simulare Bacalaureat", "Variante Bacalaureat",
+            ],
+          }),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              { "@type": "Question", name: "Unde găsesc subiectele oficiale de Bacalaureat?",
+                acceptedAnswer: { "@type": "Answer", text: "Pe această pagină găsești arhiva subiectelor oficiale BAC 2010–2026, descărcate de pe subiecte.edu.ro și variante.edu.ro, cu PDF de subiect și barem pentru fiecare sesiune." } },
+              { "@type": "Question", name: "Ce materii sunt acoperite?",
+                acceptedAnswer: { "@type": "Answer", text: "Toate materiile de Bacalaureat: Limba Română, Matematică (M1 Mate-Info, M2 Științe ale Naturii, M3 Pedagogic/Tehnologic), Istorie, Biologie, Fizică, Chimie, Geografie, Informatică, Socio-umane și limbi moderne." } },
+              { "@type": "Question", name: "Ce sesiuni sunt incluse?",
+                acceptedAnswer: { "@type": "Answer", text: "Simulare, sesiunea iunie–iulie, sesiunea august–septembrie și sesiunea de rezervă, pentru fiecare an din 2010 până în 2026." } },
+              { "@type": "Question", name: "Sunt gratuite subiectele și baremele?",
+                acceptedAnswer: { "@type": "Answer", text: "Da. Toate PDF-urile sunt gratuite și pot fi descărcate sau vizualizate direct în browser." } },
+            ],
+          }),
+        },
+      ],
+    };
+  },
   loader: async () => ({
     filters: await getSubiecteBacFilters(),
     rows: await listSubiecteBac({ data: {} }),
@@ -105,6 +167,11 @@ function Page() {
           <p className="mt-3 text-muted-foreground">
             Arhivă cu subiecte și bareme oficiale de Bacalaureat pentru toate materiile și sesiunile (simulare, iunie–iulie, august–septembrie, rezervă). Filtrează după an, materie, sesiune sau profil și descarcă PDF-ul oficial.
           </p>
+          <nav aria-label="Breadcrumb" className="mt-3 text-xs text-muted-foreground">
+            <Link to="/" className="hover:underline">Acasă</Link>
+            <span className="mx-1">/</span>
+            <span>Subiecte Bacalaureat</span>
+          </nav>
         </div>
 
         <Card className="mt-6 p-4 md:p-5">
@@ -148,6 +215,52 @@ function Page() {
             </div>
           )}
         </div>
+
+        {filtersData.materii.length > 0 && (
+          <section className="mt-12">
+            <h2 className="text-xl font-semibold">Subiecte BAC pe materii</h2>
+            <p className="mt-1 text-sm text-muted-foreground">Vezi toate subiectele și baremele pentru fiecare materie de Bacalaureat.</p>
+            <ul className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
+              {filtersData.materii.map((m) => (
+                <li key={m.slug}>
+                  <Link to="/subiecte-bac" search={{}} className="block rounded-md border bg-card px-3 py-2 text-sm transition hover:border-primary/40 hover:text-primary"
+                    onClick={(e) => { e.preventDefault(); setMaterie(m.slug); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
+                    Subiecte BAC {m.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {filtersData.years.length > 0 && (
+          <section className="mt-10">
+            <h2 className="text-xl font-semibold">Subiecte BAC pe ani</h2>
+            <p className="mt-1 text-sm text-muted-foreground">Arhivă subiecte Bacalaureat pe ani, din 2010 până în 2026.</p>
+            <ul className="mt-4 flex flex-wrap gap-2">
+              {filtersData.years.map((y) => (
+                <li key={y}>
+                  <button type="button" onClick={() => { setAn(String(y)); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                    className="rounded-md border bg-card px-3 py-1.5 text-sm transition hover:border-primary/40 hover:text-primary">
+                    Subiecte BAC {y}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        <section className="mt-12 max-w-3xl text-sm text-muted-foreground space-y-3">
+          <h2 className="text-xl font-semibold text-foreground">Despre arhiva de subiecte Bacalaureat</h2>
+          <p>GrileAdmitere.ro centralizează <strong>toate subiectele oficiale de Bacalaureat</strong> publicate de Ministerul Educației pe subiecte.edu.ro și variante.edu.ro, din 2010 până la sesiunea 2026. Pentru fiecare probă scrisă găsești atât subiectul, cât și baremul de corectare în format PDF.</p>
+          <p>Filtrele de mai sus te ajută să găsești rapid <strong>subiectele BAC la Română, Matematică (M1, M2, M3), Istorie, Biologie, Fizică, Chimie, Geografie, Informatică</strong> și Socio-umane, pentru orice sesiune: simulare, iunie–iulie, august–septembrie sau rezervă.</p>
+          <p>Pregătirea pentru examenul de Bacalaureat este mult mai eficientă dacă rezolvi subiecte reale din anii precedenți. Folosește arhiva pentru a exersa modelele clasice, a învăța din bareme și a-ți antrena ritmul de lucru pe varianta oficială.</p>
+
+          <h3 className="text-base font-semibold text-foreground pt-2">Întrebări frecvente</h3>
+          <details className="rounded-md border bg-card p-3"><summary className="cursor-pointer font-medium text-foreground">Sunt subiectele oficiale?</summary><p className="mt-2">Da, toate PDF-urile provin din sursele oficiale (subiecte.edu.ro / variante.edu.ro) și sunt rehostate pentru viteză și disponibilitate.</p></details>
+          <details className="rounded-md border bg-card p-3"><summary className="cursor-pointer font-medium text-foreground">Pot descărca PDF-urile?</summary><p className="mt-2">Da, fiecare subiect și barem are buton de descărcare directă.</p></details>
+          <details className="rounded-md border bg-card p-3"><summary className="cursor-pointer font-medium text-foreground">Există și simulările județene?</summary><p className="mt-2">Da, sesiunea „Simulare” include simulările naționale și județene atunci când sunt publicate oficial.</p></details>
+        </section>
       </main>
     </div>
   );
