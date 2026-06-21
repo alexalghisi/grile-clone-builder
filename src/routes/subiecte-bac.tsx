@@ -236,6 +236,8 @@ function Page() {
           </section>
         )}
 
+        <AdInArticle />
+
         {filtersData.years.length > 0 && (
           <section className="mt-10">
             <h2 className="text-xl font-semibold">Subiecte BAC pe ani</h2>
