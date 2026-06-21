@@ -16,6 +16,7 @@ import { UpgradeModal } from "@/components/UpgradeModal";
 import { StripeEmbeddedCheckout } from "@/components/StripeEmbeddedCheckout";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Sparkles } from "lucide-react";
+import { AdInArticle } from "@/components/AdSlot";
 
 export const Route = createFileRoute("/simulare/$slug")({
   head: ({ params }) => {
@@ -264,6 +265,7 @@ function Page() {
             <Progress value={pct} className="mb-2" />
             <p className="text-sm text-muted-foreground">{pct}%</p>
           </Card>
+          <AdInArticle />
           <div className="mt-6 space-y-2">
             {questions.map((q, i) => {
               const ok = answers[q.id] === q.correct_index;
