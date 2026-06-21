@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Header } from "@/components/Header";
 import { Card } from "@/components/ui/card";
 import { getAdmitereSubject } from "@/lib/admitere.functions";
+import { AdInArticle } from "@/components/AdSlot";
 
 export const Route = createFileRoute("/admitere/$uniSlug/$materieSlug")({
   head: ({ params }) => {
@@ -41,6 +42,7 @@ function Page() {
           <span className="mx-1">/</span><span>{params.materieSlug}</span>
         </nav>
         <h1 className="mt-2 text-3xl font-bold">Subiecte Admitere {data?.subject_name ?? params.materieSlug} {data?.university_name ?? params.uniSlug.toUpperCase()} — Toți Anii</h1>
+        <AdInArticle />
         {!data ? (
           <p className="mt-6 text-muted-foreground">Nu există subiecte încărcate pentru această combinație încă.</p>
         ) : (
