@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen } from "lucide-react";
 import { getAdmitereUniversity } from "@/lib/admitere.functions";
+import { AdLeaderboard, AdInArticle } from "@/components/AdSlot";
 
 export const Route = createFileRoute("/admitere/$uniSlug")({
   head: ({ params }) => {
@@ -98,6 +99,8 @@ function Page() {
           Arhivă cu subiecte oficiale de admitere {data.name} pe materii și ani. Descarcă PDF, vezi baremul și exersează grilele cu explicații.
         </p>
 
+        <AdLeaderboard className="my-6" />
+
         <h2 className="mt-8 mb-3 text-lg font-semibold">Materii disponibile</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {data.subjects.map((s: any) => (
@@ -117,6 +120,8 @@ function Page() {
             </Link>
           ))}
         </div>
+
+        <AdInArticle />
 
         <section className="mt-12 max-w-3xl space-y-3 text-sm text-muted-foreground">
           <h2 className="text-xl font-semibold text-foreground">Pregătire admitere {data.name}</h2>
