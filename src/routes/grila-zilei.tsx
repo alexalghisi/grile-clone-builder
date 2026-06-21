@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CalendarDays, CheckCircle2, XCircle } from "lucide-react";
+import { AdInArticle } from "@/components/AdSlot";
 
 export const Route = createFileRoute("/grila-zilei")({
   head: () => ({
@@ -73,6 +74,8 @@ function Page() {
             )}
           </Card>
         )}
+
+        {picked !== null && <AdInArticle />}
 
         <div className="mt-8 text-center">
           <Link to="/subiecte-admitere"><Button variant="outline">Subiecte Admitere</Button></Link>
