@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const PUB_ID = "ca-pub-4079300108937036";
 const SMARTLINK_URL = "https://www.profitablecpmratenetwork.com/rb3h7gyjnd?key=3640d7c71ce0ba1cecb15ee392442c42";
@@ -32,6 +32,29 @@ export function AdSlot({ slot, format = "auto", className = "" }: { slot?: strin
       data-ad-format={format}
       data-full-width-responsive="true"
     />
+  );
+}
+
+/** AdSense "in-article" — native-looking, low-friction in-content ad. */
+export function AdInArticle({ slot, className = "" }: { slot?: string; className?: string }) {
+  useEffect(() => {
+    try {
+      // @ts-ignore
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    } catch {}
+  }, []);
+  return (
+    <div className={`my-6 ${className}`}>
+      <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1 text-center">Reclamă</div>
+      <ins
+        className="adsbygoogle block"
+        style={{ display: "block", textAlign: "center" }}
+        data-ad-layout="in-article"
+        data-ad-format="fluid"
+        data-ad-client={PUB_ID}
+        data-ad-slot={slot ?? "0000000000"}
+      />
+    </div>
   );
 }
 
@@ -83,10 +106,20 @@ export function AdMobileBanner({ className = "" }: { className?: string }) {
 
 /** Sticky bottom bar — 320x50 mobile + 728x90 desktop. Highest-RPM placement. */
 export function StickyBottomAd() {
+  const [closed, setClosed] = useState(false);
+  if (closed) return null;
   return (
     <div className="fixed inset-x-0 bottom-0 z-50 border-t border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 shadow-lg">
       <div className="relative mx-auto flex items-center justify-center py-1">
         <span className="absolute left-2 top-1 text-[9px] uppercase tracking-wider text-muted-foreground">Reclamă</span>
+        <button
+          type="button"
+          aria-label="Închide reclama"
+          onClick={() => setClosed(true)}
+          className="absolute right-2 top-1 text-[11px] leading-none text-muted-foreground hover:text-foreground rounded px-1"
+        >
+          ✕
+        </button>
         <div className="md:hidden"><AdsterraBanner adKey="1d52bf344109233191b521892428281b" width={320} height={50} /></div>
         <div className="hidden md:block"><AdsterraBanner adKey="abd8df0c76ef871bb2f3a6bdfda2a972" width={728} height={90} /></div>
       </div>
