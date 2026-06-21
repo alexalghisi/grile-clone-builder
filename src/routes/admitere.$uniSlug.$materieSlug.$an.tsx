@@ -4,6 +4,7 @@ import { Header } from "@/components/Header";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { getAdmitereYear } from "@/lib/admitere.functions";
+import { AdLeaderboard, AdInArticle } from "@/components/AdSlot";
 
 export const Route = createFileRoute("/admitere/$uniSlug/$materieSlug/$an")({
   head: ({ params }) => {
@@ -96,6 +97,8 @@ function Page() {
           pregătirea admiterii și exersează apoi grilele rezolvate de pe platformă.
         </p>
 
+        <AdLeaderboard className="my-6" />
+
         {!data ? (
           <p className="mt-6 text-muted-foreground">Subiectele pentru acest an nu sunt încă disponibile.</p>
         ) : (
@@ -129,6 +132,8 @@ function Page() {
                 <Link to="/grile" className="underline">grilele interactive</Link>.
               </p>
             </section>
+
+            <AdInArticle />
 
             <section className="mt-8">
               <h2 className="text-xl font-semibold">Navighează între ani</h2>

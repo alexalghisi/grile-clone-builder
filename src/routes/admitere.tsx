@@ -5,6 +5,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { GraduationCap, FileText } from "lucide-react";
 import { listAdmitereUniversities } from "@/lib/admitere.functions";
+import { AdLeaderboard, AdInArticle } from "@/components/AdSlot";
 
 export const Route = createFileRoute("/admitere")({
   head: () => {
@@ -74,6 +75,8 @@ function Page() {
           Arhivă completă cu subiecte de admitere oficiale din 2001 până în 2026 pentru cele mai importante universități din România. Descarcă PDF cu subiecte și bareme, exersează grilele și pregătește-te pentru admitere 2026 — totul gratuit.
         </p>
 
+        <AdLeaderboard className="my-6" />
+
         {unis.length === 0 ? (
           <div className="mt-10 rounded-lg border border-dashed bg-card p-8 text-center">
             <FileText className="mx-auto h-10 w-10 text-muted-foreground" />
@@ -105,6 +108,8 @@ function Page() {
             ))}
           </div>
         )}
+
+        <AdInArticle />
 
         <section className="mt-12 max-w-3xl space-y-3 text-sm text-muted-foreground">
           <h2 className="text-xl font-semibold text-foreground">Cum folosești arhiva de subiecte admitere</h2>
