@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Download, Eye, FileText, Search, X } from "lucide-react";
 import { getSubiecteBacFilters, listSubiecteBac } from "@/lib/subiecte-bac.functions";
+import { AdLeaderboard, AdInArticle } from "@/components/AdSlot";
 
 const SESIUNI = [
   { value: "simulare", label: "Simulare" },
@@ -199,6 +200,8 @@ function Page() {
             )}
           </div>
         </Card>
+
+        <AdLeaderboard className="my-6" />
 
         <div className="mt-8">
           {rows.length === 0 ? (
