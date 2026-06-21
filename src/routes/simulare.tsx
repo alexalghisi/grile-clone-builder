@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Trophy, Clock, Lock, ArrowRight } from "lucide-react";
+import { AdLeaderboard } from "@/components/AdSlot";
 
 export const Route = createFileRoute("/simulare")({
   head: () => ({
@@ -39,6 +40,8 @@ function Page() {
             Format real: 6 variante A–F, formule matematice, figuri, cronometru. Rezolvare pas cu pas la final.
           </p>
         </div>
+
+        <AdLeaderboard className="mb-8" />
 
         {isLoading ? (
           <div className="text-center text-muted-foreground py-12">Se încarcă simulările…</div>
