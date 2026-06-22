@@ -23,6 +23,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ScoalaSoferiIndexRouteImport } from './routes/scoala-soferi.index'
 import { Route as GrileIndexRouteImport } from './routes/grile.index'
 import { Route as SimulareSlugRouteImport } from './routes/simulare.$slug'
+import { Route as ScoalaSoferiTestRouteImport } from './routes/scoala-soferi.test'
 import { Route as ScoalaSoferiCategorieRouteImport } from './routes/scoala-soferi.$categorie'
 import { Route as QuizSlugRouteImport } from './routes/quiz.$slug'
 import { Route as GrileUniSlugRouteImport } from './routes/grile.$uniSlug'
@@ -112,6 +113,11 @@ const SimulareSlugRoute = SimulareSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => SimulareRoute,
+} as any)
+const ScoalaSoferiTestRoute = ScoalaSoferiTestRouteImport.update({
+  id: '/scoala-soferi/test',
+  path: '/scoala-soferi/test',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ScoalaSoferiCategorieRoute = ScoalaSoferiCategorieRouteImport.update({
   id: '/scoala-soferi/$categorie',
@@ -236,6 +242,7 @@ export interface FileRoutesByFullPath {
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/quiz/$slug': typeof QuizSlugRoute
   '/scoala-soferi/$categorie': typeof ScoalaSoferiCategorieRoute
+  '/scoala-soferi/test': typeof ScoalaSoferiTestRoute
   '/simulare/$slug': typeof SimulareSlugRoute
   '/grile/': typeof GrileIndexRoute
   '/scoala-soferi/': typeof ScoalaSoferiIndexRoute
@@ -271,6 +278,7 @@ export interface FileRoutesByTo {
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/quiz/$slug': typeof QuizSlugRoute
   '/scoala-soferi/$categorie': typeof ScoalaSoferiCategorieRoute
+  '/scoala-soferi/test': typeof ScoalaSoferiTestRoute
   '/simulare/$slug': typeof SimulareSlugRoute
   '/grile': typeof GrileIndexRoute
   '/scoala-soferi': typeof ScoalaSoferiIndexRoute
@@ -307,6 +315,7 @@ export interface FileRoutesById {
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/quiz/$slug': typeof QuizSlugRoute
   '/scoala-soferi/$categorie': typeof ScoalaSoferiCategorieRoute
+  '/scoala-soferi/test': typeof ScoalaSoferiTestRoute
   '/simulare/$slug': typeof SimulareSlugRoute
   '/grile/': typeof GrileIndexRoute
   '/scoala-soferi/': typeof ScoalaSoferiIndexRoute
@@ -344,6 +353,7 @@ export interface FileRouteTypes {
     | '/grile/$uniSlug'
     | '/quiz/$slug'
     | '/scoala-soferi/$categorie'
+    | '/scoala-soferi/test'
     | '/simulare/$slug'
     | '/grile/'
     | '/scoala-soferi/'
@@ -379,6 +389,7 @@ export interface FileRouteTypes {
     | '/grile/$uniSlug'
     | '/quiz/$slug'
     | '/scoala-soferi/$categorie'
+    | '/scoala-soferi/test'
     | '/simulare/$slug'
     | '/grile'
     | '/scoala-soferi'
@@ -414,6 +425,7 @@ export interface FileRouteTypes {
     | '/grile/$uniSlug'
     | '/quiz/$slug'
     | '/scoala-soferi/$categorie'
+    | '/scoala-soferi/test'
     | '/simulare/$slug'
     | '/grile/'
     | '/scoala-soferi/'
@@ -449,6 +461,7 @@ export interface RootRouteChildren {
   GrileUniSlugRoute: typeof GrileUniSlugRoute
   QuizSlugRoute: typeof QuizSlugRoute
   ScoalaSoferiCategorieRoute: typeof ScoalaSoferiCategorieRoute
+  ScoalaSoferiTestRoute: typeof ScoalaSoferiTestRoute
   GrileIndexRoute: typeof GrileIndexRoute
   ScoalaSoferiIndexRoute: typeof ScoalaSoferiIndexRoute
   AdminQuestionsNewRoute: typeof AdminQuestionsNewRoute
@@ -562,6 +575,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/simulare/$slug'
       preLoaderRoute: typeof SimulareSlugRouteImport
       parentRoute: typeof SimulareRoute
+    }
+    '/scoala-soferi/test': {
+      id: '/scoala-soferi/test'
+      path: '/scoala-soferi/test'
+      fullPath: '/scoala-soferi/test'
+      preLoaderRoute: typeof ScoalaSoferiTestRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/scoala-soferi/$categorie': {
       id: '/scoala-soferi/$categorie'
@@ -767,6 +787,7 @@ const rootRouteChildren: RootRouteChildren = {
   GrileUniSlugRoute: GrileUniSlugRoute,
   QuizSlugRoute: QuizSlugRoute,
   ScoalaSoferiCategorieRoute: ScoalaSoferiCategorieRoute,
+  ScoalaSoferiTestRoute: ScoalaSoferiTestRoute,
   GrileIndexRoute: GrileIndexRoute,
   ScoalaSoferiIndexRoute: ScoalaSoferiIndexRoute,
   AdminQuestionsNewRoute: AdminQuestionsNewRoute,
