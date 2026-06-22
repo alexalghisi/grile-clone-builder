@@ -20,6 +20,7 @@ import { Route as FeedbackRouteImport } from './routes/feedback'
 import { Route as AutentificareRouteImport } from './routes/autentificare'
 import { Route as AdmitereRouteImport } from './routes/admitere'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ScoalaSoferiIndexRouteImport } from './routes/scoala-soferi.index'
 import { Route as GrileIndexRouteImport } from './routes/grile.index'
 import { Route as SimulareSlugRouteImport } from './routes/simulare.$slug'
 import { Route as QuizSlugRouteImport } from './routes/quiz.$slug'
@@ -93,6 +94,11 @@ const AdmitereRoute = AdmitereRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScoalaSoferiIndexRoute = ScoalaSoferiIndexRouteImport.update({
+  id: '/scoala-soferi/',
+  path: '/scoala-soferi/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GrileIndexRoute = GrileIndexRouteImport.update({
@@ -219,6 +225,7 @@ export interface FileRoutesByFullPath {
   '/quiz/$slug': typeof QuizSlugRoute
   '/simulare/$slug': typeof SimulareSlugRoute
   '/grile/': typeof GrileIndexRoute
+  '/scoala-soferi/': typeof ScoalaSoferiIndexRoute
   '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
@@ -251,6 +258,7 @@ export interface FileRoutesByTo {
   '/quiz/$slug': typeof QuizSlugRoute
   '/simulare/$slug': typeof SimulareSlugRoute
   '/grile': typeof GrileIndexRoute
+  '/scoala-soferi': typeof ScoalaSoferiIndexRoute
   '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
@@ -284,6 +292,7 @@ export interface FileRoutesById {
   '/quiz/$slug': typeof QuizSlugRoute
   '/simulare/$slug': typeof SimulareSlugRoute
   '/grile/': typeof GrileIndexRoute
+  '/scoala-soferi/': typeof ScoalaSoferiIndexRoute
   '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
@@ -318,6 +327,7 @@ export interface FileRouteTypes {
     | '/quiz/$slug'
     | '/simulare/$slug'
     | '/grile/'
+    | '/scoala-soferi/'
     | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
     | '/api/public/log-error'
@@ -350,6 +360,7 @@ export interface FileRouteTypes {
     | '/quiz/$slug'
     | '/simulare/$slug'
     | '/grile'
+    | '/scoala-soferi'
     | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
     | '/api/public/log-error'
@@ -382,6 +393,7 @@ export interface FileRouteTypes {
     | '/quiz/$slug'
     | '/simulare/$slug'
     | '/grile/'
+    | '/scoala-soferi/'
     | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
     | '/api/public/log-error'
@@ -413,6 +425,7 @@ export interface RootRouteChildren {
   GrileUniSlugRoute: typeof GrileUniSlugRoute
   QuizSlugRoute: typeof QuizSlugRoute
   GrileIndexRoute: typeof GrileIndexRoute
+  ScoalaSoferiIndexRoute: typeof ScoalaSoferiIndexRoute
   AdminQuestionsNewRoute: typeof AdminQuestionsNewRoute
   ApiPublicLogErrorRoute: typeof ApiPublicLogErrorRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
@@ -501,6 +514,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scoala-soferi/': {
+      id: '/scoala-soferi/'
+      path: '/scoala-soferi'
+      fullPath: '/scoala-soferi/'
+      preLoaderRoute: typeof ScoalaSoferiIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/grile/': {
@@ -707,6 +727,7 @@ const rootRouteChildren: RootRouteChildren = {
   GrileUniSlugRoute: GrileUniSlugRoute,
   QuizSlugRoute: QuizSlugRoute,
   GrileIndexRoute: GrileIndexRoute,
+  ScoalaSoferiIndexRoute: ScoalaSoferiIndexRoute,
   AdminQuestionsNewRoute: AdminQuestionsNewRoute,
   ApiPublicLogErrorRoute: ApiPublicLogErrorRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
