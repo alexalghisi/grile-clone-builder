@@ -5,7 +5,7 @@ import {
   DRIVING_QUESTIONS,
   DRIVING_CATEGORIES,
   DRIVING_CHAPTERS,
-  type DrivingCategory,
+  type DrivingQuestion,
 } from "@/lib/scoala-soferi/questions";
 
 function findCategory(slug: string) {
@@ -16,7 +16,7 @@ export const Route = createFileRoute("/scoala-soferi/$categorie")({
   loader: ({ params }) => {
     const cat = findCategory(params.categorie);
     if (!cat) throw notFound();
-    const qs = DRIVING_QUESTIONS.filter((q) => q.category === cat.code);
+    const qs: DrivingQuestion[] = DRIVING_QUESTIONS.filter((q) => q.category === cat.code);
     return { cat, qs };
   },
   head: ({ params }) => {
@@ -86,7 +86,7 @@ function CategoryPage() {
   const { cat, qs } = Route.useLoaderData();
   const byChapter = DRIVING_CHAPTERS.map((ch) => ({
     ...ch,
-    items: qs.filter((q) => q.chapter === ch.code),
+    items: qs.filter((q: DrivingQuestion) => q.chapter === ch.code),
   })).filter((g) => g.items.length > 0);
 
   return (
@@ -124,7 +124,7 @@ function CategoryPage() {
             <h2 className="text-2xl font-bold mb-3">{g.name}</h2>
             <p className="text-sm text-muted-foreground mb-4">{g.desc}</p>
             <ol className="space-y-3">
-              {g.items.map((q, i) => (
+              {g.items.map((q: DrivingQuestion, i: number) => (
                 <li key={q.id} className="rounded-lg border border-border p-4">
                   <Link
                     to="/scoala-soferi/grila/$slug"
