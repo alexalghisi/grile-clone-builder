@@ -20,14 +20,18 @@ import { Route as FeedbackRouteImport } from './routes/feedback'
 import { Route as AutentificareRouteImport } from './routes/autentificare'
 import { Route as AdmitereRouteImport } from './routes/admitere'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ScoalaSoferiIndexRouteImport } from './routes/scoala-soferi.index'
 import { Route as GrileIndexRouteImport } from './routes/grile.index'
 import { Route as SimulareSlugRouteImport } from './routes/simulare.$slug'
+import { Route as ScoalaSoferiTestRouteImport } from './routes/scoala-soferi.test'
+import { Route as ScoalaSoferiCategorieRouteImport } from './routes/scoala-soferi.$categorie'
 import { Route as QuizSlugRouteImport } from './routes/quiz.$slug'
 import { Route as GrileUniSlugRouteImport } from './routes/grile.$uniSlug'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as AdmitereUniSlugRouteImport } from './routes/admitere.$uniSlug'
 import { Route as AdminSubiecteBacRouteImport } from './routes/admin.subiecte-bac'
 import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
+import { Route as ScoalaSoferiGrilaSlugRouteImport } from './routes/scoala-soferi.grila.$slug'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicLogErrorRouteImport } from './routes/api/public/log-error'
 import { Route as AdmitereUniSlugMaterieSlugRouteImport } from './routes/admitere.$uniSlug.$materieSlug'
@@ -95,6 +99,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScoalaSoferiIndexRoute = ScoalaSoferiIndexRouteImport.update({
+  id: '/scoala-soferi/',
+  path: '/scoala-soferi/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GrileIndexRoute = GrileIndexRouteImport.update({
   id: '/grile/',
   path: '/grile/',
@@ -104,6 +113,16 @@ const SimulareSlugRoute = SimulareSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => SimulareRoute,
+} as any)
+const ScoalaSoferiTestRoute = ScoalaSoferiTestRouteImport.update({
+  id: '/scoala-soferi/test',
+  path: '/scoala-soferi/test',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScoalaSoferiCategorieRoute = ScoalaSoferiCategorieRouteImport.update({
+  id: '/scoala-soferi/$categorie',
+  path: '/scoala-soferi/$categorie',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const QuizSlugRoute = QuizSlugRouteImport.update({
   id: '/quiz/$slug',
@@ -133,6 +152,11 @@ const AdminSubiecteBacRoute = AdminSubiecteBacRouteImport.update({
 const AdminLeadsRoute = AdminLeadsRouteImport.update({
   id: '/admin/leads',
   path: '/admin/leads',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScoalaSoferiGrilaSlugRoute = ScoalaSoferiGrilaSlugRouteImport.update({
+  id: '/scoala-soferi/grila/$slug',
+  path: '/scoala-soferi/grila/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
@@ -217,12 +241,16 @@ export interface FileRoutesByFullPath {
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/quiz/$slug': typeof QuizSlugRoute
+  '/scoala-soferi/$categorie': typeof ScoalaSoferiCategorieRoute
+  '/scoala-soferi/test': typeof ScoalaSoferiTestRoute
   '/simulare/$slug': typeof SimulareSlugRoute
   '/grile/': typeof GrileIndexRoute
+  '/scoala-soferi/': typeof ScoalaSoferiIndexRoute
   '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/scoala-soferi/grila/$slug': typeof ScoalaSoferiGrilaSlugRoute
   '/admitere/$uniSlug/$materieSlug/$an': typeof AdmitereUniSlugMaterieSlugAnRoute
   '/api/public/hooks/health-check': typeof ApiPublicHooksHealthCheckRoute
   '/api/public/hooks/scrape-admitere': typeof ApiPublicHooksScrapeAdmitereRoute
@@ -249,12 +277,16 @@ export interface FileRoutesByTo {
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/quiz/$slug': typeof QuizSlugRoute
+  '/scoala-soferi/$categorie': typeof ScoalaSoferiCategorieRoute
+  '/scoala-soferi/test': typeof ScoalaSoferiTestRoute
   '/simulare/$slug': typeof SimulareSlugRoute
   '/grile': typeof GrileIndexRoute
+  '/scoala-soferi': typeof ScoalaSoferiIndexRoute
   '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/scoala-soferi/grila/$slug': typeof ScoalaSoferiGrilaSlugRoute
   '/admitere/$uniSlug/$materieSlug/$an': typeof AdmitereUniSlugMaterieSlugAnRoute
   '/api/public/hooks/health-check': typeof ApiPublicHooksHealthCheckRoute
   '/api/public/hooks/scrape-admitere': typeof ApiPublicHooksScrapeAdmitereRoute
@@ -282,12 +314,16 @@ export interface FileRoutesById {
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/quiz/$slug': typeof QuizSlugRoute
+  '/scoala-soferi/$categorie': typeof ScoalaSoferiCategorieRoute
+  '/scoala-soferi/test': typeof ScoalaSoferiTestRoute
   '/simulare/$slug': typeof SimulareSlugRoute
   '/grile/': typeof GrileIndexRoute
+  '/scoala-soferi/': typeof ScoalaSoferiIndexRoute
   '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/scoala-soferi/grila/$slug': typeof ScoalaSoferiGrilaSlugRoute
   '/admitere/$uniSlug/$materieSlug/$an': typeof AdmitereUniSlugMaterieSlugAnRoute
   '/api/public/hooks/health-check': typeof ApiPublicHooksHealthCheckRoute
   '/api/public/hooks/scrape-admitere': typeof ApiPublicHooksScrapeAdmitereRoute
@@ -316,12 +352,16 @@ export interface FileRouteTypes {
     | '/email/unsubscribe'
     | '/grile/$uniSlug'
     | '/quiz/$slug'
+    | '/scoala-soferi/$categorie'
+    | '/scoala-soferi/test'
     | '/simulare/$slug'
     | '/grile/'
+    | '/scoala-soferi/'
     | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
     | '/api/public/log-error'
     | '/lovable/email/suppression'
+    | '/scoala-soferi/grila/$slug'
     | '/admitere/$uniSlug/$materieSlug/$an'
     | '/api/public/hooks/health-check'
     | '/api/public/hooks/scrape-admitere'
@@ -348,12 +388,16 @@ export interface FileRouteTypes {
     | '/email/unsubscribe'
     | '/grile/$uniSlug'
     | '/quiz/$slug'
+    | '/scoala-soferi/$categorie'
+    | '/scoala-soferi/test'
     | '/simulare/$slug'
     | '/grile'
+    | '/scoala-soferi'
     | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
     | '/api/public/log-error'
     | '/lovable/email/suppression'
+    | '/scoala-soferi/grila/$slug'
     | '/admitere/$uniSlug/$materieSlug/$an'
     | '/api/public/hooks/health-check'
     | '/api/public/hooks/scrape-admitere'
@@ -380,12 +424,16 @@ export interface FileRouteTypes {
     | '/email/unsubscribe'
     | '/grile/$uniSlug'
     | '/quiz/$slug'
+    | '/scoala-soferi/$categorie'
+    | '/scoala-soferi/test'
     | '/simulare/$slug'
     | '/grile/'
+    | '/scoala-soferi/'
     | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
     | '/api/public/log-error'
     | '/lovable/email/suppression'
+    | '/scoala-soferi/grila/$slug'
     | '/admitere/$uniSlug/$materieSlug/$an'
     | '/api/public/hooks/health-check'
     | '/api/public/hooks/scrape-admitere'
@@ -412,10 +460,14 @@ export interface RootRouteChildren {
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   GrileUniSlugRoute: typeof GrileUniSlugRoute
   QuizSlugRoute: typeof QuizSlugRoute
+  ScoalaSoferiCategorieRoute: typeof ScoalaSoferiCategorieRoute
+  ScoalaSoferiTestRoute: typeof ScoalaSoferiTestRoute
   GrileIndexRoute: typeof GrileIndexRoute
+  ScoalaSoferiIndexRoute: typeof ScoalaSoferiIndexRoute
   AdminQuestionsNewRoute: typeof AdminQuestionsNewRoute
   ApiPublicLogErrorRoute: typeof ApiPublicLogErrorRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
+  ScoalaSoferiGrilaSlugRoute: typeof ScoalaSoferiGrilaSlugRoute
   ApiPublicHooksHealthCheckRoute: typeof ApiPublicHooksHealthCheckRoute
   ApiPublicHooksScrapeAdmitereRoute: typeof ApiPublicHooksScrapeAdmitereRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
@@ -503,6 +555,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/scoala-soferi/': {
+      id: '/scoala-soferi/'
+      path: '/scoala-soferi'
+      fullPath: '/scoala-soferi/'
+      preLoaderRoute: typeof ScoalaSoferiIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/grile/': {
       id: '/grile/'
       path: '/grile'
@@ -516,6 +575,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/simulare/$slug'
       preLoaderRoute: typeof SimulareSlugRouteImport
       parentRoute: typeof SimulareRoute
+    }
+    '/scoala-soferi/test': {
+      id: '/scoala-soferi/test'
+      path: '/scoala-soferi/test'
+      fullPath: '/scoala-soferi/test'
+      preLoaderRoute: typeof ScoalaSoferiTestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scoala-soferi/$categorie': {
+      id: '/scoala-soferi/$categorie'
+      path: '/scoala-soferi/$categorie'
+      fullPath: '/scoala-soferi/$categorie'
+      preLoaderRoute: typeof ScoalaSoferiCategorieRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/quiz/$slug': {
       id: '/quiz/$slug'
@@ -557,6 +630,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/leads'
       fullPath: '/admin/leads'
       preLoaderRoute: typeof AdminLeadsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scoala-soferi/grila/$slug': {
+      id: '/scoala-soferi/grila/$slug'
+      path: '/scoala-soferi/grila/$slug'
+      fullPath: '/scoala-soferi/grila/$slug'
+      preLoaderRoute: typeof ScoalaSoferiGrilaSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/lovable/email/suppression': {
@@ -706,10 +786,14 @@ const rootRouteChildren: RootRouteChildren = {
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   GrileUniSlugRoute: GrileUniSlugRoute,
   QuizSlugRoute: QuizSlugRoute,
+  ScoalaSoferiCategorieRoute: ScoalaSoferiCategorieRoute,
+  ScoalaSoferiTestRoute: ScoalaSoferiTestRoute,
   GrileIndexRoute: GrileIndexRoute,
+  ScoalaSoferiIndexRoute: ScoalaSoferiIndexRoute,
   AdminQuestionsNewRoute: AdminQuestionsNewRoute,
   ApiPublicLogErrorRoute: ApiPublicLogErrorRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
+  ScoalaSoferiGrilaSlugRoute: ScoalaSoferiGrilaSlugRoute,
   ApiPublicHooksHealthCheckRoute: ApiPublicHooksHealthCheckRoute,
   ApiPublicHooksScrapeAdmitereRoute: ApiPublicHooksScrapeAdmitereRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { DRIVING_QUESTIONS, DRIVING_CATEGORIES } from "@/lib/scoala-soferi/questions";
 
 const BASE_URL = "https://grileadmitere.ro";
 
@@ -26,7 +27,20 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/tutoriale", changefreq: "weekly", priority: "0.6" },
           { path: "/feedback", changefreq: "monthly", priority: "0.3" },
           { path: "/autentificare", changefreq: "monthly", priority: "0.3" },
+          { path: "/scoala-soferi", changefreq: "weekly", priority: "0.9" },
+          { path: "/scoala-soferi/test", changefreq: "weekly", priority: "0.8" },
         ];
+
+        const scoalaCatEntries: SitemapEntry[] = DRIVING_CATEGORIES.map((c) => ({
+          path: `/scoala-soferi/${c.slug}`,
+          changefreq: "weekly",
+          priority: "0.8",
+        }));
+        const scoalaGrilaEntries: SitemapEntry[] = DRIVING_QUESTIONS.map((q) => ({
+          path: `/scoala-soferi/grila/${q.slug}`,
+          changefreq: "monthly",
+          priority: "0.6",
+        }));
 
         const { data: unis } = await supabaseAdmin
           .from("universities")
@@ -84,6 +98,8 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...bacSubjectEntries,
           ...admitereUniEntries,
           ...admitereSubjEntries,
+          ...scoalaCatEntries,
+          ...scoalaGrilaEntries,
         ];
         const urls = all.map((e) =>
           [
