@@ -140,7 +140,7 @@ function GrilaPage() {
           </header>
 
           <ol className="space-y-2 mb-6">
-            {q.choices.map((c, i) => {
+            {q.choices.map((c: string, i: number) => {
               const sel = selected.includes(i);
               const right = q.correct.includes(i);
               const cls = !reveal
@@ -186,7 +186,7 @@ function GrilaPage() {
               </div>
               <div className="text-sm">
                 <strong>Răspuns corect:</strong>{" "}
-                {q.correct.map((i) => `${String.fromCharCode(65 + i)}) ${q.choices[i]}`).join(" + ")}
+                {q.correct.map((i: number) => `${String.fromCharCode(65 + i)}) ${q.choices[i]}`).join(" + ")}
               </div>
               <div className="text-sm mt-2">
                 <strong>Explicație:</strong> {q.explain}

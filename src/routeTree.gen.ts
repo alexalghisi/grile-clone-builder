@@ -30,6 +30,7 @@ import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe
 import { Route as AdmitereUniSlugRouteImport } from './routes/admitere.$uniSlug'
 import { Route as AdminSubiecteBacRouteImport } from './routes/admin.subiecte-bac'
 import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
+import { Route as ScoalaSoferiGrilaSlugRouteImport } from './routes/scoala-soferi.grila.$slug'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicLogErrorRouteImport } from './routes/api/public/log-error'
 import { Route as AdmitereUniSlugMaterieSlugRouteImport } from './routes/admitere.$uniSlug.$materieSlug'
@@ -147,6 +148,11 @@ const AdminLeadsRoute = AdminLeadsRouteImport.update({
   path: '/admin/leads',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScoalaSoferiGrilaSlugRoute = ScoalaSoferiGrilaSlugRouteImport.update({
+  id: '/scoala-soferi/grila/$slug',
+  path: '/scoala-soferi/grila/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   id: '/lovable/email/suppression',
   path: '/lovable/email/suppression',
@@ -237,6 +243,7 @@ export interface FileRoutesByFullPath {
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/scoala-soferi/grila/$slug': typeof ScoalaSoferiGrilaSlugRoute
   '/admitere/$uniSlug/$materieSlug/$an': typeof AdmitereUniSlugMaterieSlugAnRoute
   '/api/public/hooks/health-check': typeof ApiPublicHooksHealthCheckRoute
   '/api/public/hooks/scrape-admitere': typeof ApiPublicHooksScrapeAdmitereRoute
@@ -271,6 +278,7 @@ export interface FileRoutesByTo {
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/scoala-soferi/grila/$slug': typeof ScoalaSoferiGrilaSlugRoute
   '/admitere/$uniSlug/$materieSlug/$an': typeof AdmitereUniSlugMaterieSlugAnRoute
   '/api/public/hooks/health-check': typeof ApiPublicHooksHealthCheckRoute
   '/api/public/hooks/scrape-admitere': typeof ApiPublicHooksScrapeAdmitereRoute
@@ -306,6 +314,7 @@ export interface FileRoutesById {
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
+  '/scoala-soferi/grila/$slug': typeof ScoalaSoferiGrilaSlugRoute
   '/admitere/$uniSlug/$materieSlug/$an': typeof AdmitereUniSlugMaterieSlugAnRoute
   '/api/public/hooks/health-check': typeof ApiPublicHooksHealthCheckRoute
   '/api/public/hooks/scrape-admitere': typeof ApiPublicHooksScrapeAdmitereRoute
@@ -342,6 +351,7 @@ export interface FileRouteTypes {
     | '/admitere/$uniSlug/$materieSlug'
     | '/api/public/log-error'
     | '/lovable/email/suppression'
+    | '/scoala-soferi/grila/$slug'
     | '/admitere/$uniSlug/$materieSlug/$an'
     | '/api/public/hooks/health-check'
     | '/api/public/hooks/scrape-admitere'
@@ -376,6 +386,7 @@ export interface FileRouteTypes {
     | '/admitere/$uniSlug/$materieSlug'
     | '/api/public/log-error'
     | '/lovable/email/suppression'
+    | '/scoala-soferi/grila/$slug'
     | '/admitere/$uniSlug/$materieSlug/$an'
     | '/api/public/hooks/health-check'
     | '/api/public/hooks/scrape-admitere'
@@ -410,6 +421,7 @@ export interface FileRouteTypes {
     | '/admitere/$uniSlug/$materieSlug'
     | '/api/public/log-error'
     | '/lovable/email/suppression'
+    | '/scoala-soferi/grila/$slug'
     | '/admitere/$uniSlug/$materieSlug/$an'
     | '/api/public/hooks/health-check'
     | '/api/public/hooks/scrape-admitere'
@@ -442,6 +454,7 @@ export interface RootRouteChildren {
   AdminQuestionsNewRoute: typeof AdminQuestionsNewRoute
   ApiPublicLogErrorRoute: typeof ApiPublicLogErrorRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
+  ScoalaSoferiGrilaSlugRoute: typeof ScoalaSoferiGrilaSlugRoute
   ApiPublicHooksHealthCheckRoute: typeof ApiPublicHooksHealthCheckRoute
   ApiPublicHooksScrapeAdmitereRoute: typeof ApiPublicHooksScrapeAdmitereRoute
   ApiPublicPaymentsWebhookRoute: typeof ApiPublicPaymentsWebhookRoute
@@ -599,6 +612,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLeadsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/scoala-soferi/grila/$slug': {
+      id: '/scoala-soferi/grila/$slug'
+      path: '/scoala-soferi/grila/$slug'
+      fullPath: '/scoala-soferi/grila/$slug'
+      preLoaderRoute: typeof ScoalaSoferiGrilaSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/lovable/email/suppression': {
       id: '/lovable/email/suppression'
       path: '/lovable/email/suppression'
@@ -752,6 +772,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminQuestionsNewRoute: AdminQuestionsNewRoute,
   ApiPublicLogErrorRoute: ApiPublicLogErrorRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
+  ScoalaSoferiGrilaSlugRoute: ScoalaSoferiGrilaSlugRoute,
   ApiPublicHooksHealthCheckRoute: ApiPublicHooksHealthCheckRoute,
   ApiPublicHooksScrapeAdmitereRoute: ApiPublicHooksScrapeAdmitereRoute,
   ApiPublicPaymentsWebhookRoute: ApiPublicPaymentsWebhookRoute,
