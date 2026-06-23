@@ -31,6 +31,7 @@ import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe
 import { Route as AdmitereUniSlugRouteImport } from './routes/admitere.$uniSlug'
 import { Route as AdminSubiecteBacRouteImport } from './routes/admin.subiecte-bac'
 import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
+import { Route as AdminGenerateGrileRouteImport } from './routes/admin.generate-grile'
 import { Route as ScoalaSoferiGrilaSlugRouteImport } from './routes/scoala-soferi.grila.$slug'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicLogErrorRouteImport } from './routes/api/public/log-error'
@@ -154,6 +155,11 @@ const AdminLeadsRoute = AdminLeadsRouteImport.update({
   path: '/admin/leads',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminGenerateGrileRoute = AdminGenerateGrileRouteImport.update({
+  id: '/admin/generate-grile',
+  path: '/admin/generate-grile',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ScoalaSoferiGrilaSlugRoute = ScoalaSoferiGrilaSlugRouteImport.update({
   id: '/scoala-soferi/grila/$slug',
   path: '/scoala-soferi/grila/$slug',
@@ -235,6 +241,7 @@ export interface FileRoutesByFullPath {
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
   '/subiecte-bac': typeof SubiecteBacRoute
   '/tutoriale': typeof TutorialeRoute
+  '/admin/generate-grile': typeof AdminGenerateGrileRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/subiecte-bac': typeof AdminSubiecteBacRoute
   '/admitere/$uniSlug': typeof AdmitereUniSlugRouteWithChildren
@@ -271,6 +278,7 @@ export interface FileRoutesByTo {
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
   '/subiecte-bac': typeof SubiecteBacRoute
   '/tutoriale': typeof TutorialeRoute
+  '/admin/generate-grile': typeof AdminGenerateGrileRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/subiecte-bac': typeof AdminSubiecteBacRoute
   '/admitere/$uniSlug': typeof AdmitereUniSlugRouteWithChildren
@@ -308,6 +316,7 @@ export interface FileRoutesById {
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
   '/subiecte-bac': typeof SubiecteBacRoute
   '/tutoriale': typeof TutorialeRoute
+  '/admin/generate-grile': typeof AdminGenerateGrileRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/subiecte-bac': typeof AdminSubiecteBacRoute
   '/admitere/$uniSlug': typeof AdmitereUniSlugRouteWithChildren
@@ -346,6 +355,7 @@ export interface FileRouteTypes {
     | '/subiecte-admitere'
     | '/subiecte-bac'
     | '/tutoriale'
+    | '/admin/generate-grile'
     | '/admin/leads'
     | '/admin/subiecte-bac'
     | '/admitere/$uniSlug'
@@ -382,6 +392,7 @@ export interface FileRouteTypes {
     | '/subiecte-admitere'
     | '/subiecte-bac'
     | '/tutoriale'
+    | '/admin/generate-grile'
     | '/admin/leads'
     | '/admin/subiecte-bac'
     | '/admitere/$uniSlug'
@@ -418,6 +429,7 @@ export interface FileRouteTypes {
     | '/subiecte-admitere'
     | '/subiecte-bac'
     | '/tutoriale'
+    | '/admin/generate-grile'
     | '/admin/leads'
     | '/admin/subiecte-bac'
     | '/admitere/$uniSlug'
@@ -455,6 +467,7 @@ export interface RootRouteChildren {
   SubiecteAdmitereRoute: typeof SubiecteAdmitereRoute
   SubiecteBacRoute: typeof SubiecteBacRoute
   TutorialeRoute: typeof TutorialeRoute
+  AdminGenerateGrileRoute: typeof AdminGenerateGrileRoute
   AdminLeadsRoute: typeof AdminLeadsRoute
   AdminSubiecteBacRoute: typeof AdminSubiecteBacRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
@@ -632,6 +645,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLeadsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/generate-grile': {
+      id: '/admin/generate-grile'
+      path: '/admin/generate-grile'
+      fullPath: '/admin/generate-grile'
+      preLoaderRoute: typeof AdminGenerateGrileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/scoala-soferi/grila/$slug': {
       id: '/scoala-soferi/grila/$slug'
       path: '/scoala-soferi/grila/$slug'
@@ -781,6 +801,7 @@ const rootRouteChildren: RootRouteChildren = {
   SubiecteAdmitereRoute: SubiecteAdmitereRoute,
   SubiecteBacRoute: SubiecteBacRoute,
   TutorialeRoute: TutorialeRoute,
+  AdminGenerateGrileRoute: AdminGenerateGrileRoute,
   AdminLeadsRoute: AdminLeadsRoute,
   AdminSubiecteBacRoute: AdminSubiecteBacRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
