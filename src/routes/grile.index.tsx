@@ -11,14 +11,14 @@ import { AdSlot } from "@/components/AdSlot";
 
 export const Route = createFileRoute("/grile/")({
   head: () => {
-    const title = "Grile Admitere 2026 — Toate Universitățile";
+    const title = "Grile Admitere 2026 — Cea Mai Mare Bază de Grile + Profesori Verificați";
     const description =
-      "Grile admitere 2026 rezolvate pas cu pas: UMF, UPB, UBB, ASE, UAIC, UTCN și 100+ facultăți din România. Gratuit.";
+      "Grile admitere 2026 rezolvate pas cu pas de profesori cu experiență: UMF, UPB, UBB, ASE, UAIC, UTCN și 100+ facultăți. Mii de grile + profesori verificați. 100% gratuit.";
     return {
       meta: [
         { title },
         { name: "description", content: description },
-        { name: "keywords", content: "grile admitere, admitere facultate 2026, UMF, UPB, UBB, ASE, UAIC, UTCN, teste admitere, medicina, politehnica, drept, informatica" },
+        { name: "keywords", content: "grile, grile admitere, grile online, grile rezolvate, grile facultate, grile UMF, grile UPB, grile ASE, grile UBB, grile UAIC, grile UTCN, grile medicina, grile informatica, grile matematica, grile biologie, grile chimie, grile profesori, profesori grile, grile cu profesori, admitere 2026, teste admitere" },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
         { property: "og:type", content: "website" },
