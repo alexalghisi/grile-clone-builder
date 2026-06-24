@@ -27,6 +27,7 @@ import { Route as SimulareSlugRouteImport } from './routes/simulare.$slug'
 import { Route as ScoalaSoferiTestRouteImport } from './routes/scoala-soferi.test'
 import { Route as ScoalaSoferiCategorieRouteImport } from './routes/scoala-soferi.$categorie'
 import { Route as QuizSlugRouteImport } from './routes/quiz.$slug'
+import { Route as ProfesoriMaterieRouteImport } from './routes/profesori.$materie'
 import { Route as GrileUniSlugRouteImport } from './routes/grile.$uniSlug'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as AdmitereUniSlugRouteImport } from './routes/admitere.$uniSlug'
@@ -134,6 +135,11 @@ const ScoalaSoferiCategorieRoute = ScoalaSoferiCategorieRouteImport.update({
 const QuizSlugRoute = QuizSlugRouteImport.update({
   id: '/quiz/$slug',
   path: '/quiz/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfesoriMaterieRoute = ProfesoriMaterieRouteImport.update({
+  id: '/profesori/$materie',
+  path: '/profesori/$materie',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GrileUniSlugRoute = GrileUniSlugRouteImport.update({
@@ -253,6 +259,7 @@ export interface FileRoutesByFullPath {
   '/admitere/$uniSlug': typeof AdmitereUniSlugRouteWithChildren
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
+  '/profesori/$materie': typeof ProfesoriMaterieRoute
   '/quiz/$slug': typeof QuizSlugRoute
   '/scoala-soferi/$categorie': typeof ScoalaSoferiCategorieRoute
   '/scoala-soferi/test': typeof ScoalaSoferiTestRoute
@@ -291,6 +298,7 @@ export interface FileRoutesByTo {
   '/admitere/$uniSlug': typeof AdmitereUniSlugRouteWithChildren
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
+  '/profesori/$materie': typeof ProfesoriMaterieRoute
   '/quiz/$slug': typeof QuizSlugRoute
   '/scoala-soferi/$categorie': typeof ScoalaSoferiCategorieRoute
   '/scoala-soferi/test': typeof ScoalaSoferiTestRoute
@@ -330,6 +338,7 @@ export interface FileRoutesById {
   '/admitere/$uniSlug': typeof AdmitereUniSlugRouteWithChildren
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
+  '/profesori/$materie': typeof ProfesoriMaterieRoute
   '/quiz/$slug': typeof QuizSlugRoute
   '/scoala-soferi/$categorie': typeof ScoalaSoferiCategorieRoute
   '/scoala-soferi/test': typeof ScoalaSoferiTestRoute
@@ -370,6 +379,7 @@ export interface FileRouteTypes {
     | '/admitere/$uniSlug'
     | '/email/unsubscribe'
     | '/grile/$uniSlug'
+    | '/profesori/$materie'
     | '/quiz/$slug'
     | '/scoala-soferi/$categorie'
     | '/scoala-soferi/test'
@@ -408,6 +418,7 @@ export interface FileRouteTypes {
     | '/admitere/$uniSlug'
     | '/email/unsubscribe'
     | '/grile/$uniSlug'
+    | '/profesori/$materie'
     | '/quiz/$slug'
     | '/scoala-soferi/$categorie'
     | '/scoala-soferi/test'
@@ -446,6 +457,7 @@ export interface FileRouteTypes {
     | '/admitere/$uniSlug'
     | '/email/unsubscribe'
     | '/grile/$uniSlug'
+    | '/profesori/$materie'
     | '/quiz/$slug'
     | '/scoala-soferi/$categorie'
     | '/scoala-soferi/test'
@@ -484,6 +496,7 @@ export interface RootRouteChildren {
   AdminSubiecteBacRoute: typeof AdminSubiecteBacRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   GrileUniSlugRoute: typeof GrileUniSlugRoute
+  ProfesoriMaterieRoute: typeof ProfesoriMaterieRoute
   QuizSlugRoute: typeof QuizSlugRoute
   ScoalaSoferiCategorieRoute: typeof ScoalaSoferiCategorieRoute
   ScoalaSoferiTestRoute: typeof ScoalaSoferiTestRoute
@@ -628,6 +641,13 @@ declare module '@tanstack/react-router' {
       path: '/quiz/$slug'
       fullPath: '/quiz/$slug'
       preLoaderRoute: typeof QuizSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profesori/$materie': {
+      id: '/profesori/$materie'
+      path: '/profesori/$materie'
+      fullPath: '/profesori/$materie'
+      preLoaderRoute: typeof ProfesoriMaterieRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/grile/$uniSlug': {
@@ -826,6 +846,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminSubiecteBacRoute: AdminSubiecteBacRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   GrileUniSlugRoute: GrileUniSlugRoute,
+  ProfesoriMaterieRoute: ProfesoriMaterieRoute,
   QuizSlugRoute: QuizSlugRoute,
   ScoalaSoferiCategorieRoute: ScoalaSoferiCategorieRoute,
   ScoalaSoferiTestRoute: ScoalaSoferiTestRoute,

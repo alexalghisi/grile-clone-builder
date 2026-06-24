@@ -115,7 +115,7 @@ function Page() {
         <section>
           <h2 className="text-2xl font-bold">Ce acoperă profesorii de {m.nume.toLowerCase()}</h2>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
-            {m.topics.map((t) => (
+            {m.topics.map((t: string) => (
               <Card key={t} className="p-4 text-sm">
                 <div className="font-medium">{t}</div>
               </Card>
@@ -138,7 +138,7 @@ function Page() {
         <section className="mt-10 max-w-4xl">
           <h2 className="text-2xl font-bold">Întrebări frecvente — profesori de {m.nume.toLowerCase()}</h2>
           <div className="mt-4 space-y-3 text-sm">
-            {m.faq.map((f) => (
+            {m.faq.map((f: { q: string; a: string }) => (
               <Card key={f.q} className="p-5">
                 <h3 className="font-semibold">{f.q}</h3>
                 <p className="mt-1 text-muted-foreground">{f.a}</p>
