@@ -21,11 +21,13 @@ import { Route as AutentificareRouteImport } from './routes/autentificare'
 import { Route as AdmitereRouteImport } from './routes/admitere'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ScoalaSoferiIndexRouteImport } from './routes/scoala-soferi.index'
+import { Route as ProfesoriIndexRouteImport } from './routes/profesori.index'
 import { Route as GrileIndexRouteImport } from './routes/grile.index'
 import { Route as SimulareSlugRouteImport } from './routes/simulare.$slug'
 import { Route as ScoalaSoferiTestRouteImport } from './routes/scoala-soferi.test'
 import { Route as ScoalaSoferiCategorieRouteImport } from './routes/scoala-soferi.$categorie'
 import { Route as QuizSlugRouteImport } from './routes/quiz.$slug'
+import { Route as ProfesoriMaterieRouteImport } from './routes/profesori.$materie'
 import { Route as GrileUniSlugRouteImport } from './routes/grile.$uniSlug'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as AdmitereUniSlugRouteImport } from './routes/admitere.$uniSlug'
@@ -105,6 +107,11 @@ const ScoalaSoferiIndexRoute = ScoalaSoferiIndexRouteImport.update({
   path: '/scoala-soferi/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfesoriIndexRoute = ProfesoriIndexRouteImport.update({
+  id: '/profesori/',
+  path: '/profesori/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GrileIndexRoute = GrileIndexRouteImport.update({
   id: '/grile/',
   path: '/grile/',
@@ -128,6 +135,11 @@ const ScoalaSoferiCategorieRoute = ScoalaSoferiCategorieRouteImport.update({
 const QuizSlugRoute = QuizSlugRouteImport.update({
   id: '/quiz/$slug',
   path: '/quiz/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfesoriMaterieRoute = ProfesoriMaterieRouteImport.update({
+  id: '/profesori/$materie',
+  path: '/profesori/$materie',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GrileUniSlugRoute = GrileUniSlugRouteImport.update({
@@ -247,11 +259,13 @@ export interface FileRoutesByFullPath {
   '/admitere/$uniSlug': typeof AdmitereUniSlugRouteWithChildren
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
+  '/profesori/$materie': typeof ProfesoriMaterieRoute
   '/quiz/$slug': typeof QuizSlugRoute
   '/scoala-soferi/$categorie': typeof ScoalaSoferiCategorieRoute
   '/scoala-soferi/test': typeof ScoalaSoferiTestRoute
   '/simulare/$slug': typeof SimulareSlugRoute
   '/grile/': typeof GrileIndexRoute
+  '/profesori/': typeof ProfesoriIndexRoute
   '/scoala-soferi/': typeof ScoalaSoferiIndexRoute
   '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
@@ -284,11 +298,13 @@ export interface FileRoutesByTo {
   '/admitere/$uniSlug': typeof AdmitereUniSlugRouteWithChildren
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
+  '/profesori/$materie': typeof ProfesoriMaterieRoute
   '/quiz/$slug': typeof QuizSlugRoute
   '/scoala-soferi/$categorie': typeof ScoalaSoferiCategorieRoute
   '/scoala-soferi/test': typeof ScoalaSoferiTestRoute
   '/simulare/$slug': typeof SimulareSlugRoute
   '/grile': typeof GrileIndexRoute
+  '/profesori': typeof ProfesoriIndexRoute
   '/scoala-soferi': typeof ScoalaSoferiIndexRoute
   '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
@@ -322,11 +338,13 @@ export interface FileRoutesById {
   '/admitere/$uniSlug': typeof AdmitereUniSlugRouteWithChildren
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
+  '/profesori/$materie': typeof ProfesoriMaterieRoute
   '/quiz/$slug': typeof QuizSlugRoute
   '/scoala-soferi/$categorie': typeof ScoalaSoferiCategorieRoute
   '/scoala-soferi/test': typeof ScoalaSoferiTestRoute
   '/simulare/$slug': typeof SimulareSlugRoute
   '/grile/': typeof GrileIndexRoute
+  '/profesori/': typeof ProfesoriIndexRoute
   '/scoala-soferi/': typeof ScoalaSoferiIndexRoute
   '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
@@ -361,11 +379,13 @@ export interface FileRouteTypes {
     | '/admitere/$uniSlug'
     | '/email/unsubscribe'
     | '/grile/$uniSlug'
+    | '/profesori/$materie'
     | '/quiz/$slug'
     | '/scoala-soferi/$categorie'
     | '/scoala-soferi/test'
     | '/simulare/$slug'
     | '/grile/'
+    | '/profesori/'
     | '/scoala-soferi/'
     | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
@@ -398,11 +418,13 @@ export interface FileRouteTypes {
     | '/admitere/$uniSlug'
     | '/email/unsubscribe'
     | '/grile/$uniSlug'
+    | '/profesori/$materie'
     | '/quiz/$slug'
     | '/scoala-soferi/$categorie'
     | '/scoala-soferi/test'
     | '/simulare/$slug'
     | '/grile'
+    | '/profesori'
     | '/scoala-soferi'
     | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
@@ -435,11 +457,13 @@ export interface FileRouteTypes {
     | '/admitere/$uniSlug'
     | '/email/unsubscribe'
     | '/grile/$uniSlug'
+    | '/profesori/$materie'
     | '/quiz/$slug'
     | '/scoala-soferi/$categorie'
     | '/scoala-soferi/test'
     | '/simulare/$slug'
     | '/grile/'
+    | '/profesori/'
     | '/scoala-soferi/'
     | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
@@ -472,10 +496,12 @@ export interface RootRouteChildren {
   AdminSubiecteBacRoute: typeof AdminSubiecteBacRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   GrileUniSlugRoute: typeof GrileUniSlugRoute
+  ProfesoriMaterieRoute: typeof ProfesoriMaterieRoute
   QuizSlugRoute: typeof QuizSlugRoute
   ScoalaSoferiCategorieRoute: typeof ScoalaSoferiCategorieRoute
   ScoalaSoferiTestRoute: typeof ScoalaSoferiTestRoute
   GrileIndexRoute: typeof GrileIndexRoute
+  ProfesoriIndexRoute: typeof ProfesoriIndexRoute
   ScoalaSoferiIndexRoute: typeof ScoalaSoferiIndexRoute
   AdminQuestionsNewRoute: typeof AdminQuestionsNewRoute
   ApiPublicLogErrorRoute: typeof ApiPublicLogErrorRoute
@@ -575,6 +601,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScoalaSoferiIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/profesori/': {
+      id: '/profesori/'
+      path: '/profesori'
+      fullPath: '/profesori/'
+      preLoaderRoute: typeof ProfesoriIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/grile/': {
       id: '/grile/'
       path: '/grile'
@@ -608,6 +641,13 @@ declare module '@tanstack/react-router' {
       path: '/quiz/$slug'
       fullPath: '/quiz/$slug'
       preLoaderRoute: typeof QuizSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profesori/$materie': {
+      id: '/profesori/$materie'
+      path: '/profesori/$materie'
+      fullPath: '/profesori/$materie'
+      preLoaderRoute: typeof ProfesoriMaterieRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/grile/$uniSlug': {
@@ -806,10 +846,12 @@ const rootRouteChildren: RootRouteChildren = {
   AdminSubiecteBacRoute: AdminSubiecteBacRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   GrileUniSlugRoute: GrileUniSlugRoute,
+  ProfesoriMaterieRoute: ProfesoriMaterieRoute,
   QuizSlugRoute: QuizSlugRoute,
   ScoalaSoferiCategorieRoute: ScoalaSoferiCategorieRoute,
   ScoalaSoferiTestRoute: ScoalaSoferiTestRoute,
   GrileIndexRoute: GrileIndexRoute,
+  ProfesoriIndexRoute: ProfesoriIndexRoute,
   ScoalaSoferiIndexRoute: ScoalaSoferiIndexRoute,
   AdminQuestionsNewRoute: AdminQuestionsNewRoute,
   ApiPublicLogErrorRoute: ApiPublicLogErrorRoute,

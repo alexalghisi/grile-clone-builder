@@ -32,10 +32,11 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Grile Admitere 2026 cu Explicații Pas cu Pas" },
-      { name: "description", content: "Grile admitere și BAC 2026 cu explicații detaliate pas cu pas. UPB, UBB, UTCN, UMF, UAIC, ASE și 100+ universități din România." },
-      { property: "og:title", content: "Grile Admitere 2026 cu Explicații Pas cu Pas" },
-      { property: "og:description", content: "Singurul site de grile online care îți arată DE CE ai greșit. UPB, UBB, UTCN, UMF, ASE și 100+ universități." },
+      { title: "Grile Admitere 2026 + Profesori Verificați — GrileAdmitere.ro" },
+      { name: "description", content: "Grile admitere și BAC 2026 rezolvate pas cu pas de profesori verificați. Mii de grile + profesori particulari pentru UPB, UBB, UTCN, UMF, UAIC, ASE și 100+ facultăți. 100% gratuit." },
+      { name: "keywords", content: "grile, grile admitere, grile online, grile facultate, grile rezolvate, grile cu profesori, profesori, profesori online, profesori meditatii, profesori admitere, profesori BAC, profesori matematica, profesori romana, profesori biologie, profesori chimie, profesori fizica, profesori informatica, UMF, UPB, UBB, ASE, UAIC, UTCN" },
+      { property: "og:title", content: "Grile Admitere 2026 + Profesori Verificați — GrileAdmitere.ro" },
+      { property: "og:description", content: "Cea mai mare bază de grile rezolvate de profesori verificați. Grile admitere și BAC 2026 — UMF, UPB, UBB, ASE, UAIC, UTCN. Gratuit." },
       { property: "og:url", content: "https://grileadmitere.ro/" },
     ],
     links: [{ rel: "canonical", href: "https://grileadmitere.ro/" }],
