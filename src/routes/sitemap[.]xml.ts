@@ -108,6 +108,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...admitereSubjEntries,
           ...scoalaCatEntries,
           ...scoalaGrilaEntries,
+          ...profesoriEntries,
         ];
         const urls = all.map((e) =>
           [
