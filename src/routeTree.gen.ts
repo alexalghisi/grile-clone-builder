@@ -21,6 +21,7 @@ import { Route as AutentificareRouteImport } from './routes/autentificare'
 import { Route as AdmitereRouteImport } from './routes/admitere'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ScoalaSoferiIndexRouteImport } from './routes/scoala-soferi.index'
+import { Route as ProfesoriIndexRouteImport } from './routes/profesori.index'
 import { Route as GrileIndexRouteImport } from './routes/grile.index'
 import { Route as SimulareSlugRouteImport } from './routes/simulare.$slug'
 import { Route as ScoalaSoferiTestRouteImport } from './routes/scoala-soferi.test'
@@ -103,6 +104,11 @@ const IndexRoute = IndexRouteImport.update({
 const ScoalaSoferiIndexRoute = ScoalaSoferiIndexRouteImport.update({
   id: '/scoala-soferi/',
   path: '/scoala-soferi/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfesoriIndexRoute = ProfesoriIndexRouteImport.update({
+  id: '/profesori/',
+  path: '/profesori/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GrileIndexRoute = GrileIndexRouteImport.update({
@@ -252,6 +258,7 @@ export interface FileRoutesByFullPath {
   '/scoala-soferi/test': typeof ScoalaSoferiTestRoute
   '/simulare/$slug': typeof SimulareSlugRoute
   '/grile/': typeof GrileIndexRoute
+  '/profesori/': typeof ProfesoriIndexRoute
   '/scoala-soferi/': typeof ScoalaSoferiIndexRoute
   '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
@@ -289,6 +296,7 @@ export interface FileRoutesByTo {
   '/scoala-soferi/test': typeof ScoalaSoferiTestRoute
   '/simulare/$slug': typeof SimulareSlugRoute
   '/grile': typeof GrileIndexRoute
+  '/profesori': typeof ProfesoriIndexRoute
   '/scoala-soferi': typeof ScoalaSoferiIndexRoute
   '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
@@ -327,6 +335,7 @@ export interface FileRoutesById {
   '/scoala-soferi/test': typeof ScoalaSoferiTestRoute
   '/simulare/$slug': typeof SimulareSlugRoute
   '/grile/': typeof GrileIndexRoute
+  '/profesori/': typeof ProfesoriIndexRoute
   '/scoala-soferi/': typeof ScoalaSoferiIndexRoute
   '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
@@ -366,6 +375,7 @@ export interface FileRouteTypes {
     | '/scoala-soferi/test'
     | '/simulare/$slug'
     | '/grile/'
+    | '/profesori/'
     | '/scoala-soferi/'
     | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
@@ -403,6 +413,7 @@ export interface FileRouteTypes {
     | '/scoala-soferi/test'
     | '/simulare/$slug'
     | '/grile'
+    | '/profesori'
     | '/scoala-soferi'
     | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
@@ -440,6 +451,7 @@ export interface FileRouteTypes {
     | '/scoala-soferi/test'
     | '/simulare/$slug'
     | '/grile/'
+    | '/profesori/'
     | '/scoala-soferi/'
     | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
@@ -476,6 +488,7 @@ export interface RootRouteChildren {
   ScoalaSoferiCategorieRoute: typeof ScoalaSoferiCategorieRoute
   ScoalaSoferiTestRoute: typeof ScoalaSoferiTestRoute
   GrileIndexRoute: typeof GrileIndexRoute
+  ProfesoriIndexRoute: typeof ProfesoriIndexRoute
   ScoalaSoferiIndexRoute: typeof ScoalaSoferiIndexRoute
   AdminQuestionsNewRoute: typeof AdminQuestionsNewRoute
   ApiPublicLogErrorRoute: typeof ApiPublicLogErrorRoute
@@ -573,6 +586,13 @@ declare module '@tanstack/react-router' {
       path: '/scoala-soferi'
       fullPath: '/scoala-soferi/'
       preLoaderRoute: typeof ScoalaSoferiIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profesori/': {
+      id: '/profesori/'
+      path: '/profesori'
+      fullPath: '/profesori/'
+      preLoaderRoute: typeof ProfesoriIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/grile/': {
@@ -810,6 +830,7 @@ const rootRouteChildren: RootRouteChildren = {
   ScoalaSoferiCategorieRoute: ScoalaSoferiCategorieRoute,
   ScoalaSoferiTestRoute: ScoalaSoferiTestRoute,
   GrileIndexRoute: GrileIndexRoute,
+  ProfesoriIndexRoute: ProfesoriIndexRoute,
   ScoalaSoferiIndexRoute: ScoalaSoferiIndexRoute,
   AdminQuestionsNewRoute: AdminQuestionsNewRoute,
   ApiPublicLogErrorRoute: ApiPublicLogErrorRoute,

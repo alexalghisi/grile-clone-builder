@@ -11,7 +11,7 @@ const DESCRIPTION =
   "Profesori de meditații online pentru admitere și BAC 2026. Profesori de matematică, română, biologie, chimie, fizică, informatică — grile rezolvate de profesori cu experiență. 100% gratuit.";
 const URL = "https://grileadmitere.ro/profesori";
 
-export const Route = createFileRoute("/profesori")({
+export const Route = createFileRoute("/profesori/")({
   head: () => ({
     meta: [
       { title: TITLE },
