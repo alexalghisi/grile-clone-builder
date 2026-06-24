@@ -73,9 +73,9 @@ function Page() {
           <span className="mx-1">/</span>
           <span>Grile Admitere</span>
         </nav>
-        <h1 className="text-3xl font-bold">Grile Admitere 2026 — Toate Universitățile din România</h1>
+        <h1 className="text-3xl font-bold">Grile Admitere 2026 — Toate Universitățile + Profesori Verificați</h1>
         <p className="mt-2 text-muted-foreground">
-          {unis.length} universități · grile admitere rezolvate pas cu pas pentru Medicină (UMF), Politehnică (UPB, UTCN), Drept, Informatică, ASE, UBB, UAIC și multe altele.
+          {unis.length} universități · mii de <strong>grile</strong> admitere rezolvate pas cu pas de <strong>profesori</strong> verificați — Medicină (UMF), Politehnică (UPB, UTCN), Drept, Informatică, ASE, UBB, UAIC și multe altele.
         </p>
         <p className="mt-2 max-w-3xl text-sm text-muted-foreground">
           Alege universitatea ta și exersează gratuit cu mii de grile reale din anii precedenți, cu explicații detaliate pentru fiecare răspuns. Ideal pentru pregătirea admiterii 2026 la facultate.
@@ -101,8 +101,20 @@ function Page() {
         </div>
         <section className="mt-10 max-w-3xl text-sm text-muted-foreground space-y-3">
           <h2 className="text-lg font-semibold text-foreground">De ce să te pregătești cu GrileAdmitere.ro</h2>
-          <p>Platforma noastră adună grile reale de admitere de la cele mai importante universități din România. Fiecare grilă vine cu explicații pas cu pas, ca să înțelegi raționamentul, nu doar răspunsul corect.</p>
-          <p>Indiferent dacă vizezi Medicina la UMF Carol Davila, Informatica la Politehnică sau Drept la Universitatea București, găsești aici materialele de care ai nevoie pentru admitere 2026 — complet gratuit.</p>
+          <p>Platforma noastră adună <strong>grile</strong> reale de admitere de la cele mai importante universități din România. Fiecare <strong>grilă</strong> vine cu explicații pas cu pas scrise de <strong>profesori</strong>, ca să înțelegi raționamentul, nu doar răspunsul corect.</p>
+          <p>Indiferent dacă cauți <strong>grile</strong> de Medicină la UMF Carol Davila, <strong>grile</strong> de Informatică la Politehnică sau <strong>grile</strong> de Drept la Universitatea București — și indiferent dacă vrei <strong>profesori</strong> de matematică, biologie, chimie sau română — găsești aici totul pentru admitere 2026, complet gratuit.</p>
+          <p>Vezi și <Link to="/profesori" className="text-primary underline">directorul de profesori pe materii</Link> — profesori particulari care publică grile rezolvate pas cu pas.</p>
+          <h3 className="pt-3 text-base font-semibold text-foreground">Grile pe categorii</h3>
+          <ul className="grid grid-cols-1 gap-1 sm:grid-cols-2">
+            <li>• Grile admitere medicină (UMF)</li>
+            <li>• Grile admitere politehnică (UPB, UTCN)</li>
+            <li>• Grile admitere informatică (UBB, UAIC, UPB)</li>
+            <li>• Grile admitere ASE și cibernetică</li>
+            <li>• Grile admitere drept</li>
+            <li>• Grile BAC pe materii</li>
+            <li>• Grile cu profesori verificați</li>
+            <li>• Grile rezolvate pas cu pas — gratuit</li>
+          </ul>
         </section>
       </main>
     </div>
