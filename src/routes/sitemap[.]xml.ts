@@ -3,6 +3,7 @@ import type {} from "@tanstack/react-start";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { DRIVING_QUESTIONS, DRIVING_CATEGORIES } from "@/lib/scoala-soferi/questions";
 import { PROFESORI_MATERII } from "@/lib/profesori/data";
+import { tutoriale } from "@/lib/tutoriale/data";
 
 const BASE_URL = "https://grileadmitere.ro";
 
@@ -37,6 +38,12 @@ export const Route = createFileRoute("/sitemap.xml")({
           path: `/profesori/${m.slug}`,
           changefreq: "weekly",
           priority: "0.85",
+        }));
+
+        const tutorialeEntries: SitemapEntry[] = tutoriale.map((t) => ({
+          path: `/tutoriale/${t.slug}`,
+          changefreq: "monthly",
+          priority: "0.7",
         }));
 
         const scoalaCatEntries: SitemapEntry[] = DRIVING_CATEGORIES.map((c) => ({
@@ -109,6 +116,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...scoalaCatEntries,
           ...scoalaGrilaEntries,
           ...profesoriEntries,
+          ...tutorialeEntries,
         ];
         const urls = all.map((e) =>
           [
