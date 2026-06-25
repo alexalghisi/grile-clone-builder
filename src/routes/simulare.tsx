@@ -6,7 +6,7 @@ import { Header } from "@/components/Header";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Trophy, Clock, Lock, ArrowRight } from "lucide-react";
+import { Trophy, Clock, ArrowRight } from "lucide-react";
 import { AdLeaderboard } from "@/components/AdSlot";
 
 export const Route = createFileRoute("/simulare")({
@@ -58,9 +58,6 @@ function Page() {
                     {s.universities?.short_name && <Badge variant="outline">{s.universities.short_name}</Badge>}
                     {s.session && <Badge variant="secondary">{s.session}</Badge>}
                   </div>
-                  {s.is_premium && (
-                    <Badge className="bg-amber-500 text-white"><Lock className="mr-1 h-3 w-3" />Premium</Badge>
-                  )}
                 </div>
                 <h2 className="text-lg font-bold">{s.title}</h2>
                 {s.description && <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{s.description}</p>}
