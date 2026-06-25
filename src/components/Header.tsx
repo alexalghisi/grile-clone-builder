@@ -12,7 +12,7 @@ const NAV = [
   { to: "/admitere", label: "Subiecte admitere" },
   { to: "/subiecte-bac", label: "BAC" },
   { to: "/scoala-soferi", label: "Școală șoferi" },
-  { to: "/tutoriale", label: "Resurse" },
+  { to: "/tutoriale", label: "Tutoriale" },
   { to: "/contact", label: "Contact" },
   { to: "/preturi", label: "Prețuri" },
 ] as const;
