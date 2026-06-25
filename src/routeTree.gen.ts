@@ -17,6 +17,7 @@ import { Route as SimulareRouteImport } from './routes/simulare'
 import { Route as PreturiRouteImport } from './routes/preturi'
 import { Route as GrilaZileiRouteImport } from './routes/grila-zilei'
 import { Route as FeedbackRouteImport } from './routes/feedback'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AutentificareRouteImport } from './routes/autentificare'
 import { Route as AdmitereRouteImport } from './routes/admitere'
 import { Route as IndexRouteImport } from './routes/index'
@@ -86,6 +87,11 @@ const GrilaZileiRoute = GrilaZileiRouteImport.update({
 const FeedbackRoute = FeedbackRouteImport.update({
   id: '/feedback',
   path: '/feedback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AutentificareRoute = AutentificareRouteImport.update({
@@ -251,6 +257,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admitere': typeof AdmitereRouteWithChildren
   '/autentificare': typeof AutentificareRoute
+  '/contact': typeof ContactRoute
   '/feedback': typeof FeedbackRoute
   '/grila-zilei': typeof GrilaZileiRoute
   '/preturi': typeof PreturiRoute
@@ -291,6 +298,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admitere': typeof AdmitereRouteWithChildren
   '/autentificare': typeof AutentificareRoute
+  '/contact': typeof ContactRoute
   '/feedback': typeof FeedbackRoute
   '/grila-zilei': typeof GrilaZileiRoute
   '/preturi': typeof PreturiRoute
@@ -332,6 +340,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admitere': typeof AdmitereRouteWithChildren
   '/autentificare': typeof AutentificareRoute
+  '/contact': typeof ContactRoute
   '/feedback': typeof FeedbackRoute
   '/grila-zilei': typeof GrilaZileiRoute
   '/preturi': typeof PreturiRoute
@@ -374,6 +383,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admitere'
     | '/autentificare'
+    | '/contact'
     | '/feedback'
     | '/grila-zilei'
     | '/preturi'
@@ -414,6 +424,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admitere'
     | '/autentificare'
+    | '/contact'
     | '/feedback'
     | '/grila-zilei'
     | '/preturi'
@@ -454,6 +465,7 @@ export interface FileRouteTypes {
     | '/'
     | '/admitere'
     | '/autentificare'
+    | '/contact'
     | '/feedback'
     | '/grila-zilei'
     | '/preturi'
@@ -495,6 +507,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdmitereRoute: typeof AdmitereRouteWithChildren
   AutentificareRoute: typeof AutentificareRoute
+  ContactRoute: typeof ContactRoute
   FeedbackRoute: typeof FeedbackRoute
   GrilaZileiRoute: typeof GrilaZileiRoute
   PreturiRoute: typeof PreturiRoute
@@ -583,6 +596,13 @@ declare module '@tanstack/react-router' {
       path: '/feedback'
       fullPath: '/feedback'
       preLoaderRoute: typeof FeedbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/autentificare': {
@@ -864,6 +884,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdmitereRoute: AdmitereRouteWithChildren,
   AutentificareRoute: AutentificareRoute,
+  ContactRoute: ContactRoute,
   FeedbackRoute: FeedbackRoute,
   GrilaZileiRoute: GrilaZileiRoute,
   PreturiRoute: PreturiRoute,
