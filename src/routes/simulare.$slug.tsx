@@ -10,12 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { QuestionContent } from "@/components/QuestionContent";
-import { Clock, CheckCircle2, XCircle, Trophy, Lock, AlertTriangle } from "lucide-react";
-import { useSubscription } from "@/hooks/useSubscription";
-import { UpgradeModal } from "@/components/UpgradeModal";
-import { StripeEmbeddedCheckout } from "@/components/StripeEmbeddedCheckout";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Sparkles } from "lucide-react";
+import { Clock, CheckCircle2, XCircle, Trophy, AlertTriangle } from "lucide-react";
 import { AdInArticle } from "@/components/AdSlot";
 
 export const Route = createFileRoute("/simulare/$slug")({
