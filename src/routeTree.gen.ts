@@ -23,6 +23,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ScoalaSoferiIndexRouteImport } from './routes/scoala-soferi.index'
 import { Route as ProfesoriIndexRouteImport } from './routes/profesori.index'
 import { Route as GrileIndexRouteImport } from './routes/grile.index'
+import { Route as TutorialeSlugRouteImport } from './routes/tutoriale.$slug'
 import { Route as SimulareSlugRouteImport } from './routes/simulare.$slug'
 import { Route as ScoalaSoferiTestRouteImport } from './routes/scoala-soferi.test'
 import { Route as ScoalaSoferiCategorieRouteImport } from './routes/scoala-soferi.$categorie'
@@ -116,6 +117,11 @@ const GrileIndexRoute = GrileIndexRouteImport.update({
   id: '/grile/',
   path: '/grile/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const TutorialeSlugRoute = TutorialeSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => TutorialeRoute,
 } as any)
 const SimulareSlugRoute = SimulareSlugRouteImport.update({
   id: '/$slug',
@@ -252,7 +258,7 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
   '/subiecte-bac': typeof SubiecteBacRoute
-  '/tutoriale': typeof TutorialeRoute
+  '/tutoriale': typeof TutorialeRouteWithChildren
   '/admin/generate-grile': typeof AdminGenerateGrileRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/subiecte-bac': typeof AdminSubiecteBacRoute
@@ -264,6 +270,7 @@ export interface FileRoutesByFullPath {
   '/scoala-soferi/$categorie': typeof ScoalaSoferiCategorieRoute
   '/scoala-soferi/test': typeof ScoalaSoferiTestRoute
   '/simulare/$slug': typeof SimulareSlugRoute
+  '/tutoriale/$slug': typeof TutorialeSlugRoute
   '/grile/': typeof GrileIndexRoute
   '/profesori/': typeof ProfesoriIndexRoute
   '/scoala-soferi/': typeof ScoalaSoferiIndexRoute
@@ -291,7 +298,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
   '/subiecte-bac': typeof SubiecteBacRoute
-  '/tutoriale': typeof TutorialeRoute
+  '/tutoriale': typeof TutorialeRouteWithChildren
   '/admin/generate-grile': typeof AdminGenerateGrileRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/subiecte-bac': typeof AdminSubiecteBacRoute
@@ -303,6 +310,7 @@ export interface FileRoutesByTo {
   '/scoala-soferi/$categorie': typeof ScoalaSoferiCategorieRoute
   '/scoala-soferi/test': typeof ScoalaSoferiTestRoute
   '/simulare/$slug': typeof SimulareSlugRoute
+  '/tutoriale/$slug': typeof TutorialeSlugRoute
   '/grile': typeof GrileIndexRoute
   '/profesori': typeof ProfesoriIndexRoute
   '/scoala-soferi': typeof ScoalaSoferiIndexRoute
@@ -331,7 +339,7 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
   '/subiecte-bac': typeof SubiecteBacRoute
-  '/tutoriale': typeof TutorialeRoute
+  '/tutoriale': typeof TutorialeRouteWithChildren
   '/admin/generate-grile': typeof AdminGenerateGrileRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/subiecte-bac': typeof AdminSubiecteBacRoute
@@ -343,6 +351,7 @@ export interface FileRoutesById {
   '/scoala-soferi/$categorie': typeof ScoalaSoferiCategorieRoute
   '/scoala-soferi/test': typeof ScoalaSoferiTestRoute
   '/simulare/$slug': typeof SimulareSlugRoute
+  '/tutoriale/$slug': typeof TutorialeSlugRoute
   '/grile/': typeof GrileIndexRoute
   '/profesori/': typeof ProfesoriIndexRoute
   '/scoala-soferi/': typeof ScoalaSoferiIndexRoute
@@ -384,6 +393,7 @@ export interface FileRouteTypes {
     | '/scoala-soferi/$categorie'
     | '/scoala-soferi/test'
     | '/simulare/$slug'
+    | '/tutoriale/$slug'
     | '/grile/'
     | '/profesori/'
     | '/scoala-soferi/'
@@ -423,6 +433,7 @@ export interface FileRouteTypes {
     | '/scoala-soferi/$categorie'
     | '/scoala-soferi/test'
     | '/simulare/$slug'
+    | '/tutoriale/$slug'
     | '/grile'
     | '/profesori'
     | '/scoala-soferi'
@@ -462,6 +473,7 @@ export interface FileRouteTypes {
     | '/scoala-soferi/$categorie'
     | '/scoala-soferi/test'
     | '/simulare/$slug'
+    | '/tutoriale/$slug'
     | '/grile/'
     | '/profesori/'
     | '/scoala-soferi/'
@@ -490,7 +502,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SubiecteAdmitereRoute: typeof SubiecteAdmitereRoute
   SubiecteBacRoute: typeof SubiecteBacRoute
-  TutorialeRoute: typeof TutorialeRoute
+  TutorialeRoute: typeof TutorialeRouteWithChildren
   AdminGenerateGrileRoute: typeof AdminGenerateGrileRoute
   AdminLeadsRoute: typeof AdminLeadsRoute
   AdminSubiecteBacRoute: typeof AdminSubiecteBacRoute
@@ -614,6 +626,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/grile/'
       preLoaderRoute: typeof GrileIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/tutoriale/$slug': {
+      id: '/tutoriale/$slug'
+      path: '/$slug'
+      fullPath: '/tutoriale/$slug'
+      preLoaderRoute: typeof TutorialeSlugRouteImport
+      parentRoute: typeof TutorialeRoute
     }
     '/simulare/$slug': {
       id: '/simulare/$slug'
@@ -829,6 +848,18 @@ const SimulareRouteWithChildren = SimulareRoute._addFileChildren(
   SimulareRouteChildren,
 )
 
+interface TutorialeRouteChildren {
+  TutorialeSlugRoute: typeof TutorialeSlugRoute
+}
+
+const TutorialeRouteChildren: TutorialeRouteChildren = {
+  TutorialeSlugRoute: TutorialeSlugRoute,
+}
+
+const TutorialeRouteWithChildren = TutorialeRoute._addFileChildren(
+  TutorialeRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdmitereRoute: AdmitereRouteWithChildren,
@@ -840,7 +871,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SubiecteAdmitereRoute: SubiecteAdmitereRoute,
   SubiecteBacRoute: SubiecteBacRoute,
-  TutorialeRoute: TutorialeRoute,
+  TutorialeRoute: TutorialeRouteWithChildren,
   AdminGenerateGrileRoute: AdminGenerateGrileRoute,
   AdminLeadsRoute: AdminLeadsRoute,
   AdminSubiecteBacRoute: AdminSubiecteBacRoute,
