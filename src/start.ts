@@ -6,6 +6,12 @@ import { attachSupabaseAuth } from "@/integrations/supabase/auth-attacher";
 
 const errorMiddleware = createMiddleware().server(async ({ next, request }) => {
   try {
+    const u = request ? new URL((request as Request).url) : null;
+    if (u && u.pathname.startsWith("/lovable/")) {
+      return await next();
+    }
+  } catch {}
+  try {
     return await next();
   } catch (error) {
     if (error != null && typeof error === "object" && "statusCode" in error) {

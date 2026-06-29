@@ -13,9 +13,39 @@ import { sendContactMessage } from '@/lib/contact.functions'
 export const Route = createFileRoute('/contact')({
   head: () => ({
     meta: [
-      { title: 'Contact | GrileAdmitere.ro' },
-      { name: 'description', content: 'Contactează echipa GrileAdmitere.ro — sugestii, întrebări sau colaborări. Îți răspundem în cel mai scurt timp.' },
+      { title: 'Contact GrileAdmitere — Suport admitere, grile și BAC | Răspuns rapid' },
+      { name: 'description', content: 'Contactează echipa GrileAdmitere.ro pentru întrebări despre grile admitere 2026, simulări BAC, profesori meditații și colaborări. Îți răspundem rapid pe email.' },
+      { name: 'keywords', content: 'contact grile admitere, suport admitere facultate, contact profesori meditatii, intrebari BAC, grileadmitere contact' },
       { name: 'robots', content: 'index, follow' },
+      { property: 'og:title', content: 'Contact GrileAdmitere — Suport admitere, grile și BAC' },
+      { property: 'og:description', content: 'Scrie-ne pentru orice întrebare despre admitere, grile, BAC sau colaborări. Răspuns rapid pe email.' },
+      { property: 'og:type', content: 'website' },
+      { property: 'og:url', content: 'https://grileadmitere.ro/contact' },
+    ],
+    links: [{ rel: 'canonical', href: 'https://grileadmitere.ro/contact' }],
+    scripts: [
+      {
+        type: 'application/ld+json',
+        children: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'ContactPage',
+          name: 'Contact GrileAdmitere.ro',
+          url: 'https://grileadmitere.ro/contact',
+          inLanguage: 'ro-RO',
+          isPartOf: { '@type': 'WebSite', name: 'GrileAdmitere.ro', url: 'https://grileadmitere.ro' },
+          mainEntity: {
+            '@type': 'Organization',
+            name: 'GrileAdmitere.ro',
+            url: 'https://grileadmitere.ro',
+            contactPoint: [{
+              '@type': 'ContactPoint',
+              contactType: 'customer support',
+              availableLanguage: ['Romanian'],
+              areaServed: 'RO',
+            }],
+          },
+        }),
+      },
     ],
   }),
   component: ContactPage,
