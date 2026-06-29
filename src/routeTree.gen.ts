@@ -37,6 +37,7 @@ import { Route as AdminSubiecteBacRouteImport } from './routes/admin.subiecte-ba
 import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
 import { Route as AdminGenerateGrileRouteImport } from './routes/admin.generate-grile'
 import { Route as SubiecteBacMaterieMaterieRouteImport } from './routes/subiecte-bac.materie.$materie'
+import { Route as SubiecteBacAnAnRouteImport } from './routes/subiecte-bac.an.$an'
 import { Route as ScoalaSoferiGrilaSlugRouteImport } from './routes/scoala-soferi.grila.$slug'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiPublicLogErrorRouteImport } from './routes/api/public/log-error'
@@ -191,6 +192,11 @@ const SubiecteBacMaterieMaterieRoute =
     path: '/materie/$materie',
     getParentRoute: () => SubiecteBacRoute,
   } as any)
+const SubiecteBacAnAnRoute = SubiecteBacAnAnRouteImport.update({
+  id: '/an/$an',
+  path: '/an/$an',
+  getParentRoute: () => SubiecteBacRoute,
+} as any)
 const ScoalaSoferiGrilaSlugRoute = ScoalaSoferiGrilaSlugRouteImport.update({
   id: '/scoala-soferi/grila/$slug',
   path: '/scoala-soferi/grila/$slug',
@@ -293,6 +299,7 @@ export interface FileRoutesByFullPath {
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/scoala-soferi/grila/$slug': typeof ScoalaSoferiGrilaSlugRoute
+  '/subiecte-bac/an/$an': typeof SubiecteBacAnAnRoute
   '/subiecte-bac/materie/$materie': typeof SubiecteBacMaterieMaterieRoute
   '/admitere/$uniSlug/$materieSlug/$an': typeof AdmitereUniSlugMaterieSlugAnRoute
   '/api/public/hooks/health-check': typeof ApiPublicHooksHealthCheckRoute
@@ -335,6 +342,7 @@ export interface FileRoutesByTo {
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/scoala-soferi/grila/$slug': typeof ScoalaSoferiGrilaSlugRoute
+  '/subiecte-bac/an/$an': typeof SubiecteBacAnAnRoute
   '/subiecte-bac/materie/$materie': typeof SubiecteBacMaterieMaterieRoute
   '/admitere/$uniSlug/$materieSlug/$an': typeof AdmitereUniSlugMaterieSlugAnRoute
   '/api/public/hooks/health-check': typeof ApiPublicHooksHealthCheckRoute
@@ -378,6 +386,7 @@ export interface FileRoutesById {
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/scoala-soferi/grila/$slug': typeof ScoalaSoferiGrilaSlugRoute
+  '/subiecte-bac/an/$an': typeof SubiecteBacAnAnRoute
   '/subiecte-bac/materie/$materie': typeof SubiecteBacMaterieMaterieRoute
   '/admitere/$uniSlug/$materieSlug/$an': typeof AdmitereUniSlugMaterieSlugAnRoute
   '/api/public/hooks/health-check': typeof ApiPublicHooksHealthCheckRoute
@@ -422,6 +431,7 @@ export interface FileRouteTypes {
     | '/api/public/log-error'
     | '/lovable/email/suppression'
     | '/scoala-soferi/grila/$slug'
+    | '/subiecte-bac/an/$an'
     | '/subiecte-bac/materie/$materie'
     | '/admitere/$uniSlug/$materieSlug/$an'
     | '/api/public/hooks/health-check'
@@ -464,6 +474,7 @@ export interface FileRouteTypes {
     | '/api/public/log-error'
     | '/lovable/email/suppression'
     | '/scoala-soferi/grila/$slug'
+    | '/subiecte-bac/an/$an'
     | '/subiecte-bac/materie/$materie'
     | '/admitere/$uniSlug/$materieSlug/$an'
     | '/api/public/hooks/health-check'
@@ -506,6 +517,7 @@ export interface FileRouteTypes {
     | '/api/public/log-error'
     | '/lovable/email/suppression'
     | '/scoala-soferi/grila/$slug'
+    | '/subiecte-bac/an/$an'
     | '/subiecte-bac/materie/$materie'
     | '/admitere/$uniSlug/$materieSlug/$an'
     | '/api/public/hooks/health-check'
@@ -751,6 +763,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SubiecteBacMaterieMaterieRouteImport
       parentRoute: typeof SubiecteBacRoute
     }
+    '/subiecte-bac/an/$an': {
+      id: '/subiecte-bac/an/$an'
+      path: '/an/$an'
+      fullPath: '/subiecte-bac/an/$an'
+      preLoaderRoute: typeof SubiecteBacAnAnRouteImport
+      parentRoute: typeof SubiecteBacRoute
+    }
     '/scoala-soferi/grila/$slug': {
       id: '/scoala-soferi/grila/$slug'
       path: '/scoala-soferi/grila/$slug'
@@ -889,10 +908,12 @@ const SimulareRouteWithChildren = SimulareRoute._addFileChildren(
 )
 
 interface SubiecteBacRouteChildren {
+  SubiecteBacAnAnRoute: typeof SubiecteBacAnAnRoute
   SubiecteBacMaterieMaterieRoute: typeof SubiecteBacMaterieMaterieRoute
 }
 
 const SubiecteBacRouteChildren: SubiecteBacRouteChildren = {
+  SubiecteBacAnAnRoute: SubiecteBacAnAnRoute,
   SubiecteBacMaterieMaterieRoute: SubiecteBacMaterieMaterieRoute,
 }
 
