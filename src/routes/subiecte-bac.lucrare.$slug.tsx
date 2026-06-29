@@ -5,6 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Download, Eye } from "lucide-react";
 import { getBacBySlug } from "@/lib/subiecte-bac.functions";
+type LoaderData = NonNullable<Awaited<ReturnType<typeof getBacBySlug>>>;
+type PairItem = LoaderData["pair"][number];
+type RelatedItem = LoaderData["related"][number];
+
 import { AdLeaderboard, AdInArticle } from "@/components/AdSlot";
 
 const SES: Record<string, string> = {
@@ -132,7 +136,7 @@ function Page() {
           <section className="mt-6">
             <h2 className="text-lg font-semibold">Subiect + Barem</h2>
             <div className="mt-2 grid grid-cols-1 gap-3 md:grid-cols-2">
-              {pair.map((p) => (
+              {pair.map((p: PairItem) => (
                 <Card key={p.id} className="p-3 flex items-center justify-between gap-2">
                   <div>
                     <Badge>{p.paper_type === "barem" ? "Barem" : "Subiect"}</Badge>
@@ -164,7 +168,7 @@ function Page() {
           <section className="mt-10">
             <h2 className="text-xl font-semibold">Alte variante {r.subject_name}</h2>
             <ul className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
-              {related.filter((x) => x.slug && x.slug !== r.slug).map((x) => (
+              {related.filter((x: RelatedItem) => x.slug && x.slug !== r.slug).map((x: RelatedItem) => (
                 <li key={x.slug}>
                   <Link to="/subiecte-bac/lucrare/$slug" params={{ slug: x.slug! }}
                     className="block rounded-md border bg-card px-3 py-2 text-sm hover:border-primary/40 hover:text-primary">
