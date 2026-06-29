@@ -77,10 +77,12 @@ export const Route = createFileRoute("/subiecte-bac/materie/$materie")({
   ),
 });
 
+type BacRow = Awaited<ReturnType<typeof getBacByMaterie>>["rows"][number];
+
 function Page() {
   const { name, rows } = Route.useLoaderData();
-  const byYear = new Map<number, typeof rows>();
-  rows.forEach((r) => { const a = byYear.get(r.year) ?? []; a.push(r); byYear.set(r.year, a); });
+  const byYear = new Map<number, BacRow[]>();
+  rows.forEach((r: BacRow) => { const a = byYear.get(r.year) ?? []; a.push(r); byYear.set(r.year, a); });
   const years = Array.from(byYear.keys()).sort((a, b) => b - a);
 
   return (
@@ -103,7 +105,7 @@ function Page() {
           <section key={y} className="mt-8">
             <h2 className="text-xl font-semibold">Subiecte BAC {name} {y}</h2>
             <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
-              {(byYear.get(y) ?? []).map((r) => (
+              {(byYear.get(y) ?? []).map((r: BacRow) => (
                 <Card key={r.id} className="p-4">
                   <div className="flex flex-wrap gap-2 text-xs">
                     <Badge variant="secondary">{r.year}</Badge>
