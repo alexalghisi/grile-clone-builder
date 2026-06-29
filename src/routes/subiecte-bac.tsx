@@ -226,8 +226,8 @@ function Page() {
             <ul className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
               {filtersData.materii.map((m) => (
                 <li key={m.slug}>
-                  <Link to="/subiecte-bac" search={{}} className="block rounded-md border bg-card px-3 py-2 text-sm transition hover:border-primary/40 hover:text-primary"
-                    onClick={(e) => { e.preventDefault(); setMaterie(m.slug); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
+                  <Link to="/subiecte-bac/materie/$materie" params={{ materie: m.slug }}
+                    className="block rounded-md border bg-card px-3 py-2 text-sm transition hover:border-primary/40 hover:text-primary">
                     Subiecte BAC {m.name}
                   </Link>
                 </li>
@@ -245,10 +245,10 @@ function Page() {
             <ul className="mt-4 flex flex-wrap gap-2">
               {filtersData.years.map((y) => (
                 <li key={y}>
-                  <button type="button" onClick={() => { setAn(String(y)); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                  <Link to="/subiecte-bac/an/$an" params={{ an: String(y) }}
                     className="rounded-md border bg-card px-3 py-1.5 text-sm transition hover:border-primary/40 hover:text-primary">
                     Subiecte BAC {y}
-                  </button>
+                  </Link>
                 </li>
               ))}
             </ul>

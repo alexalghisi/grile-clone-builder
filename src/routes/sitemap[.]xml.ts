@@ -66,7 +66,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           .select("slug");
         const { data: bacSubjects } = await supabaseAdmin
           .from("bac_papers")
-          .select("subject_slug");
+          .select("subject_slug, slug, year");
         const { data: admitereRows } = await supabaseAdmin
           .from("admitere_papers")
           .select("university_slug, subject_slug");
@@ -81,13 +81,28 @@ export const Route = createFileRoute("/sitemap.xml")({
           changefreq: "weekly",
           priority: "0.6",
         }));
-        const bacSubjectEntries: SitemapEntry[] = Array.from(
-          new Set((bacSubjects ?? []).map((r: any) => r.subject_slug as string)),
+        const bacRows = (bacSubjects ?? []) as Array<{ subject_slug: string; slug: string | null; year: number }>;
+        const bacMaterieEntries: SitemapEntry[] = Array.from(
+          new Set(bacRows.map((r) => r.subject_slug)),
         ).map((slug) => ({
-          path: `/subiecte-bac/${slug}`,
+          path: `/subiecte-bac/materie/${slug}`,
           changefreq: "monthly",
-          priority: "0.7",
+          priority: "0.8",
         }));
+        const bacYearEntries: SitemapEntry[] = Array.from(
+          new Set(bacRows.map((r) => r.year)),
+        ).map((y) => ({
+          path: `/subiecte-bac/an/${y}`,
+          changefreq: "monthly",
+          priority: "0.75",
+        }));
+        const bacPaperEntries: SitemapEntry[] = bacRows
+          .filter((r) => r.slug)
+          .map((r) => ({
+            path: `/subiecte-bac/lucrare/${r.slug}`,
+            changefreq: "yearly",
+            priority: "0.6",
+          }));
 
         const admitereUniSet = new Set<string>();
         const admitereSubjectSet = new Set<string>();
@@ -110,7 +125,9 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...staticEntries,
           ...uniEntries,
           ...quizEntries,
-          ...bacSubjectEntries,
+          ...bacMaterieEntries,
+          ...bacYearEntries,
+          ...bacPaperEntries,
           ...admitereUniEntries,
           ...admitereSubjEntries,
           ...scoalaCatEntries,

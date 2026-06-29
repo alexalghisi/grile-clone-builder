@@ -66,6 +66,61 @@ export const getSubiecteBacFilters = createServerFn({ method: "GET" }).handler(a
   };
 });
 
+export const getBacByMaterie = createServerFn({ method: "GET" })
+  .inputValidator((d: { slug: string }) => d)
+  .handler(async ({ data }) => {
+    const { data: rows } = await supabaseAdmin
+      .from("bac_papers")
+      .select("id, slug, year, session, subject_slug, subject_name, profil, paper_type, title, pdf_url, storage_path, source_url, variant, description")
+      .eq("subject_slug", data.slug)
+      .order("year", { ascending: false })
+      .order("session", { ascending: true })
+      .limit(2000);
+    const list = rows ?? [];
+    const name = list[0]?.subject_name ?? data.slug;
+    return { name, slug: data.slug, rows: list };
+  });
+
+export const getBacByYear = createServerFn({ method: "GET" })
+  .inputValidator((d: { year: number }) => d)
+  .handler(async ({ data }) => {
+    const { data: rows } = await supabaseAdmin
+      .from("bac_papers")
+      .select("id, slug, year, session, subject_slug, subject_name, profil, paper_type, title, pdf_url, storage_path, source_url, variant, description")
+      .eq("year", data.year)
+      .order("subject_name", { ascending: true })
+      .order("session", { ascending: true })
+      .limit(3000);
+    return { year: data.year, rows: rows ?? [] };
+  });
+
+export const getBacBySlug = createServerFn({ method: "GET" })
+  .inputValidator((d: { slug: string }) => d)
+  .handler(async ({ data }) => {
+    const { data: row } = await supabaseAdmin
+      .from("bac_papers")
+      .select("id, slug, year, session, subject_slug, subject_name, profil, paper_type, title, pdf_url, storage_path, source_url, variant, description")
+      .eq("slug", data.slug)
+      .maybeSingle();
+    if (!row) return null;
+    // related: same subject+year+session+variant (subiect+barem pair) and other variants same year
+    let pairQ = supabaseAdmin
+      .from("bac_papers")
+      .select("id, slug, paper_type, pdf_url, title")
+      .eq("subject_slug", row.subject_slug)
+      .eq("year", row.year)
+      .eq("session", row.session);
+    pairQ = row.variant == null ? pairQ.is("variant", null) : pairQ.eq("variant", row.variant);
+    const { data: pair } = await pairQ;
+    const { data: years } = await supabaseAdmin
+      .from("bac_papers")
+      .select("slug, year, session, variant")
+      .eq("subject_slug", row.subject_slug)
+      .order("year", { ascending: false })
+      .limit(20);
+    return { row, pair: pair ?? [], related: years ?? [] };
+  });
+
 const CreateInput = z.object({
   year: z.number().int().min(2000).max(2030),
   session: z.enum(SESIUNI),
