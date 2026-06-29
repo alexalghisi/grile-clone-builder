@@ -21,7 +21,6 @@ export const Route = createFileRoute('/contact')({
       { property: 'og:description', content: 'Scrie-ne pentru orice întrebare despre admitere, grile, BAC sau colaborări. Răspuns rapid pe email.' },
       { property: 'og:type', content: 'website' },
       { property: 'og:url', content: 'https://grileadmitere.ro/contact' },
-      { rel: 'canonical', href: 'https://grileadmitere.ro/contact' } as any,
     ],
     links: [{ rel: 'canonical', href: 'https://grileadmitere.ro/contact' }],
     scripts: [
