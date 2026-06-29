@@ -104,13 +104,14 @@ export const getBacBySlug = createServerFn({ method: "GET" })
       .maybeSingle();
     if (!row) return null;
     // related: same subject+year+session+variant (subiect+barem pair) and other variants same year
-    const { data: pair } = await supabaseAdmin
+    let pairQ = supabaseAdmin
       .from("bac_papers")
       .select("id, slug, paper_type, pdf_url, title")
       .eq("subject_slug", row.subject_slug)
       .eq("year", row.year)
-      .eq("session", row.session)
-      .eq("variant", row.variant);
+      .eq("session", row.session);
+    pairQ = row.variant == null ? pairQ.is("variant", null) : pairQ.eq("variant", row.variant);
+    const { data: pair } = await pairQ;
     const { data: years } = await supabaseAdmin
       .from("bac_papers")
       .select("slug, year, session, variant")
