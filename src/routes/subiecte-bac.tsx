@@ -21,14 +21,14 @@ const SESIUNI = [
 
 export const Route = createFileRoute("/subiecte-bac")({
   head: () => {
-    const title = "Subiecte Bacalaureat 2010–2026 — Arhivă Oficială PDF (Subiecte + Bareme)";
-    const description = "Subiecte și bareme Bacalaureat 2010–2026 — Română, Matematică M1/M2/M3, Istorie, Biologie, Fizică, Chimie, Geografie, Informatică, Socio-umane. Simulare, iunie–iulie, august–septembrie, rezervă. PDF oficial, gratuit.";
+    const title = "Subiecte BAC 2026 + Bareme — Arhivă Subiecte Bacalaureat 2010–2026 PDF";
+    const description = "Subiecte BAC 2026 și subiecte bacalaureat 2010–2026 cu bareme oficiale PDF: subiecte bac română, subiecte bac matematică M1/M2/M3, subiecte bac istorie, biologie, fizică, chimie, geografie, informatică. Simulare BAC, sesiunea iunie–iulie, august–septembrie, rezervă. Descarcă gratuit toate variantele de subiecte bac.";
     const url = "https://grileadmitere.ro/subiecte-bac";
     return {
       meta: [
         { title },
         { name: "description", content: description },
-        { name: "keywords", content: "subiecte bac, subiecte bacalaureat 2026, bareme bacalaureat, subiecte bac romana, subiecte bac matematica, subiecte bac istorie, subiecte bac biologie, subiecte bac fizica, subiecte bac chimie, subiecte bac geografie, subiecte bac informatica, simulare bac, subiecte edu ro, variante bac PDF" },
+        { name: "keywords", content: "subiecte bac, subiecte bac 2026, subiecte bac 2025, subiecte bac 2024, subiecte bac 2023, subiecte bacalaureat, subiecte bacalaureat 2026, subiecte bac pdf, subiecte bac rezolvate, subiecte bac oficiale, bareme bac, bareme bacalaureat, variante bac, variante bacalaureat, subiecte bac romana, subiecte bac matematica, subiecte bac matematica m1, subiecte bac matematica m2, subiecte bac matematica m3, subiecte bac istorie, subiecte bac biologie, subiecte bac fizica, subiecte bac chimie, subiecte bac geografie, subiecte bac informatica, subiecte bac logica, subiecte bac psihologie, subiecte bac economie, simulare bac, simulare bacalaureat, subiecte simulare bac, subiecte edu ro, subiecte bac edu ro, model subiect bac, modele subiecte bac, arhiva subiecte bac" },
         { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1" },
         { name: "author", content: "GrileAdmitere.ro" },
         { httpEquiv: "Content-Language", content: "ro-RO" },
@@ -77,14 +77,18 @@ export const Route = createFileRoute("/subiecte-bac")({
             "@context": "https://schema.org",
             "@type": "FAQPage",
             mainEntity: [
-              { "@type": "Question", name: "Unde găsesc subiectele oficiale de Bacalaureat?",
-                acceptedAnswer: { "@type": "Answer", text: "Pe această pagină găsești arhiva subiectelor oficiale BAC 2010–2026, descărcate de pe subiecte.edu.ro și variante.edu.ro, cu PDF de subiect și barem pentru fiecare sesiune." } },
-              { "@type": "Question", name: "Ce materii sunt acoperite?",
-                acceptedAnswer: { "@type": "Answer", text: "Toate materiile de Bacalaureat: Limba Română, Matematică (M1 Mate-Info, M2 Științe ale Naturii, M3 Pedagogic/Tehnologic), Istorie, Biologie, Fizică, Chimie, Geografie, Informatică, Socio-umane și limbi moderne." } },
-              { "@type": "Question", name: "Ce sesiuni sunt incluse?",
-                acceptedAnswer: { "@type": "Answer", text: "Simulare, sesiunea iunie–iulie, sesiunea august–septembrie și sesiunea de rezervă, pentru fiecare an din 2010 până în 2026." } },
-              { "@type": "Question", name: "Sunt gratuite subiectele și baremele?",
-                acceptedAnswer: { "@type": "Answer", text: "Da. Toate PDF-urile sunt gratuite și pot fi descărcate sau vizualizate direct în browser." } },
+              { "@type": "Question", name: "Unde găsesc subiectele BAC oficiale 2026?",
+                acceptedAnswer: { "@type": "Answer", text: "Subiectele BAC 2026 oficiale, împreună cu baremele de corectare, sunt publicate în arhiva GrileAdmitere.ro — preluate din sursele oficiale subiecte.edu.ro și variante.edu.ro, în PDF, gratuit, pentru fiecare materie și sesiune." } },
+              { "@type": "Question", name: "Ce subiecte BAC sunt disponibile pe GrileAdmitere.ro?",
+                acceptedAnswer: { "@type": "Answer", text: "Subiecte BAC la Limba Română, Matematică M1 (Mate-Info), M2 (Științe ale Naturii), M3 (Pedagogic / Tehnologic), Istorie, Biologie, Fizică, Chimie, Geografie, Informatică, Logică, Psihologie, Economie și limbi moderne — toate cu bareme PDF." } },
+              { "@type": "Question", name: "Ce sesiuni de subiecte bacalaureat acoperă arhiva?",
+                acceptedAnswer: { "@type": "Answer", text: "Toate sesiunile de Bacalaureat: simulare (națională și județeană), sesiunea iunie–iulie, sesiunea august–septembrie și sesiunea de rezervă, pentru fiecare an din 2010 până în 2026." } },
+              { "@type": "Question", name: "Sunt gratuite subiectele BAC și baremele PDF?",
+                acceptedAnswer: { "@type": "Answer", text: "Da. Toate subiectele BAC și baremele sunt gratuite. PDF-urile pot fi descărcate sau vizualizate direct în browser, fără cont și fără abonament." } },
+              { "@type": "Question", name: "Cum se pregătește un elev pentru subiectele BAC 2026?",
+                acceptedAnswer: { "@type": "Answer", text: "Cea mai eficientă metodă este rezolvarea subiectelor BAC din anii precedenți (2020–2025) împreună cu baremul, cronometrând lucrarea, urmată de simulare BAC și recapitulare pe materii." } },
+              { "@type": "Question", name: "Care sunt cele mai căutate subiecte de bacalaureat?",
+                acceptedAnswer: { "@type": "Answer", text: "Cele mai căutate sunt subiectele BAC la Română, Matematică M1, Istorie și Biologie — urmate de Fizică, Chimie, Geografie, Informatică și Anatomie." } },
             ],
           }),
         },
@@ -164,9 +168,9 @@ function Page() {
       <Header />
       <main className="container mx-auto px-4 py-8 md:py-12">
         <div className="max-w-3xl">
-          <h1 className="text-3xl font-bold sm:text-4xl">Subiecte Bacalaureat 2010–2026</h1>
+          <h1 className="text-3xl font-bold sm:text-4xl">Subiecte BAC 2026 + Subiecte Bacalaureat 2010–2026 cu Bareme PDF</h1>
           <p className="mt-3 text-muted-foreground">
-            Arhivă cu subiecte și bareme oficiale de Bacalaureat pentru toate materiile și sesiunile (simulare, iunie–iulie, august–septembrie, rezervă). Filtrează după an, materie, sesiune sau profil și descarcă PDF-ul oficial.
+            Cea mai completă arhivă de <strong>subiecte bac</strong> și <strong>subiecte bacalaureat</strong> din România: <strong>subiecte BAC oficiale</strong> și <strong>bareme</strong> pentru toate materiile (Română, Matematică M1/M2/M3, Istorie, Biologie, Fizică, Chimie, Geografie, Informatică, Logică, Psihologie, Economie) și toate sesiunile (<strong>simulare BAC</strong>, iunie–iulie, august–septembrie, rezervă), din 2010 până în 2026. Descarcă <strong>subiecte BAC PDF</strong> gratuit.
           </p>
           <nav aria-label="Breadcrumb" className="mt-3 text-xs text-muted-foreground">
             <Link to="/" className="hover:underline">Acasă</Link>
@@ -256,15 +260,22 @@ function Page() {
         )}
 
         <section className="mt-12 max-w-3xl text-sm text-muted-foreground space-y-3">
-          <h2 className="text-xl font-semibold text-foreground">Despre arhiva de subiecte Bacalaureat</h2>
-          <p>GrileAdmitere.ro centralizează <strong>toate subiectele oficiale de Bacalaureat</strong> publicate de Ministerul Educației pe subiecte.edu.ro și variante.edu.ro, din 2010 până la sesiunea 2026. Pentru fiecare probă scrisă găsești atât subiectul, cât și baremul de corectare în format PDF.</p>
-          <p>Filtrele de mai sus te ajută să găsești rapid <strong>subiectele BAC la Română, Matematică (M1, M2, M3), Istorie, Biologie, Fizică, Chimie, Geografie, Informatică</strong> și Socio-umane, pentru orice sesiune: simulare, iunie–iulie, august–septembrie sau rezervă.</p>
-          <p>Pregătirea pentru examenul de Bacalaureat este mult mai eficientă dacă rezolvi subiecte reale din anii precedenți. Folosește arhiva pentru a exersa modelele clasice, a învăța din bareme și a-ți antrena ritmul de lucru pe varianta oficială.</p>
+          <h2 className="text-xl font-semibold text-foreground">Subiecte BAC — arhivă oficială 2010–2026</h2>
+          <p>GrileAdmitere.ro centralizează <strong>toate subiectele BAC</strong> și <strong>subiectele bacalaureat</strong> publicate oficial de Ministerul Educației pe subiecte.edu.ro și variante.edu.ro, din 2010 până la <strong>subiectele BAC 2026</strong>. Pentru fiecare probă scrisă găsești <strong>subiectul BAC</strong> și <strong>baremul de corectare</strong> în format PDF, gata de descărcat.</p>
+          <p>Filtrele de mai sus te ajută să găsești rapid <strong>subiecte BAC Română</strong>, <strong>subiecte BAC Matematică (M1, M2, M3)</strong>, <strong>subiecte BAC Istorie</strong>, <strong>subiecte BAC Biologie</strong>, <strong>subiecte BAC Fizică</strong>, <strong>subiecte BAC Chimie</strong>, <strong>subiecte BAC Geografie</strong>, <strong>subiecte BAC Informatică</strong>, Logică, Psihologie și Economie — pentru orice sesiune: <strong>simulare BAC</strong>, iunie–iulie, august–septembrie sau rezervă.</p>
+          <p>Pregătirea pentru examenul de <strong>Bacalaureat 2026</strong> este mult mai eficientă dacă rezolvi <strong>subiecte BAC reale</strong> din anii precedenți. Folosește arhiva de <strong>variante BAC</strong> pentru a exersa modelele clasice, a învăța din bareme și a-ți antrena ritmul de lucru pe lucrarea oficială.</p>
+
+          <h3 className="text-base font-semibold text-foreground pt-2">Subiecte BAC pe ani — acces rapid</h3>
+          <p>Vezi <strong>subiecte BAC 2026</strong>, <strong>subiecte BAC 2025</strong>, <strong>subiecte BAC 2024</strong>, <strong>subiecte BAC 2023</strong>, <strong>subiecte BAC 2022</strong>, <strong>subiecte BAC 2021</strong>, <strong>subiecte BAC 2020</strong> și până la <strong>subiecte BAC 2010</strong> — fiecare an cu toate materiile, profilurile și baremele oficiale.</p>
+
+          <h3 className="text-base font-semibold text-foreground pt-2">Subiecte BAC pe materii — cele mai căutate</h3>
+          <p><strong>Subiecte BAC Română</strong> (proba scrisă obligatorie), <strong>subiecte BAC Matematică M1</strong> (Mate-Info), <strong>subiecte BAC Matematică M2</strong> (Științe ale Naturii), <strong>subiecte BAC Matematică M3</strong> (Pedagogic/Tehnologic), <strong>subiecte BAC Istorie</strong>, <strong>subiecte BAC Biologie</strong> (vegetală, animală, anatomie), <strong>subiecte BAC Fizică</strong>, <strong>subiecte BAC Chimie</strong> (organică, anorganică), <strong>subiecte BAC Geografie</strong>, <strong>subiecte BAC Informatică</strong> (C/C++, Pascal).</p>
 
           <h3 className="text-base font-semibold text-foreground pt-2">Întrebări frecvente</h3>
-          <details className="rounded-md border bg-card p-3"><summary className="cursor-pointer font-medium text-foreground">Sunt subiectele oficiale?</summary><p className="mt-2">Da, toate PDF-urile provin din sursele oficiale (subiecte.edu.ro / variante.edu.ro) și sunt rehostate pentru viteză și disponibilitate.</p></details>
-          <details className="rounded-md border bg-card p-3"><summary className="cursor-pointer font-medium text-foreground">Pot descărca PDF-urile?</summary><p className="mt-2">Da, fiecare subiect și barem are buton de descărcare directă.</p></details>
-          <details className="rounded-md border bg-card p-3"><summary className="cursor-pointer font-medium text-foreground">Există și simulările județene?</summary><p className="mt-2">Da, sesiunea „Simulare” include simulările naționale și județene atunci când sunt publicate oficial.</p></details>
+          <details className="rounded-md border bg-card p-3"><summary className="cursor-pointer font-medium text-foreground">Sunt subiectele BAC oficiale?</summary><p className="mt-2">Da, toate <strong>subiectele bacalaureat</strong> și baremele provin din sursele oficiale (subiecte.edu.ro / variante.edu.ro) și sunt rehostate pe GrileAdmitere.ro pentru viteză și disponibilitate.</p></details>
+          <details className="rounded-md border bg-card p-3"><summary className="cursor-pointer font-medium text-foreground">Pot descărca subiectele BAC în PDF?</summary><p className="mt-2">Da, fiecare <strong>subiect BAC</strong> și fiecare barem are buton de descărcare directă în PDF.</p></details>
+          <details className="rounded-md border bg-card p-3"><summary className="cursor-pointer font-medium text-foreground">Există și subiecte de la simulările județene?</summary><p className="mt-2">Da, sesiunea „Simulare BAC” include simulările naționale și județene atunci când sunt publicate oficial.</p></details>
+          <details className="rounded-md border bg-card p-3"><summary className="cursor-pointer font-medium text-foreground">Cum aleg subiectul BAC potrivit pentru pregătire?</summary><p className="mt-2">Filtrează după <strong>materie</strong>, <strong>an</strong>, <strong>sesiune</strong> și <strong>profil</strong>. Începe cu subiectele BAC din 2025 și 2024, apoi mergi în urmă spre 2010 pentru variație de modele.</p></details>
         </section>
       </main>
     </div>
