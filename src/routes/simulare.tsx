@@ -7,17 +7,60 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Trophy, Clock, ArrowRight } from "lucide-react";
-import { AdLeaderboard } from "@/components/AdSlot";
+import { AdLeaderboard, AdInArticle, AdSlot } from "@/components/AdSlot";
 
 export const Route = createFileRoute("/simulare")({
   head: () => ({
     meta: [
-      { title: "Simulări Admitere 2026 — Format Real Cronometrat" },
-      { name: "description", content: "Simulări admitere 2026 cronometrate, cu 6 variante de răspuns A-F, formule matematice și figuri, în format identic cu examenul real UPB/UB." },
-      { property: "og:title", content: "Simulare Admitere 2026 — Test Cronometrat Gratuit" },
-      { property: "og:description", content: "Simulări cronometrate în format real, feedback instant și rezolvare pas cu pas." },
+      { title: "Simulare Admitere 2026 Gratuit — UPB, UMF, UBB, ASE, UAIC | GrileAdmitere" },
+      { name: "description", content: "Simulare admitere 2026 gratuită cronometrată — UPB, UMF (Carol Davila, Cluj, Iași, Timișoara), UBB, ASE, UAIC, UTCN. 6 variante A–F, LaTeX, figuri, feedback instant și rezolvare pas cu pas. Format identic cu examenul real." },
+      { name: "keywords", content: "simulare admitere, simulare admitere 2026, simulare UPB, simulare UMF, simulare UBB, simulare ASE, simulare UAIC, simulare UTCN, simulare medicina, simulare politehnica, simulare informatica, test admitere, test admitere online, grile cronometrate, simulare grile" },
+      { property: "og:title", content: "Simulare Admitere 2026 — Cronometrată, Gratuită, cu Rezolvări" },
+      { property: "og:description", content: "Simulări admitere UPB, UMF, UBB, ASE, UAIC — format real, cronometrate, cu rezolvări pas cu pas. 100% gratuit." },
+      { property: "og:url", content: "https://grileadmitere.ro/simulare" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: "https://grileadmitere.ro/simulare" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Acasă", item: "https://grileadmitere.ro/" },
+            { "@type": "ListItem", position: 2, name: "Simulări Admitere", item: "https://grileadmitere.ro/simulare" },
+          ],
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Course",
+          name: "Simulare Admitere 2026",
+          description: "Simulări cronometrate pentru admiterea 2026 la UPB, UMF, UBB, ASE, UAIC, UTCN.",
+          provider: { "@type": "EducationalOrganization", name: "GrileAdmitere.ro", url: "https://grileadmitere.ro" },
+          educationalLevel: "Higher Education",
+          inLanguage: "ro-RO",
+          isAccessibleForFree: true,
+          offers: { "@type": "Offer", price: "0", priceCurrency: "RON" },
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: [
+            { "@type": "Question", name: "Cât durează o simulare de admitere?", acceptedAnswer: { "@type": "Answer", text: "Fiecare simulare are între 60 și 180 minute, în funcție de universitate — durata este identică cu examenul real de admitere." } },
+            { "@type": "Question", name: "Simulările sunt gratuite?", acceptedAnswer: { "@type": "Answer", text: "Da. Toate simulările admitere 2026 pentru UPB, UMF, UBB, ASE, UAIC, UTCN sunt 100% gratuite pe GrileAdmitere.ro." } },
+            { "@type": "Question", name: "Primesc rezolvări pas cu pas?", acceptedAnswer: { "@type": "Answer", text: "Da. La finalul simulării vezi scorul, timpul și rezolvarea completă pas cu pas la fiecare grilă." } },
+          ],
+        }),
+      },
+    ],
   }),
   component: Page,
 });
@@ -72,6 +115,15 @@ function Page() {
             ))}
           </div>
         )}
+
+        <AdInArticle />
+
+        <section className="mt-12 max-w-3xl text-sm text-muted-foreground space-y-3">
+          <h2 className="text-xl font-semibold text-foreground">Cum funcționează simularea admitere 2026</h2>
+          <p>Fiecare <strong>simulare admitere</strong> reproduce fidel proba reală: număr de întrebări, timp, format A–F, formule matematice și figuri. La final primești scorul, timpul și <strong>rezolvarea pas cu pas</strong> la fiecare grilă.</p>
+          <p>Recomandăm să dai <strong>2–3 simulări pe săptămână</strong> în lunile premergătoare admiterii — este cel mai eficient mod de a-ți antrena ritmul și de a scoate în evidență capitolele slabe.</p>
+        </section>
+        <AdSlot className="my-6" />
       </main>
     </div>
   );
