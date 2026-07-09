@@ -7,7 +7,7 @@ import { Header } from "@/components/Header";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { GraduationCap } from "lucide-react";
-import { AdSlot } from "@/components/AdSlot";
+import { AdSlot, AdInArticle, AdLeaderboard } from "@/components/AdSlot";
 
 export const Route = createFileRoute("/grile/")({
   head: () => {
@@ -82,6 +82,7 @@ function Page() {
         </p>
         <Input className="mt-6 max-w-md" placeholder="Caută universitate sau oraș…" value={q} onChange={(e) => setQ(e.target.value)} />
         <AdSlot className="my-6" />
+        <AdLeaderboard className="my-4" />
         <h2 className="mb-3 text-lg font-semibold">Lista universităților</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((u: any) => (
@@ -99,6 +100,7 @@ function Page() {
             </Link>
           ))}
         </div>
+        <AdInArticle />
         <section className="mt-10 max-w-3xl text-sm text-muted-foreground space-y-3">
           <h2 className="text-lg font-semibold text-foreground">De ce să te pregătești cu GrileAdmitere.ro</h2>
           <p>Platforma noastră adună <strong>grile</strong> reale de admitere de la cele mai importante universități din România. Fiecare <strong>grilă</strong> vine cu explicații pas cu pas scrise de <strong>profesori</strong>, ca să înțelegi raționamentul, nu doar răspunsul corect.</p>

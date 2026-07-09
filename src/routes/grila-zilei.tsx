@@ -8,16 +8,43 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CalendarDays, CheckCircle2, XCircle } from "lucide-react";
-import { AdInArticle } from "@/components/AdSlot";
+import { AdInArticle, AdLeaderboard, AdSlot } from "@/components/AdSlot";
 
 export const Route = createFileRoute("/grila-zilei")({
-  head: () => ({
-    meta: [
-      { title: "Grila Zilei — GrileAdmitere.ro" },
-      { name: "description", content: "Revino zilnic pentru a rezolva grila zilei și a-ți testa cunoștințele!" },
-    ],
-    links: [{ rel: "canonical", href: "https://grileadmitere.ro/grila-zilei" }],
-  }),
+  head: () => {
+    const title = "Grila Zilei — Întrebare Admitere Nouă în Fiecare Zi | GrileAdmitere";
+    const description = "Grila zilei — o întrebare nouă de admitere sau BAC în fiecare zi, cu rezolvare pas cu pas. Antrenează-te zilnic gratuit pentru UPB, UMF, UBB, ASE.";
+    const url = "https://grileadmitere.ro/grila-zilei";
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { name: "keywords", content: "grila zilei, grile zilnice, intrebare admitere, grila admitere zilnica, exercitiu zilnic admitere, grile bac zilnic" },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:url", content: url },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary" },
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Quiz",
+            name: title,
+            description,
+            url,
+            inLanguage: "ro-RO",
+            educationalUse: "Assessment",
+            learningResourceType: "Quiz",
+            isAccessibleForFree: true,
+          }),
+        },
+      ],
+    };
+  },
   component: Page,
 });
 
@@ -35,6 +62,7 @@ function Page() {
     <div className="min-h-screen bg-background">
       <Header />
       <main className="container mx-auto max-w-2xl px-4 py-10">
+        <AdLeaderboard className="mb-6" />
         <Badge variant="secondary" className="mb-3"><CalendarDays className="mr-1 h-3 w-3" /> {today}</Badge>
         <h1 className="text-3xl font-bold sm:text-4xl">Grila Zilei</h1>
         <p className="mt-2 text-muted-foreground">Revino zilnic pentru a rezolva grila zilei și a-ți testa cunoștințele!</p>
@@ -80,6 +108,7 @@ function Page() {
         <div className="mt-8 text-center">
           <Link to="/subiecte-admitere"><Button variant="outline">Subiecte Admitere</Button></Link>
         </div>
+        <AdSlot className="my-8" />
       </main>
     </div>
   );

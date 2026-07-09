@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getUniversity } from "@/lib/db.functions";
 import { Header } from "@/components/Header";
 import { Card } from "@/components/ui/card";
-import { AdSlot, AdLeaderboard } from "@/components/AdSlot";
+import { AdSlot, AdLeaderboard, AdInArticle } from "@/components/AdSlot";
 import { BookOpen, Trophy, Sparkles, FileText } from "lucide-react";
 
 export const Route = createFileRoute("/grile/$uniSlug")({
@@ -103,6 +103,7 @@ function Page() {
             </Link>
           ))}
         </div>
+        <AdInArticle />
         {/* Next-step CTAs to reduce bounce */}
         <section className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
           {[
