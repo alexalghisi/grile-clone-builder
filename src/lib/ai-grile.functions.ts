@@ -173,7 +173,7 @@ Format JSON cerut (correct_index între 0 și ${optionCount - 1}):
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
+        model: "openai/gpt-5.5",
         messages: [
           { role: "system", content: sys },
           { role: "user", content: user },
