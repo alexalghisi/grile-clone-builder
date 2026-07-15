@@ -144,3 +144,88 @@ export function SmartlinkButton({ children, className = "" }: { children: React.
     </a>
   );
 }
+
+/**
+ * Aggressive floating social/promo bar — dismissible after 8s auto-appear.
+ * High-CTR placement without popup blocker triggers.
+ */
+export function AdSocialBar() {
+  const [visible, setVisible] = useState(false);
+  const [closed, setClosed] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const seen = sessionStorage.getItem("ga_sb_closed");
+    if (seen) return;
+    const t = setTimeout(() => setVisible(true), 6000);
+    return () => clearTimeout(t);
+  }, []);
+  if (closed || !visible) return null;
+  return (
+    <div className="fixed left-2 right-2 top-2 z-[60] md:left-auto md:right-4 md:top-4 md:max-w-sm">
+      <div className="relative rounded-lg border border-primary/30 bg-gradient-to-r from-primary to-purple-600 p-3 pr-8 text-white shadow-2xl">
+        <button
+          type="button"
+          aria-label="Închide"
+          onClick={() => {
+            setClosed(true);
+            try { sessionStorage.setItem("ga_sb_closed", "1"); } catch {}
+          }}
+          className="absolute right-1.5 top-1.5 text-white/80 hover:text-white text-xs leading-none rounded px-1.5 py-0.5"
+        >
+          ✕
+        </button>
+        <a
+          href={SMARTLINK_URL}
+          target="_blank"
+          rel="noopener sponsored"
+          className="block"
+        >
+          <div className="text-[10px] uppercase tracking-wider opacity-80">Recomandat</div>
+          <div className="text-sm font-semibold leading-tight">
+            Simulare admitere GRATIS · vezi ce medie iei →
+          </div>
+          <div className="text-[11px] opacity-90 mt-0.5">Deblochează accesul instant</div>
+        </a>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Aggressive one-time "click anywhere" pop-under trigger — first click on page opens smartlink in new tab.
+ * Session-scoped so a returning user isn't re-prompted every second.
+ */
+export function AdPopunderTrigger() {
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      if (sessionStorage.getItem("ga_pu_done")) return;
+    } catch {}
+    let fired = false;
+    const handler = () => {
+      if (fired) return;
+      fired = true;
+      try { sessionStorage.setItem("ga_pu_done", "1"); } catch {}
+      try {
+        const w = window.open(SMARTLINK_URL, "_blank", "noopener,noreferrer");
+        // Focus back to origin so it behaves like a popunder.
+        w?.blur?.();
+        window.focus?.();
+      } catch {}
+      window.removeEventListener("click", handler, true);
+    };
+    window.addEventListener("click", handler, true);
+    return () => window.removeEventListener("click", handler, true);
+  }, []);
+  return null;
+}
+
+/** Stacked double in-article slot — 2x AdSense back to back for heavy in-content monetization. */
+export function AdInArticleStack({ className = "" }: { className?: string }) {
+  return (
+    <div className={`my-6 space-y-4 ${className}`}>
+      <AdInArticle />
+      <AdInArticle />
+    </div>
+  );
+}

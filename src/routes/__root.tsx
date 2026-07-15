@@ -10,7 +10,7 @@ import {
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
-import { AdScript, StickyBottomAd } from "@/components/AdSlot";
+import { AdScript, StickyBottomAd, AdSocialBar, AdPopunderTrigger } from "@/components/AdSlot";
 import { Toaster } from "@/components/ui/sonner";
 import { ClientErrorReporter, reportClientError } from "@/components/ClientErrorReporter";
 
@@ -197,6 +197,8 @@ function RootComponent() {
         <Outlet />
       </div>
       <StickyBottomAd />
+      <AdSocialBar />
+      <AdPopunderTrigger />
       <Toaster />
       <ClientErrorReporter />
     </QueryClientProvider>
