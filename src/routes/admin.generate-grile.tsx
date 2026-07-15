@@ -14,6 +14,7 @@ import { Sparkles, Loader2, Square } from "lucide-react";
 import {
   listSubjectsWithAdvancedCount,
   generateAdvancedBatch,
+  resetSubjectQuestions,
 } from "@/lib/ai-grile.functions";
 
 export const Route = createFileRoute("/admin/generate-grile")({
@@ -48,6 +49,7 @@ function Page() {
 
   const listFn = useServerFn(listSubjectsWithAdvancedCount);
   const genFn = useServerFn(generateAdvancedBatch);
+  const resetFn = useServerFn(resetSubjectQuestions);
 
   const { data: subjects = [] } = useQuery({
     queryKey: ["admin-subjects-advanced"],
@@ -102,6 +104,17 @@ function Page() {
     }
     setBulkActive(false);
     toast.success("Generare bulk încheiată");
+  }
+
+  async function resetSubject(subjectId: string, label: string) {
+    if (!confirm(`ȘTERGI TOATE grilele pentru "${label}"? Nu se poate anula.`)) return;
+    try {
+      const r = await resetFn({ data: { subjectId, onlyAiGenerated: false } });
+      toast.success(`${label}: șterse ${r.deleted} grile`);
+      qc.invalidateQueries({ queryKey: ["admin-subjects-advanced"] });
+    } catch (e: any) {
+      toast.error(`Reset eșuat: ${e.message}`);
+    }
   }
 
   if (!ready) return null;
@@ -165,6 +178,15 @@ function Page() {
                     {inProgress !== undefined ? (
                       <><Loader2 className="w-4 h-4 mr-1 animate-spin" /> {inProgress} noi…</>
                     ) : done ? "Complet" : "Generează 200"}
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    disabled={inProgress !== undefined}
+                    onClick={() => resetSubject(s.id, `${s.university} · ${s.name}`)}
+                    title="Șterge toate grilele acestei materii"
+                  >
+                    Reset
                   </Button>
                 </div>
               </Card>
