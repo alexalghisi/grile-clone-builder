@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Header } from "@/components/Header";
-import { AdLeaderboard, AdInArticle, StickyBottomAd } from "@/components/AdSlot";
+import { AdLeaderboard, AdInArticle } from "@/components/AdSlot";
 import {
   DRIVING_QUESTIONS,
   DRIVING_CATEGORIES,
@@ -140,7 +140,6 @@ function CategoryPage() {
           </section>
         ))}
 
-        <StickyBottomAd />
       </main>
     </div>
   );

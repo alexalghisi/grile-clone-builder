@@ -2,6 +2,7 @@ import * as React from 'react'
 import { render } from '@react-email/components'
 import { createClient } from '@supabase/supabase-js'
 import { TEMPLATES } from './email-templates/registry'
+import { getOrCreateUnsubscribeToken } from './email-unsubscribe.server'
 
 const SITE_NAME = 'GrileAdmitere'
 const SENDER_DOMAIN = 'notify.grileadmitere.ro'
@@ -39,6 +40,7 @@ export async function notifyNewLead(payload: LeadNotifyPayload): Promise<void> {
 
     const supabase = createClient(supabaseUrl, serviceKey)
     const messageId = crypto.randomUUID()
+    const unsubscribeToken = await getOrCreateUnsubscribeToken(ALERT_RECIPIENT)
 
     await supabase.from('email_send_log').insert({
       message_id: messageId,
@@ -60,6 +62,7 @@ export async function notifyNewLead(payload: LeadNotifyPayload): Promise<void> {
         purpose: 'transactional',
         label: 'lead-alert',
         idempotency_key: `lead-${messageId}`,
+        unsubscribe_token: unsubscribeToken,
         queued_at: new Date().toISOString(),
       },
     })

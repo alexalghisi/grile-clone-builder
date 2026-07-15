@@ -2,7 +2,7 @@ import { useMemo, useState, useEffect } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { z } from "zod";
 import { Header } from "@/components/Header";
-import { AdInArticle, StickyBottomAd } from "@/components/AdSlot";
+import { AdInArticle } from "@/components/AdSlot";
 import {
   DRIVING_QUESTIONS,
   DRIVING_CATEGORIES,
@@ -189,7 +189,6 @@ function TestPage() {
         )}
 
         <AdInArticle className="my-8" />
-        <StickyBottomAd />
       </main>
     </div>
   );

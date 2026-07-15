@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Header } from "@/components/Header";
-import { AdInArticle, StickyBottomAd } from "@/components/AdSlot";
+import { AdInArticle } from "@/components/AdSlot";
 import {
   DRIVING_QUESTIONS,
   DRIVING_CATEGORIES,
@@ -215,7 +215,6 @@ function GrilaPage() {
           </section>
         </article>
 
-        <StickyBottomAd />
       </main>
     </div>
   );
