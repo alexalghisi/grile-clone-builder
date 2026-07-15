@@ -22,6 +22,7 @@ export const sendContactMessage = createServerFn({ method: 'POST' })
     const { render } = await import('@react-email/components')
     const { createClient } = await import('@supabase/supabase-js')
     const { TEMPLATES } = await import('./email-templates/registry')
+    const { getOrCreateUnsubscribeToken } = await import('./email-unsubscribe.server')
 
     const supabaseUrl = process.env.SUPABASE_URL ?? import.meta.env.VITE_SUPABASE_URL
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -45,6 +46,7 @@ export const sendContactMessage = createServerFn({ method: 'POST' })
 
     const supabase = createClient(supabaseUrl, serviceKey)
     const messageId = crypto.randomUUID()
+    const unsubscribeToken = await getOrCreateUnsubscribeToken(RECIPIENT)
 
     await supabase.from('email_send_log').insert({
       message_id: messageId,
@@ -67,6 +69,7 @@ export const sendContactMessage = createServerFn({ method: 'POST' })
         purpose: 'transactional',
         label: 'contact-message',
         idempotency_key: `contact-${messageId}`,
+        unsubscribe_token: unsubscribeToken,
         queued_at: new Date().toISOString(),
       },
     })
