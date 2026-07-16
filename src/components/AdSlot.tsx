@@ -161,7 +161,7 @@ export function AdSocialBar() {
   }, []);
   if (closed || !visible) return null;
   return (
-    <div className="fixed left-2 right-2 top-2 z-[60] md:left-auto md:right-4 md:top-4 md:max-w-sm">
+    <div className="fixed left-2 right-2 bottom-[70px] z-30 md:left-auto md:right-4 md:top-4 md:bottom-auto md:z-[60] md:max-w-sm">
       <div className="relative rounded-lg border border-primary/30 bg-gradient-to-r from-primary to-purple-600 p-3 pr-8 text-white shadow-2xl">
         <button
           type="button"
@@ -196,27 +196,9 @@ export function AdSocialBar() {
  * Session-scoped so a returning user isn't re-prompted every second.
  */
 export function AdPopunderTrigger() {
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    try {
-      if (sessionStorage.getItem("ga_pu_done")) return;
-    } catch {}
-    let fired = false;
-    const handler = () => {
-      if (fired) return;
-      fired = true;
-      try { sessionStorage.setItem("ga_pu_done", "1"); } catch {}
-      try {
-        const w = window.open(SMARTLINK_URL, "_blank", "noopener,noreferrer");
-        // Focus back to origin so it behaves like a popunder.
-        w?.blur?.();
-        window.focus?.();
-      } catch {}
-      window.removeEventListener("click", handler, true);
-    };
-    window.addEventListener("click", handler, true);
-    return () => window.removeEventListener("click", handler, true);
-  }, []);
+  // Removed: hijacking the first click to open an affiliate tab created a
+  // broken/spammy UX and tripped popup blockers. Kept as a no-op export for
+  // backward compatibility with any lingering imports.
   return null;
 }
 
