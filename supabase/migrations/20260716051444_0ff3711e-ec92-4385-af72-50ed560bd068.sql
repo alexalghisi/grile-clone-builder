@@ -1,0 +1,1 @@
+DELETE FROM public.questions WHERE subject_id = '1dfe43fc-a93d-4331-86c1-f4459f706603';
