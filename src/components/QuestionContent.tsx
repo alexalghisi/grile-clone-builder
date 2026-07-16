@@ -34,6 +34,9 @@ export function QuestionContent({ text, figureUrl, className = "" }: Props) {
         remarkPlugins={[remarkGfm, remarkMath]}
         rehypePlugins={[rehypeKatex]}
         components={{
+          // Avoid <div> inside <pre> (invalid HTML → hydration mismatch #418).
+          // Our `code` renderer already emits a full block wrapper, so drop <pre>.
+          pre: ({ children }: any) => <>{children}</>,
           code({ inline, className, children, ...props }: any) {
             const match = /language-(\w+)/.exec(className || "");
             const lang = match?.[1] || "cpp";

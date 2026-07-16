@@ -1,0 +1,1 @@
+UPDATE public.health_checks SET url = 'https://grileadmitere.ro/subiecte-bac/materie/matematica', consecutive_failures = 0, last_error = NULL, last_alert_at = NULL WHERE id = '472ef6f0-baf7-41b2-b8af-dd174ef77cce';
