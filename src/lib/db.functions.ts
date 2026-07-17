@@ -163,7 +163,7 @@ export const getSimulation = createServerFn({ method: "GET" })
               .from("simulation_purchases")
               .select("id")
               .eq("user_id", userId)
-              .eq("simulation_id", (sim as any).id)
+              .eq("simulation_slug", (sim as any).slug)
               .maybeSingle();
             if (purchase) hasAccess = true;
           }
