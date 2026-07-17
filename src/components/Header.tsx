@@ -14,7 +14,6 @@ const NAV = [
   { to: "/scoala-soferi", label: "Școală șoferi" },
   { to: "/tutoriale", label: "Tutoriale" },
   { to: "/contact", label: "Contact" },
-  { to: "/preturi", label: "Prețuri" },
 ] as const;
 
 export function Header() {
