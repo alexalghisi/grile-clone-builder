@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { getRequestHeader } from "@tanstack/react-start/server";
 
 function srv() {
   return supabaseAdmin;
@@ -147,11 +148,39 @@ export const getSimulation = createServerFn({ method: "GET" })
       .eq("slug", data.slug)
       .maybeSingle();
     if (!sim) return null;
+
+    // Gate premium content: verify authenticated user has an active purchase
+    if ((sim as any).is_premium) {
+      let hasAccess = false;
+      const authHeader = getRequestHeader("authorization") ?? getRequestHeader("Authorization");
+      if (authHeader?.startsWith("Bearer ")) {
+        const token = authHeader.slice("Bearer ".length).trim();
+        try {
+          const { data: userData } = await sb.auth.getUser(token);
+          const userId = userData?.user?.id;
+          if (userId) {
+            const { data: purchase } = await sb
+              .from("simulation_purchases")
+              .select("id")
+              .eq("user_id", userId)
+              .eq("simulation_slug", (sim as any).slug)
+              .maybeSingle();
+            if (purchase) hasAccess = true;
+          }
+        } catch {
+          // fall through - no access
+        }
+      }
+      if (!hasAccess) {
+        return { simulation: sim, questions: [], locked: true };
+      }
+    }
+
     const { data: rows } = await sb
       .from("simulation_questions")
       .select("order_index, questions(id, question_text, options, correct_index, explanation, figure_url, solution_md, problem_number)")
       .eq("simulation_id", sim.id)
       .order("order_index", { ascending: true });
     const questions = (rows ?? []).map((r: any) => r.questions).filter(Boolean);
-    return { simulation: sim, questions };
+    return { simulation: sim, questions, locked: false };
   });
