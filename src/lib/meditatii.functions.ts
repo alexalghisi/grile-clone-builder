@@ -12,6 +12,18 @@ const LeadSchema = z.object({
   page_url: z.string().max(500).optional(),
 });
 
+function escapeHtml(value: string | undefined | null): string {
+  if (value === null || value === undefined) return "-";
+  const str = String(value);
+  if (!str) return "-";
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 export const submitMeditatiiLead = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => LeadSchema.parse(d))
   .handler(async ({ data }) => {
@@ -26,12 +38,12 @@ export const submitMeditatiiLead = createServerFn({ method: "POST" })
           to: "alexalghisi@gmail.com",
           subject: `[Meditații] Lead nou — ${data.subject}`,
           html: `<h2>Cerere meditații</h2>
-            <p><strong>Materie:</strong> ${data.subject}</p>
-            <p><strong>Nivel:</strong> ${data.level ?? "-"}</p>
-            <p><strong>Contact:</strong> ${data.contact} (${data.contact_type})</p>
-            <p><strong>Buget:</strong> ${data.budget ?? "-"}</p>
-            <p><strong>Mesaj:</strong> ${data.message ?? "-"}</p>
-            <p><strong>Pagină:</strong> ${data.page_url ?? "-"}</p>`,
+            <p><strong>Materie:</strong> ${escapeHtml(data.subject)}</p>
+            <p><strong>Nivel:</strong> ${escapeHtml(data.level)}</p>
+            <p><strong>Contact:</strong> ${escapeHtml(data.contact)} (${escapeHtml(data.contact_type)})</p>
+            <p><strong>Buget:</strong> ${escapeHtml(data.budget)}</p>
+            <p><strong>Mesaj:</strong> ${escapeHtml(data.message)}</p>
+            <p><strong>Pagină:</strong> ${escapeHtml(data.page_url)}</p>`,
         },
       });
     } catch (e) {
