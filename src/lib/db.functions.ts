@@ -1,6 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
-import { getRequestHeader } from "@tanstack/react-start/server";
 
 function srv() {
   return supabaseAdmin;
