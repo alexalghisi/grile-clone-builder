@@ -177,7 +177,7 @@ function Page() {
                   return (
                     <div key={i} className={`flex items-start gap-3 rounded-md border p-3 text-sm ${cls}`}>
                       <span className="font-bold text-primary">{String.fromCharCode(65 + i)})</span>
-                      <span className="flex-1"><QuestionContent text={opt} className="[&_p]:my-0" /></span>
+                      <div className="flex-1"><QuestionContent text={opt} className="[&_p]:my-0" /></div>
                     </div>
                   );
                 })}
@@ -255,14 +255,17 @@ function Page() {
             {q.options.map((opt, i) => {
               const isSel = sel === i;
               return (
-                <button
+                <div
                   key={i}
+                  role="button"
+                  tabIndex={0}
                   onClick={() => setAnswers({ ...answers, [q.id]: i })}
-                  className={`flex w-full items-start gap-3 rounded-md border p-3 text-left text-sm transition ${isSel ? "border-primary bg-primary/5" : "hover:border-primary/40"}`}
+                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setAnswers({ ...answers, [q.id]: i }); } }}
+                  className={`flex w-full cursor-pointer items-start gap-3 rounded-md border p-3 text-left text-sm transition ${isSel ? "border-primary bg-primary/5" : "hover:border-primary/40"}`}
                 >
                   <span className="font-bold text-primary">{String.fromCharCode(65 + i)})</span>
-                  <span className="flex-1"><QuestionContent text={opt} className="[&_p]:my-0" /></span>
-                </button>
+                  <div className="flex-1"><QuestionContent text={opt} className="[&_p]:my-0" /></div>
+                </div>
               );
             })}
           </div>
