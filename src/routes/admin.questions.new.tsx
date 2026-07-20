@@ -238,7 +238,7 @@ function Page() {
                 {options.map((opt, i) => opt.trim() && (
                   <div key={i} className={`flex items-start gap-3 rounded-md border p-3 text-sm ${i === correctIndex ? "border-green-600 bg-green-50 dark:bg-green-950/30" : ""}`}>
                     <span className="font-bold text-primary">{LABELS[i]})</span>
-                    <span className="flex-1"><QuestionContent text={opt} className="[&_p]:my-0" /></span>
+                    <div className="flex-1"><QuestionContent text={opt} className="[&_p]:my-0" /></div>
                   </div>
                 ))}
               </div>
