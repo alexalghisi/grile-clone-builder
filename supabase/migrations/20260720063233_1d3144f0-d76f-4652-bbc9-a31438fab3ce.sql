@@ -1,0 +1,1 @@
+UPDATE public.health_checks SET max_response_ms = GREATEST(max_response_ms, 15000), consecutive_failures = 0, last_alert_at = NULL WHERE label IN ('Admitere hub', 'Subiecte BAC hub') OR url LIKE '%/admitere' OR url LIKE '%/subiecte-bac';

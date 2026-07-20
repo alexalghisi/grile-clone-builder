@@ -350,17 +350,20 @@ function Page() {
                 setAnswers({ ...answers, [q.id]: next });
               };
               return (
-                <button
+                <div
                   key={i}
-                  disabled={isRevealed}
-                  onClick={chooseAnswer}
-                  className={`flex w-full items-start gap-3 rounded-md border p-3 text-left text-sm transition ${cls}`}
+                  role="button"
+                  tabIndex={isRevealed ? -1 : 0}
+                  aria-disabled={isRevealed}
+                  onClick={() => { if (!isRevealed) chooseAnswer(); }}
+                  onKeyDown={(e) => { if (!isRevealed && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); chooseAnswer(); } }}
+                  className={`flex w-full cursor-pointer items-start gap-3 rounded-md border p-3 text-left text-sm transition ${cls} ${isRevealed ? "pointer-events-none" : ""}`}
                 >
                   <span className="font-bold text-primary">{String.fromCharCode(65 + i)})</span>
-                  <span className="flex-1">
+                  <div className="flex-1">
                     <QuestionContent text={opt} className="[&_p]:my-0" />
-                  </span>
-                </button>
+                  </div>
+                </div>
               );
             })}
           </div>
