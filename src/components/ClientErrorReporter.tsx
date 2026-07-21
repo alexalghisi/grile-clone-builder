@@ -28,6 +28,15 @@ function once(key: string) {
 export function ClientErrorReporter() {
   useEffect(() => {
     const onError = (ev: ErrorEvent) => {
+      const msg = ev.message || "";
+      if (
+        msg.includes("ResizeObserver loop") ||
+        msg.includes("ResizeObserver loop completed with undelivered notifications") ||
+        msg === "Script error." ||
+        msg.includes("Non-Error promise rejection captured")
+      ) {
+        return;
+      }
       const key = `${ev.message}|${ev.filename}:${ev.lineno}`;
       if (!once(key)) return;
       send({
@@ -41,6 +50,7 @@ export function ClientErrorReporter() {
     const onRejection = (ev: PromiseRejectionEvent) => {
       const reason: any = ev.reason;
       const message = reason?.message ? String(reason.message) : String(reason);
+      if (message.includes("ResizeObserver loop")) return;
       const key = `rejection|${message}`;
       if (!once(key)) return;
       send({
