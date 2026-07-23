@@ -156,7 +156,7 @@ export function AdSocialBar() {
     if (typeof window === "undefined") return;
     const seen = sessionStorage.getItem("ga_sb_closed");
     if (seen) return;
-    const t = setTimeout(() => setVisible(true), 6000);
+    const t = setTimeout(() => setVisible(true), 3000);
     return () => clearTimeout(t);
   }, []);
   if (closed || !visible) return null;
