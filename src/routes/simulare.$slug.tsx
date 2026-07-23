@@ -279,6 +279,10 @@ function Page() {
           </div>
         </Card>
 
+        {(idx + 1) % 5 === 0 && idx < questions.length - 1 && (
+          <div className="mt-4"><AdInArticle /></div>
+        )}
+
         <div className="mt-4 grid grid-cols-10 gap-1 sm:grid-cols-15 md:grid-cols-20">
           {questions.map((qq, i) => {
             const isCurrent = i === idx;
