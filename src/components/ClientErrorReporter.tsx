@@ -49,8 +49,12 @@ export function ClientErrorReporter() {
     };
     const onRejection = (ev: PromiseRejectionEvent) => {
       const reason: any = ev.reason;
+      if (reason === undefined || reason === null) return;
       const message = reason?.message ? String(reason.message) : String(reason);
+      if (!message || message === "undefined" || message === "null" || message === "[object Object]") return;
       if (message.includes("ResizeObserver loop")) return;
+      if (message.includes("Load failed") || message.includes("NetworkError") || message.includes("Failed to fetch")) return;
+      if (message.includes("AbortError") || message.includes("The operation was aborted")) return;
       const key = `rejection|${message}`;
       if (!once(key)) return;
       send({

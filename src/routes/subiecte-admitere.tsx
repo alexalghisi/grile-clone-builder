@@ -34,12 +34,12 @@ function Page() {
 
         <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {SUBJECTS.map((s) => (
-            <Link key={s.slug} to="/quiz/$slug" params={{ slug: s.slug }}>
+            <Link key={s.slug} to="/quiz/$slug" params={{ slug: s.slug }} className="block">
               <Card className="h-full p-6 transition hover:border-primary/40 hover:shadow-md">
                 <div className="text-3xl">{s.icon}</div>
                 <h2 className="mt-3 text-lg font-semibold">{s.name}</h2>
                 <p className="mt-1 text-sm text-muted-foreground">{s.desc}</p>
-                <Button variant="outline" size="sm" className="mt-4">Începe Quiz <ArrowRight className="ml-1 h-3 w-3" /></Button>
+                <span className="mt-4 inline-flex items-center rounded-md border px-3 py-1.5 text-sm font-medium">Începe Quiz <ArrowRight className="ml-1 h-3 w-3" /></span>
               </Card>
             </Link>
           ))}
@@ -48,7 +48,7 @@ function Page() {
         <Card className="mt-12 p-6 sm:p-8">
           <h3 className="text-xl font-semibold">Pregătire Completă</h3>
           <p className="mt-2 text-sm text-muted-foreground">Accesează grile de admitere după universitate și subiecte specifice</p>
-          <Link to="/grile"><Button className="mt-4">Navighează la Grile</Button></Link>
+          <Link to="/grile" className="mt-4 inline-flex"><Button>Navighează la Grile</Button></Link>
         </Card>
       </main>
     </div>
