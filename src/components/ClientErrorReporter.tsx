@@ -29,11 +29,27 @@ export function ClientErrorReporter() {
   useEffect(() => {
     const onError = (ev: ErrorEvent) => {
       const msg = ev.message || "";
+      const filename = ev.filename || "";
+      const stackStr = ev.error?.stack ? String(ev.error.stack) : "";
       if (
         msg.includes("ResizeObserver loop") ||
         msg.includes("ResizeObserver loop completed with undelivered notifications") ||
         msg === "Script error." ||
-        msg.includes("Non-Error promise rejection captured")
+        msg.includes("Non-Error promise rejection captured") ||
+        // Third-party ad/analytics noise — cannot fix from our side
+        msg.includes("adsbygoogle") ||
+        msg.includes("TagError") ||
+        msg.includes("No slot size for availableWidth") ||
+        filename.includes("googlesyndication") ||
+        filename.includes("googletagmanager") ||
+        filename.includes("google-analytics") ||
+        filename.includes("highperformanceformat") ||
+        filename.includes("profitablecpmratenetwork") ||
+        stackStr.includes("googlesyndication") ||
+        stackStr.includes("adsbygoogle") ||
+        // Minified React #418/#423/#425 are hydration mismatches usually caused by
+        // browser extensions injecting DOM; recoverable, not actionable.
+        /Minified React error #(418|421|422|423|425)/.test(msg)
       ) {
         return;
       }
@@ -55,6 +71,8 @@ export function ClientErrorReporter() {
       if (message.includes("ResizeObserver loop")) return;
       if (message.includes("Load failed") || message.includes("NetworkError") || message.includes("Failed to fetch")) return;
       if (message.includes("AbortError") || message.includes("The operation was aborted")) return;
+      if (message.includes("adsbygoogle") || message.includes("TagError")) return;
+      if (/Minified React error #(418|421|422|423|425)/.test(message)) return;
       const key = `rejection|${message}`;
       if (!once(key)) return;
       send({
