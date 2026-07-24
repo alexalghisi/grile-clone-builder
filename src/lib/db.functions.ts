@@ -148,6 +148,14 @@ export const getSimulation = createServerFn({ method: "GET" })
       .maybeSingle();
     if (!sim) return null;
 
+    // Gate premium content server-side: never return questions/answers for
+    // is_premium simulations from this public endpoint. Purchase-verified
+    // access must go through a dedicated authenticated server function that
+    // checks simulation_purchases / subscriptions for the current user.
+    if ((sim as any).is_premium) {
+      return { simulation: sim, questions: [], locked: true };
+    }
+
     const { data: rows } = await sb
       .from("simulation_questions")
       .select("order_index, questions(id, question_text, options, correct_index, explanation, figure_url, solution_md, problem_number)")

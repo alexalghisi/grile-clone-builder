@@ -13,12 +13,32 @@ const ALERT_RECIPIENT = 'alexalghisi@gmail.com'
 // fires many times in a short window. Per-worker; best-effort.
 const seen = new Map<string, number>()
 const THROTTLE_MS = 5 * 60 * 1000
+const GLOBAL_MAX_PER_WINDOW = 20
+const globalTimestamps: number[] = []
+
+function normalizeMessage(msg: string): string {
+  return (msg || '')
+    .toLowerCase()
+    .replace(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/g, '<uuid>')
+    .replace(/0x[0-9a-f]+/g, '<hex>')
+    .replace(/\d+/g, '<n>')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 160)
+}
 
 function shouldSend(key: string): boolean {
   const now = Date.now()
+  // Global cap regardless of key — hard ceiling on outbound alert volume.
+  while (globalTimestamps.length && now - globalTimestamps[0] > THROTTLE_MS) {
+    globalTimestamps.shift()
+  }
+  if (globalTimestamps.length >= GLOBAL_MAX_PER_WINDOW) return false
+
   const last = seen.get(key) ?? 0
   if (now - last < THROTTLE_MS) return false
   seen.set(key, now)
+  globalTimestamps.push(now)
   if (seen.size > 200) {
     for (const [k, v] of seen) if (now - v > THROTTLE_MS) seen.delete(k)
   }
@@ -40,7 +60,7 @@ export async function sendErrorAlert(payload: AlertPayload): Promise<void> {
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
     if (!supabaseUrl || !serviceKey) return
 
-    const key = `${payload.source}|${(payload.message || '').slice(0, 120)}|${payload.url || ''}`
+    const key = `${payload.source}|${normalizeMessage(payload.message)}|${payload.url || ''}`
     if (!shouldSend(key)) return
 
     const entry = TEMPLATES['error-alert']
