@@ -17,10 +17,24 @@ export function AdScript() {
 export function AdSlot({ slot, format = "auto", className = "" }: { slot?: string; format?: string; className?: string }) {
   const ref = useRef<HTMLModElement>(null);
   useEffect(() => {
-    try {
-      // @ts-ignore
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    } catch {}
+    const el = ref.current;
+    if (!el) return;
+    let pushed = false;
+    const tryPush = () => {
+      if (pushed) return;
+      const w = el.getBoundingClientRect().width;
+      if (w < 1) return;
+      pushed = true;
+      try {
+        // @ts-ignore
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch {}
+    };
+    tryPush();
+    if (pushed) return;
+    const ro = new ResizeObserver(tryPush);
+    ro.observe(el);
+    return () => ro.disconnect();
   }, []);
   return (
     <ins
@@ -37,16 +51,32 @@ export function AdSlot({ slot, format = "auto", className = "" }: { slot?: strin
 
 /** AdSense "in-article" — native-looking, low-friction in-content ad. */
 export function AdInArticle({ slot, className = "" }: { slot?: string; className?: string }) {
+  const ref = useRef<HTMLModElement>(null);
   useEffect(() => {
-    try {
-      // @ts-ignore
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-    } catch {}
+    const el = ref.current;
+    if (!el) return;
+    let pushed = false;
+    const tryPush = () => {
+      if (pushed) return;
+      const w = el.getBoundingClientRect().width;
+      if (w < 1) return;
+      pushed = true;
+      try {
+        // @ts-ignore
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch {}
+    };
+    tryPush();
+    if (pushed) return;
+    const ro = new ResizeObserver(tryPush);
+    ro.observe(el);
+    return () => ro.disconnect();
   }, []);
   return (
     <div className={`my-6 ${className}`}>
       <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1 text-center">Reclamă</div>
       <ins
+        ref={ref}
         className="adsbygoogle block"
         style={{ display: "block", textAlign: "center" }}
         data-ad-layout="in-article"
