@@ -73,6 +73,11 @@ export function ClientErrorReporter() {
       if (message.includes("AbortError") || message.includes("The operation was aborted")) return;
       if (message.includes("adsbygoogle") || message.includes("TagError")) return;
       if (/Minified React error #(418|421|422|423|425)/.test(message)) return;
+      if (
+        message.includes("sessionStorage") ||
+        message.includes("localStorage") ||
+        message.includes("Access is denied for this document")
+      ) return;
       const key = `rejection|${message}`;
       if (!once(key)) return;
       send({
