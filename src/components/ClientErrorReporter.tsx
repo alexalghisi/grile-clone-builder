@@ -2,6 +2,14 @@ import { useEffect } from "react";
 
 function send(payload: Record<string, unknown>) {
   try {
+    const msg = String((payload as any)?.message || "");
+    if (
+      msg.includes("sessionStorage") ||
+      msg.includes("localStorage") ||
+      msg.includes("Access is denied for this document")
+    ) {
+      return;
+    }
     const body = JSON.stringify(payload);
     if (navigator.sendBeacon) {
       const blob = new Blob([body], { type: "application/json" });
