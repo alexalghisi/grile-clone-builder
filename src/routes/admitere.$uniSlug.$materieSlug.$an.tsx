@@ -139,9 +139,11 @@ function Page() {
               <h2 className="text-xl font-semibold">Navighează între ani</h2>
               <div className="mt-3 flex flex-wrap gap-2">
                 {data.all_years.map((y: number) => (
-                  <Link key={y} to="/admitere/$uniSlug/$materieSlug/$an" params={{ uniSlug: params.uniSlug, materieSlug: params.materieSlug, an: String(y) }}>
-                    <Button size="sm" variant={y === Number(params.an) ? "default" : "outline"}>{y}</Button>
-                  </Link>
+                  <Button key={y} asChild size="sm" variant={y === Number(params.an) ? "default" : "outline"}>
+                    <Link to="/admitere/$uniSlug/$materieSlug/$an" params={{ uniSlug: params.uniSlug, materieSlug: params.materieSlug, an: String(y) }}>
+                      {y}
+                    </Link>
+                  </Button>
                 ))}
               </div>
             </section>

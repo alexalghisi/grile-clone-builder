@@ -105,7 +105,7 @@ function Page() {
         <AlertTriangle className="mx-auto h-12 w-12 text-muted-foreground" />
         <h1 className="mt-4 text-2xl font-bold">Simulare indisponibilă</h1>
         <p className="mt-2 text-muted-foreground">Nu am găsit această simulare.</p>
-        <Link to="/simulare"><Button className="mt-6">Vezi simulările</Button></Link>
+        <Button asChild className="mt-6"><Link to="/simulare">Vezi simulările</Link></Button>
       </main>
     </div>
   );

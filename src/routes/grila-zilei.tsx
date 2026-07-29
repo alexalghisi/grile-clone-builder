@@ -106,7 +106,7 @@ function Page() {
         {picked !== null && <AdInArticle />}
 
         <div className="mt-8 text-center">
-          <Link to="/subiecte-admitere"><Button variant="outline">Subiecte Admitere</Button></Link>
+          <Button asChild variant="outline"><Link to="/subiecte-admitere">Subiecte Admitere</Link></Button>
         </div>
         <AdSlot className="my-8" />
       </main>

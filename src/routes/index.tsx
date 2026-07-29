@@ -113,16 +113,16 @@ function Index() {
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Link to="/simulare">
-                <Button size="lg" className="h-12 [background-image:var(--gradient-hero)] px-6 text-base shadow-[var(--shadow-glow)] hover:opacity-95">
+              <Button asChild size="lg" className="h-12 [background-image:var(--gradient-hero)] px-6 text-base shadow-[var(--shadow-glow)] hover:opacity-95">
+                <Link to="/simulare">
                   <Trophy className="mr-2 h-4 w-4" /> Începe o simulare
-                </Button>
-              </Link>
-              <Link to="/grile">
-                <Button size="lg" variant="outline" className="h-12 px-6 text-base">
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="h-12 px-6 text-base">
+                <Link to="/grile">
                   Vezi grile pe materii <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </div>
 
             <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
@@ -245,9 +245,9 @@ function Index() {
           <p className="mt-3 max-w-2xl text-muted-foreground">
             Simulare admitere UPB, UBB, UTCN, UMF și 100+ universități. 30 de grile cu cronometru, în format identic cu examenul real. Feedback instant cu explicații la fiecare greșeală.
           </p>
-          <Link to="/simulare">
-            <Button size="lg" className="mt-6"><Trophy className="mr-2 h-4 w-4" /> Începe o simulare gratuită</Button>
-          </Link>
+          <Button asChild size="lg" className="mt-6">
+            <Link to="/simulare"><Trophy className="mr-2 h-4 w-4" /> Începe o simulare gratuită</Link>
+          </Button>
         </section>
 
         {/* Why */}

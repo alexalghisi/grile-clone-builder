@@ -48,7 +48,7 @@ function Page() {
         <Card className="mt-12 p-6 sm:p-8">
           <h3 className="text-xl font-semibold">Pregătire Completă</h3>
           <p className="mt-2 text-sm text-muted-foreground">Accesează grile de admitere după universitate și subiecte specifice</p>
-          <Link to="/grile" className="mt-4 inline-flex"><Button>Navighează la Grile</Button></Link>
+          <Button asChild className="mt-4"><Link to="/grile">Navighează la Grile</Link></Button>
         </Card>
       </main>
     </div>

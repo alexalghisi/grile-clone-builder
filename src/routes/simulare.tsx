@@ -108,9 +108,9 @@ function Page() {
                   <span className="flex items-center gap-1"><Clock className="h-4 w-4" />{s.duration_minutes} min</span>
                   <span className="flex items-center gap-1"><Trophy className="h-4 w-4" />{s.total_questions} probleme</span>
                 </div>
-                <Link to="/simulare/$slug" params={{ slug: s.slug }} className="mt-4 block">
-                  <Button className="w-full">Începe <ArrowRight className="ml-2 h-4 w-4" /></Button>
-                </Link>
+                <Button asChild className="mt-4 w-full">
+                  <Link to="/simulare/$slug" params={{ slug: s.slug }}>Începe <ArrowRight className="ml-2 h-4 w-4" /></Link>
+                </Button>
               </Card>
             ))}
           </div>

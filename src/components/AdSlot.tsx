@@ -2,6 +2,63 @@ import { useEffect, useRef, useState } from "react";
 
 const PUB_ID = "ca-pub-4079300108937036";
 const SMARTLINK_URL = "https://www.profitablecpmratenetwork.com/rb3h7gyjnd?key=3640d7c71ce0ba1cecb15ee392442c42";
+const ADSENSE_READY_MIN_WIDTH = 250;
+
+function readSessionFlag(key: string) {
+  try {
+    return typeof window !== "undefined" && window.sessionStorage.getItem(key) === "1";
+  } catch {
+    return false;
+  }
+}
+
+function writeSessionFlag(key: string) {
+  try {
+    if (typeof window !== "undefined") window.sessionStorage.setItem(key, "1");
+  } catch {}
+}
+
+function FallbackDisplayAd({ className = "" }: { className?: string }) {
+  return (
+    <>
+      <AdMobileBanner className={className} />
+      <AdLeaderboard className={className} />
+    </>
+  );
+}
+
+function useAdsensePush<T extends HTMLElement>(ref: React.RefObject<T | null>, enabled: boolean) {
+  useEffect(() => {
+    const el = ref.current;
+    if (!enabled || !el || typeof window === "undefined") return;
+    let pushed = false;
+    let frame = 0;
+    const tryPush = () => {
+      if (pushed) return;
+      const width = Math.floor(el.getBoundingClientRect().width);
+      if (width < ADSENSE_READY_MIN_WIDTH || el.offsetParent === null) return;
+      pushed = true;
+      frame = window.requestAnimationFrame(() => {
+        try {
+          // @ts-expect-error Google injects this queue globally.
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        } catch {}
+      });
+    };
+    tryPush();
+    if (pushed) return () => window.cancelAnimationFrame(frame);
+    if (typeof ResizeObserver === "undefined") {
+      const t = window.setTimeout(tryPush, 500);
+      return () => window.clearTimeout(t);
+    }
+    const ro = new ResizeObserver(tryPush);
+    ro.observe(el);
+    return () => {
+      ro.disconnect();
+      if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, [enabled, ref]);
+}
 
 export function AdScript() {
   return (
@@ -16,33 +73,18 @@ export function AdScript() {
 /** Google AdSense responsive slot */
 export function AdSlot({ slot, format = "auto", className = "" }: { slot?: string; format?: string; className?: string }) {
   const ref = useRef<HTMLModElement>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    let pushed = false;
-    const tryPush = () => {
-      if (pushed) return;
-      const w = el.getBoundingClientRect().width;
-      if (w < 1) return;
-      pushed = true;
-      try {
-        // @ts-ignore
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-      } catch {}
-    };
-    tryPush();
-    if (pushed) return;
-    const ro = new ResizeObserver(tryPush);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
+  const hasValidSlot = Boolean(slot && slot !== "0000000000");
+  useAdsensePush(ref, hasValidSlot);
+  if (!hasValidSlot) {
+    return <FallbackDisplayAd className={className} />;
+  }
   return (
     <ins
       ref={ref}
       className={`adsbygoogle block ${className}`}
-      style={{ display: "block" }}
+      style={{ display: "block", minWidth: ADSENSE_READY_MIN_WIDTH, minHeight: format === "fluid" ? 250 : 90 }}
       data-ad-client={PUB_ID}
-      data-ad-slot={slot ?? "0000000000"}
+      data-ad-slot={slot}
       data-ad-format={format}
       data-full-width-responsive="true"
     />
@@ -52,37 +94,22 @@ export function AdSlot({ slot, format = "auto", className = "" }: { slot?: strin
 /** AdSense "in-article" — native-looking, low-friction in-content ad. */
 export function AdInArticle({ slot, className = "" }: { slot?: string; className?: string }) {
   const ref = useRef<HTMLModElement>(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    let pushed = false;
-    const tryPush = () => {
-      if (pushed) return;
-      const w = el.getBoundingClientRect().width;
-      if (w < 1) return;
-      pushed = true;
-      try {
-        // @ts-ignore
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-      } catch {}
-    };
-    tryPush();
-    if (pushed) return;
-    const ro = new ResizeObserver(tryPush);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
+  const hasValidSlot = Boolean(slot && slot !== "0000000000");
+  useAdsensePush(ref, hasValidSlot);
+  if (!hasValidSlot) {
+    return <FallbackDisplayAd className={`my-6 ${className}`} />;
+  }
   return (
     <div className={`my-6 ${className}`}>
       <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1 text-center">Reclamă</div>
       <ins
         ref={ref}
         className="adsbygoogle block"
-        style={{ display: "block", textAlign: "center" }}
+        style={{ display: "block", minWidth: ADSENSE_READY_MIN_WIDTH, minHeight: 250, textAlign: "center" }}
         data-ad-layout="in-article"
         data-ad-format="fluid"
         data-ad-client={PUB_ID}
-        data-ad-slot={slot ?? "0000000000"}
+        data-ad-slot={slot}
       />
     </div>
   );
@@ -109,7 +136,7 @@ function AdsterraBanner({
       height={height}
       scrolling="no"
       frameBorder={0}
-      sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
+      sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox"
       className={`mx-auto block max-w-full ${className}`}
       style={{ width, height, border: 0 }}
     />
@@ -184,8 +211,7 @@ export function AdSocialBar() {
   const [closed, setClosed] = useState(false);
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const seen = sessionStorage.getItem("ga_sb_closed");
-    if (seen) return;
+    if (readSessionFlag("ga_sb_closed")) return;
     const t = setTimeout(() => setVisible(true), 3000);
     return () => clearTimeout(t);
   }, []);
@@ -198,7 +224,7 @@ export function AdSocialBar() {
           aria-label="Închide"
           onClick={() => {
             setClosed(true);
-            try { sessionStorage.setItem("ga_sb_closed", "1"); } catch {}
+            writeSessionFlag("ga_sb_closed");
           }}
           className="absolute right-1.5 top-1.5 text-white/80 hover:text-white text-xs leading-none rounded px-1.5 py-0.5"
         >

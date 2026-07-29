@@ -306,7 +306,11 @@ function Page() {
                 <span className="text-sm font-medium">{r.subject_name}</span>
                 <span className="text-xs text-muted-foreground truncate max-w-md">{r.title}</span>
                 <div className="ml-auto flex gap-1">
-                  {r.pdf_url && <a href={r.pdf_url} target="_blank" rel="noopener noreferrer"><Button size="sm" variant="outline">PDF</Button></a>}
+                  {r.pdf_url && (
+                    <Button asChild size="sm" variant="outline">
+                      <a href={r.pdf_url} target="_blank" rel="noopener noreferrer">PDF</a>
+                    </Button>
+                  )}
                   <Button size="sm" variant="ghost" onClick={() => handleDelete(r.id)}><Trash2 className="h-3 w-3" /></Button>
                 </div>
               </div>

@@ -57,14 +57,14 @@ export function Header() {
             </>
           ) : (
             <>
-              <Link to="/autentificare" className="hidden sm:block">
-                <Button size="sm" variant="ghost">Conectare</Button>
-              </Link>
-              <Link to="/autentificare">
-                <Button size="sm" className="[background-image:var(--gradient-hero)] shadow-[var(--shadow-glow)] hover:opacity-95">
+              <Button asChild size="sm" variant="ghost" className="hidden sm:inline-flex">
+                <Link to="/autentificare">Conectare</Link>
+              </Button>
+              <Button asChild size="sm" className="[background-image:var(--gradient-hero)] shadow-[var(--shadow-glow)] hover:opacity-95">
+                <Link to="/autentificare">
                   Începe gratuit <ArrowRight className="ml-1 h-3.5 w-3.5" />
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </>
           )}
           <Sheet open={open} onOpenChange={setOpen}>

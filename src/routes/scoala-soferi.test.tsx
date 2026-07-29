@@ -42,10 +42,19 @@ export const Route = createFileRoute("/scoala-soferi/test")({
   }),
 });
 
-function pickRandom<T>(arr: T[], n: number): T[] {
+function seededRandom(seed: number) {
+  let value = seed || 1;
+  return () => {
+    value = (value * 1664525 + 1013904223) % 4294967296;
+    return value / 4294967296;
+  };
+}
+
+function pickRandom<T>(arr: T[], n: number, seed: number): T[] {
   const a = [...arr];
+  const random = seededRandom(seed);
   for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+    const j = Math.floor(random() * (i + 1));
     [a[i], a[j]] = [a[j], a[i]];
   }
   return a.slice(0, n);
@@ -59,7 +68,8 @@ function TestPage() {
   const [seed, setSeed] = useState(0);
   const questions = useMemo<DrivingQuestion[]>(() => {
     const pool = DRIVING_QUESTIONS.filter((q) => q.category === code);
-    return pickRandom(pool, Math.min(26, pool.length));
+    const categorySeed = code.split("").reduce((sum, char) => sum + char.charCodeAt(0), 0);
+    return pickRandom(pool, Math.min(26, pool.length), categorySeed + seed);
   }, [code, seed]);
 
   const [answers, setAnswers] = useState<Record<number, number[]>>({});

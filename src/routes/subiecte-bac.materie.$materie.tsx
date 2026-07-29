@@ -117,16 +117,16 @@ function Page() {
                   <h3 className="mt-2 text-base font-semibold">{r.title}</h3>
                   {r.pdf_url && (
                     <div className="mt-3 flex gap-2">
-                      <a href={r.pdf_url} target="_blank" rel="noopener noreferrer">
-                        <Button size="sm" variant="outline"><Eye className="mr-1 h-3 w-3" />Vezi PDF</Button>
-                      </a>
-                      <a href={r.pdf_url} download>
-                        <Button size="sm" variant="ghost"><Download className="mr-1 h-3 w-3" />Descarcă</Button>
-                      </a>
+                      <Button asChild size="sm" variant="outline">
+                        <a href={r.pdf_url} target="_blank" rel="noopener noreferrer"><Eye className="mr-1 h-3 w-3" />Vezi PDF</a>
+                      </Button>
+                      <Button asChild size="sm" variant="ghost">
+                        <a href={r.pdf_url} download><Download className="mr-1 h-3 w-3" />Descarcă</a>
+                      </Button>
                       {r.slug && (
-                        <Link to="/subiecte-bac/lucrare/$slug" params={{ slug: r.slug }}>
-                          <Button size="sm" variant="ghost">Detalii</Button>
-                        </Link>
+                        <Button asChild size="sm" variant="ghost">
+                          <Link to="/subiecte-bac/lucrare/$slug" params={{ slug: r.slug }}>Detalii</Link>
+                        </Button>
                       )}
                     </div>
                   )}
