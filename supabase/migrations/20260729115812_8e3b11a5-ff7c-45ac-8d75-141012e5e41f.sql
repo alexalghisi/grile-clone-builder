@@ -1,0 +1,1 @@
+UPDATE public.health_checks SET max_response_ms = 15000 WHERE max_response_ms < 15000;
