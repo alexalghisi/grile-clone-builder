@@ -18,7 +18,16 @@ function writeSessionFlag(key: string) {
   } catch {}
 }
 
-function useAdsensePush(ref: React.RefObject<HTMLElement | null>, enabled: boolean) {
+function FallbackDisplayAd({ className = "" }: { className?: string }) {
+  return (
+    <>
+      <AdMobileBanner className={className} />
+      <AdLeaderboard className={className} />
+    </>
+  );
+}
+
+function useAdsensePush<T extends HTMLElement>(ref: React.RefObject<T | null>, enabled: boolean) {
   useEffect(() => {
     const el = ref.current;
     if (!enabled || !el || typeof window === "undefined") return;
@@ -67,7 +76,7 @@ export function AdSlot({ slot, format = "auto", className = "" }: { slot?: strin
   const hasValidSlot = Boolean(slot && slot !== "0000000000");
   useAdsensePush(ref, hasValidSlot);
   if (!hasValidSlot) {
-    return <AdMobileBanner className={className} />;
+    return <FallbackDisplayAd className={className} />;
   }
   return (
     <ins
@@ -88,7 +97,7 @@ export function AdInArticle({ slot, className = "" }: { slot?: string; className
   const hasValidSlot = Boolean(slot && slot !== "0000000000");
   useAdsensePush(ref, hasValidSlot);
   if (!hasValidSlot) {
-    return <AdLeaderboard className={`my-6 ${className}`} />;
+    return <FallbackDisplayAd className={`my-6 ${className}`} />;
   }
   return (
     <div className={`my-6 ${className}`}>
