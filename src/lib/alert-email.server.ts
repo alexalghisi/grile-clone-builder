@@ -56,6 +56,28 @@ export interface AlertPayload {
 
 export async function sendErrorAlert(payload: AlertPayload): Promise<void> {
   try {
+    // Server-side suppression: drop noisy/known-benign client errors even if
+    // they slipped past the client-side filter. These are not actionable.
+    const msg = payload.message || ''
+    const stack = payload.stack || ''
+    const combined = `${msg}\n${stack}`
+    const IGNORED_PATTERNS: RegExp[] = [
+      /Minified React error #(418|421|422|423|425)/,
+      /ResizeObserver loop/i,
+      /adsbygoogle/i,
+      /TagError/,
+      /No slot size for availableWidth/i,
+      /googlesyndication|googletagmanager|google-analytics|highperformanceformat|profitablecpmratenetwork/i,
+      /sessionStorage|localStorage/i,
+      /Access is denied for this document/i,
+      /Load failed|NetworkError|Failed to fetch/i,
+      /AbortError|The operation was aborted/i,
+      /Non-Error promise rejection captured/i,
+      /^Script error\.?$/,
+    ]
+    if (IGNORED_PATTERNS.some((re) => re.test(combined))) return
+    if (!msg || msg === 'undefined' || msg === 'null' || msg === '[object Object]') return
+
     const supabaseUrl = import.meta.env.VITE_SUPABASE_URL ?? process.env.SUPABASE_URL
     const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
     if (!supabaseUrl || !serviceKey) return
