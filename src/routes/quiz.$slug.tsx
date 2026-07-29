@@ -226,9 +226,9 @@ function Page() {
               <Button onClick={() => { setIdx(0); setAnswers({}); setRevealed({}); setDone(false); setSeconds(0); }}>
                 <RotateCcw className="mr-2 h-4 w-4" />Reîncepe
               </Button>
-              <Link to="/grile/$uniSlug" params={{ uniSlug: (data.subject as any).universities?.slug ?? "" }}>
-                <Button variant="outline">Înapoi</Button>
-              </Link>
+              <Button asChild variant="outline">
+                <Link to="/grile/$uniSlug" params={{ uniSlug: (data.subject as any).universities?.slug ?? "" }}>Înapoi</Link>
+              </Button>
             </div>
           </Card>
 
@@ -241,11 +241,11 @@ function Page() {
               <div className="text-sm text-muted-foreground">
                 {(next as any).universities?.short_name ?? ""} · pregătire recomandată
               </div>
-              <Link to="/quiz/$slug" params={{ slug: next.slug }} className="mt-4 block">
-                <Button size="lg" className="w-full">
+              <Button asChild size="lg" className="mt-4 w-full">
+                <Link to="/quiz/$slug" params={{ slug: next.slug }}>
                   Grila următoare <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </Card>
           )}
 

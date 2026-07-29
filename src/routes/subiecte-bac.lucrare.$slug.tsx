@@ -121,12 +121,12 @@ function Page() {
 
         {r.pdf_url && (
           <div className="mt-5 flex flex-wrap gap-2">
-            <a href={r.pdf_url} target="_blank" rel="noopener noreferrer">
-              <Button><Eye className="mr-1 h-4 w-4" />Deschide PDF</Button>
-            </a>
-            <a href={r.pdf_url} download>
-              <Button variant="outline"><Download className="mr-1 h-4 w-4" />Descarcă PDF</Button>
-            </a>
+            <Button asChild>
+              <a href={r.pdf_url} target="_blank" rel="noopener noreferrer"><Eye className="mr-1 h-4 w-4" />Deschide PDF</a>
+            </Button>
+            <Button asChild variant="outline">
+              <a href={r.pdf_url} download><Download className="mr-1 h-4 w-4" />Descarcă PDF</a>
+            </Button>
           </div>
         )}
 
@@ -143,9 +143,9 @@ function Page() {
                     <div className="mt-1 text-sm">{p.title}</div>
                   </div>
                   {p.slug && p.slug !== r.slug && (
-                    <Link to="/subiecte-bac/lucrare/$slug" params={{ slug: p.slug }}>
-                      <Button size="sm" variant="outline">Deschide</Button>
-                    </Link>
+                    <Button asChild size="sm" variant="outline">
+                      <Link to="/subiecte-bac/lucrare/$slug" params={{ slug: p.slug }}>Deschide</Link>
+                    </Button>
                   )}
                 </Card>
               ))}
