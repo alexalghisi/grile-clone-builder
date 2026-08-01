@@ -2,6 +2,13 @@ import { createClient } from '@supabase/supabase-js'
 import { sendErrorAlert } from './alert-email.server'
 
 const ALERT_THROTTLE_MS = 30 * 60 * 1000
+// A single bad response is almost always a deploy/cold-start blip. Only page
+// the owner once a check has failed on consecutive runs.
+const ALERT_AFTER_CONSECUTIVE_FAILURES = 2
+const RETRY_ATTEMPTS = 3
+const RETRY_DELAY_MS = 2500
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
 function getAdmin() {
   const url = process.env.SUPABASE_URL ?? import.meta.env.VITE_SUPABASE_URL
@@ -24,29 +31,40 @@ export async function runHealthChecks(): Promise<{ checked: number; failed: numb
 
   await Promise.all(
     checks.map(async (c: any) => {
-      const startedAt = Date.now()
       let status = 0
       let error: string | null = null
       let responseMs = 0
-      try {
-        const controller = new AbortController()
-        const timeout = setTimeout(() => controller.abort(), 10_000)
-        const res = await fetch(c.url, {
-          signal: controller.signal,
-          headers: { 'User-Agent': 'GrileAdmitereHealthCheck/1.0' },
-          redirect: 'follow',
-        })
-        clearTimeout(timeout)
-        status = res.status
-        responseMs = Date.now() - startedAt
-      } catch (e: any) {
-        error = e?.message ? String(e.message) : String(e)
-        responseMs = Date.now() - startedAt
+      let statusOk = false
+      let speedOk = false
+      let ok = false
+
+      for (let attempt = 1; attempt <= RETRY_ATTEMPTS; attempt++) {
+        const startedAt = Date.now()
+        status = 0
+        error = null
+        try {
+          const controller = new AbortController()
+          const timeout = setTimeout(() => controller.abort(), 15_000)
+          const res = await fetch(c.url, {
+            signal: controller.signal,
+            headers: { 'User-Agent': 'GrileAdmitereHealthCheck/1.0' },
+            redirect: 'follow',
+          })
+          clearTimeout(timeout)
+          status = res.status
+          responseMs = Date.now() - startedAt
+        } catch (e: any) {
+          error = e?.message ? String(e.message) : String(e)
+          responseMs = Date.now() - startedAt
+        }
+
+        statusOk = status === c.expected_status
+        speedOk = responseMs <= c.max_response_ms
+        ok = statusOk && speedOk && !error
+        if (ok) break
+        if (attempt < RETRY_ATTEMPTS) await sleep(RETRY_DELAY_MS)
       }
 
-      const statusOk = status === c.expected_status
-      const speedOk = responseMs <= c.max_response_ms
-      const ok = statusOk && speedOk && !error
       const consecutive = ok ? 0 : (c.consecutive_failures ?? 0) + 1
 
       await supabase
@@ -64,7 +82,8 @@ export async function runHealthChecks(): Promise<{ checked: number; failed: numb
         failed += 1
         const lastAlert = c.last_alert_at ? new Date(c.last_alert_at).getTime() : 0
         const throttled = now - lastAlert < ALERT_THROTTLE_MS
-        if (!throttled) {
+        const confirmed = consecutive >= ALERT_AFTER_CONSECUTIVE_FAILURES
+        if (!throttled && confirmed) {
           const reason = error
             ? `Eroare rețea: ${error}`
             : !statusOk
