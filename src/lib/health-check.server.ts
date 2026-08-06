@@ -61,11 +61,24 @@ export async function runHealthChecks(): Promise<{ checked: number; failed: numb
         statusOk = status === c.expected_status
         speedOk = responseMs <= c.max_response_ms
         ok = statusOk && speedOk && !error
+        const reasonLabel = ok
+          ? 'ok'
+          : error
+            ? `network_error: ${error}`
+            : !statusOk
+              ? `bad_status: got ${status}, expected ${c.expected_status}`
+              : `slow: ${responseMs}ms > ${c.max_response_ms}ms`
+        console.log(
+          `[health-check] ${c.label} (${c.url}) attempt ${attempt}/${RETRY_ATTEMPTS} — status=${status} latency=${responseMs}ms statusOk=${statusOk} speedOk=${speedOk} result=${reasonLabel}`,
+        )
         if (ok) break
         if (attempt < RETRY_ATTEMPTS) await sleep(RETRY_DELAY_MS)
       }
 
       const consecutive = ok ? 0 : (c.consecutive_failures ?? 0) + 1
+      console.log(
+        `[health-check] ${c.label} final — ok=${ok} status=${status} latency=${responseMs}ms consecutive_failures=${consecutive}`,
+      )
 
       await supabase
         .from('health_checks')
