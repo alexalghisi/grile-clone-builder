@@ -71,9 +71,6 @@ export async function sendErrorAlert(payload: AlertPayload): Promise<void> {
     if (IGNORED_PATTERNS.some((re) => re.test(combined))) return
     if (!msg || msg === 'undefined' || msg === 'null' || msg === '[object Object]') return
 
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL ?? process.env.SUPABASE_URL
-    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-    if (!supabaseUrl || !serviceKey) return
 
     const key = `${payload.source}|${normalizeMessage(payload.message)}|${payload.url || ''}`
     if (!shouldSend(key)) return

@@ -32,10 +32,24 @@ export const submitMeditatiiLead = createServerFn({ method: "POST" })
 
     // Best-effort email notification via queued mailer (if configured)
     try {
-      await supabaseAdmin.rpc("enqueue_email", {
-        queue_name: "transactional",
-        payload: {
+      const { sendLovableEmail } = await import("@lovable.dev/email-js");
+      const html = `<h2>Cerere meditații</h2>
+            <p><strong>Materie:</strong> ${escapeHtml(data.subject)}</p>
+            <p><strong>Nivel:</strong> ${escapeHtml(data.level)}</p>
+            <p><strong>Contact:</strong> ${escapeHtml(data.contact)} (${escapeHtml(data.contact_type)})</p>
+            <p><strong>Buget:</strong> ${escapeHtml(data.budget)}</p>
+            <p><strong>Mesaj:</strong> ${escapeHtml(data.message)}</p>
+            <p><strong>Pagină:</strong> ${escapeHtml(data.page_url)}</p>`;
+      await sendLovableEmail(
+        {
           to: "alexalghisi@gmail.com",
+          from: "Grileadmitere.ro <noreply@grileadmitere.ro>",
+          sender_domain: "notify.grileadmitere.ro",
+          purpose: "transactional",
+          label: "meditatii-lead",
+          idempotency_key: `meditatii-${crypto.randomUUID()}`,
+          html,
+          text: html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim(),
           subject: `[Meditații] Lead nou — ${data.subject}`,
           html: `<h2>Cerere meditații</h2>
             <p><strong>Materie:</strong> ${escapeHtml(data.subject)}</p>
