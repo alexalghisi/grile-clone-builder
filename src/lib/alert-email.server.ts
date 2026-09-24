@@ -1,12 +1,5 @@
-import * as React from 'react'
-import { render } from '@react-email/components'
-import { createClient } from '@supabase/supabase-js'
-import { TEMPLATES } from './email-templates/registry'
-import { getOrCreateUnsubscribeToken } from './email-unsubscribe.server'
+import { sendAndLog } from './email-log.server'
 
-const SITE_NAME = 'GrileAdmitere'
-const SENDER_DOMAIN = 'notify.grileadmitere.ro'
-const FROM_DOMAIN = 'grileadmitere.ro'
 const ALERT_RECIPIENT = 'alexalghisi@gmail.com'
 
 // Simple in-memory throttle so we don't spam the inbox if the same error
@@ -78,15 +71,9 @@ export async function sendErrorAlert(payload: AlertPayload): Promise<void> {
     if (IGNORED_PATTERNS.some((re) => re.test(combined))) return
     if (!msg || msg === 'undefined' || msg === 'null' || msg === '[object Object]') return
 
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL ?? process.env.SUPABASE_URL
-    const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-    if (!supabaseUrl || !serviceKey) return
 
     const key = `${payload.source}|${normalizeMessage(payload.message)}|${payload.url || ''}`
     if (!shouldSend(key)) return
-
-    const entry = TEMPLATES['error-alert']
-    if (!entry) return
 
     const data = {
       source: payload.source,
@@ -98,38 +85,9 @@ export async function sendErrorAlert(payload: AlertPayload): Promise<void> {
       extra: payload.extra ? JSON.stringify(payload.extra, null, 2).slice(0, 4000) : '',
     }
 
-    const element = React.createElement(entry.component, data)
-    const html = await render(element)
-    const text = await render(element, { plainText: true })
-    const subject = typeof entry.subject === 'function' ? entry.subject(data) : entry.subject
-
-    const supabase = createClient(supabaseUrl, serviceKey)
-    const messageId = crypto.randomUUID()
-    const unsubscribeToken = await getOrCreateUnsubscribeToken(ALERT_RECIPIENT)
-
-    await supabase.from('email_send_log').insert({
-      message_id: messageId,
-      template_name: 'error-alert',
-      recipient_email: ALERT_RECIPIENT,
-      status: 'pending',
-    })
-
-    await supabase.rpc('enqueue_email', {
-      queue_name: 'transactional_emails',
-      payload: {
-        message_id: messageId,
-        to: ALERT_RECIPIENT,
-        from: `${SITE_NAME} Alerts <alerts@${FROM_DOMAIN}>`,
-        sender_domain: SENDER_DOMAIN,
-        subject,
-        html,
-        text,
-        purpose: 'transactional',
-        label: 'error-alert',
-        idempotency_key: `alert-${messageId}`,
-        unsubscribe_token: unsubscribeToken,
-        queued_at: new Date().toISOString(),
-      },
+    await sendAndLog('error-alert', ALERT_RECIPIENT, {
+      templateData: data,
+      idempotencyKey: `alert-${crypto.randomUUID()}`,
     })
   } catch (e) {
     console.error('sendErrorAlert failed', e)
