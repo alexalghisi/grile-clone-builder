@@ -31,7 +31,6 @@ import { Route as QuizSlugRouteImport } from './routes/quiz.$slug'
 import { Route as ProfesoriMaterieRouteImport } from './routes/profesori.$materie'
 import { Route as LpGrileAdmitereRouteImport } from './routes/lp.grile-admitere'
 import { Route as GrileUniSlugRouteImport } from './routes/grile.$uniSlug'
-import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as AdmitereUniSlugRouteImport } from './routes/admitere.$uniSlug'
 import { Route as AdminSubiecteBacRouteImport } from './routes/admin.subiecte-bac'
 import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
@@ -40,14 +39,11 @@ import { Route as SubiecteBacMaterieMaterieRouteImport } from './routes/subiecte
 import { Route as SubiecteBacLucrareSlugRouteImport } from './routes/subiecte-bac.lucrare.$slug'
 import { Route as SubiecteBacAnAnRouteImport } from './routes/subiecte-bac.an.$an'
 import { Route as ScoalaSoferiGrilaSlugRouteImport } from './routes/scoala-soferi.grila.$slug'
-import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as LovableEmailEventsRouteImport } from './routes/lovable/email/events'
 import { Route as ApiPublicLogErrorRouteImport } from './routes/api/public/log-error'
 import { Route as AdmitereUniSlugMaterieSlugRouteImport } from './routes/admitere.$uniSlug.$materieSlug'
 import { Route as AdminQuestionsNewRouteImport } from './routes/admin.questions.new'
-import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
-import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as ApiPublicHooksScrapeAdmitereRouteImport } from './routes/api/public/hooks/scrape-admitere'
 import { Route as ApiPublicHooksHealthCheckRouteImport } from './routes/api/public/hooks/health-check'
 import { Route as AdmitereUniSlugMaterieSlugAnRouteImport } from './routes/admitere.$uniSlug.$materieSlug.$an'
@@ -162,11 +158,6 @@ const GrileUniSlugRoute = GrileUniSlugRouteImport.update({
   path: '/grile/$uniSlug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
-  id: '/email/unsubscribe',
-  path: '/email/unsubscribe',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdmitereUniSlugRoute = AdmitereUniSlugRouteImport.update({
   id: '/$uniSlug',
   path: '/$uniSlug',
@@ -208,11 +199,6 @@ const ScoalaSoferiGrilaSlugRoute = ScoalaSoferiGrilaSlugRouteImport.update({
   path: '/scoala-soferi/grila/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
-  id: '/lovable/email/suppression',
-  path: '/lovable/email/suppression',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const LovableEmailEventsRoute = LovableEmailEventsRouteImport.update({
   id: '/lovable/email/events',
   path: '/lovable/email/events',
@@ -234,22 +220,10 @@ const AdminQuestionsNewRoute = AdminQuestionsNewRouteImport.update({
   path: '/admin/questions/new',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LovableEmailTransactionalSendRoute =
-  LovableEmailTransactionalSendRouteImport.update({
-    id: '/lovable/email/transactional/send',
-    path: '/lovable/email/transactional/send',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const LovableEmailTransactionalPreviewRoute =
   LovableEmailTransactionalPreviewRouteImport.update({
     id: '/lovable/email/transactional/preview',
     path: '/lovable/email/transactional/preview',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const LovableEmailQueueProcessRoute =
-  LovableEmailQueueProcessRouteImport.update({
-    id: '/lovable/email/queue/process',
-    path: '/lovable/email/queue/process',
     getParentRoute: () => rootRouteImport,
   } as any)
 const ApiPublicHooksScrapeAdmitereRoute =
@@ -287,7 +261,6 @@ export interface FileRoutesByFullPath {
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/subiecte-bac': typeof AdminSubiecteBacRoute
   '/admitere/$uniSlug': typeof AdmitereUniSlugRouteWithChildren
-  '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/lp/grile-admitere': typeof LpGrileAdmitereRoute
   '/profesori/$materie': typeof ProfesoriMaterieRoute
@@ -303,7 +276,6 @@ export interface FileRoutesByFullPath {
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
   '/lovable/email/events': typeof LovableEmailEventsRoute
-  '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/scoala-soferi/grila/$slug': typeof ScoalaSoferiGrilaSlugRoute
   '/subiecte-bac/an/$an': typeof SubiecteBacAnAnRoute
   '/subiecte-bac/lucrare/$slug': typeof SubiecteBacLucrareSlugRoute
@@ -311,9 +283,7 @@ export interface FileRoutesByFullPath {
   '/admitere/$uniSlug/$materieSlug/$an': typeof AdmitereUniSlugMaterieSlugAnRoute
   '/api/public/hooks/health-check': typeof ApiPublicHooksHealthCheckRoute
   '/api/public/hooks/scrape-admitere': typeof ApiPublicHooksScrapeAdmitereRoute
-  '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
-  '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -331,7 +301,6 @@ export interface FileRoutesByTo {
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/subiecte-bac': typeof AdminSubiecteBacRoute
   '/admitere/$uniSlug': typeof AdmitereUniSlugRouteWithChildren
-  '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/lp/grile-admitere': typeof LpGrileAdmitereRoute
   '/profesori/$materie': typeof ProfesoriMaterieRoute
@@ -347,7 +316,6 @@ export interface FileRoutesByTo {
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
   '/lovable/email/events': typeof LovableEmailEventsRoute
-  '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/scoala-soferi/grila/$slug': typeof ScoalaSoferiGrilaSlugRoute
   '/subiecte-bac/an/$an': typeof SubiecteBacAnAnRoute
   '/subiecte-bac/lucrare/$slug': typeof SubiecteBacLucrareSlugRoute
@@ -355,9 +323,7 @@ export interface FileRoutesByTo {
   '/admitere/$uniSlug/$materieSlug/$an': typeof AdmitereUniSlugMaterieSlugAnRoute
   '/api/public/hooks/health-check': typeof ApiPublicHooksHealthCheckRoute
   '/api/public/hooks/scrape-admitere': typeof ApiPublicHooksScrapeAdmitereRoute
-  '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
-  '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -376,7 +342,6 @@ export interface FileRoutesById {
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/subiecte-bac': typeof AdminSubiecteBacRoute
   '/admitere/$uniSlug': typeof AdmitereUniSlugRouteWithChildren
-  '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/grile/$uniSlug': typeof GrileUniSlugRoute
   '/lp/grile-admitere': typeof LpGrileAdmitereRoute
   '/profesori/$materie': typeof ProfesoriMaterieRoute
@@ -392,7 +357,6 @@ export interface FileRoutesById {
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
   '/lovable/email/events': typeof LovableEmailEventsRoute
-  '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/scoala-soferi/grila/$slug': typeof ScoalaSoferiGrilaSlugRoute
   '/subiecte-bac/an/$an': typeof SubiecteBacAnAnRoute
   '/subiecte-bac/lucrare/$slug': typeof SubiecteBacLucrareSlugRoute
@@ -400,9 +364,7 @@ export interface FileRoutesById {
   '/admitere/$uniSlug/$materieSlug/$an': typeof AdmitereUniSlugMaterieSlugAnRoute
   '/api/public/hooks/health-check': typeof ApiPublicHooksHealthCheckRoute
   '/api/public/hooks/scrape-admitere': typeof ApiPublicHooksScrapeAdmitereRoute
-  '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
-  '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -422,7 +384,6 @@ export interface FileRouteTypes {
     | '/admin/leads'
     | '/admin/subiecte-bac'
     | '/admitere/$uniSlug'
-    | '/email/unsubscribe'
     | '/grile/$uniSlug'
     | '/lp/grile-admitere'
     | '/profesori/$materie'
@@ -438,7 +399,6 @@ export interface FileRouteTypes {
     | '/admitere/$uniSlug/$materieSlug'
     | '/api/public/log-error'
     | '/lovable/email/events'
-    | '/lovable/email/suppression'
     | '/scoala-soferi/grila/$slug'
     | '/subiecte-bac/an/$an'
     | '/subiecte-bac/lucrare/$slug'
@@ -446,9 +406,7 @@ export interface FileRouteTypes {
     | '/admitere/$uniSlug/$materieSlug/$an'
     | '/api/public/hooks/health-check'
     | '/api/public/hooks/scrape-admitere'
-    | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
-    | '/lovable/email/transactional/send'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -466,7 +424,6 @@ export interface FileRouteTypes {
     | '/admin/leads'
     | '/admin/subiecte-bac'
     | '/admitere/$uniSlug'
-    | '/email/unsubscribe'
     | '/grile/$uniSlug'
     | '/lp/grile-admitere'
     | '/profesori/$materie'
@@ -482,7 +439,6 @@ export interface FileRouteTypes {
     | '/admitere/$uniSlug/$materieSlug'
     | '/api/public/log-error'
     | '/lovable/email/events'
-    | '/lovable/email/suppression'
     | '/scoala-soferi/grila/$slug'
     | '/subiecte-bac/an/$an'
     | '/subiecte-bac/lucrare/$slug'
@@ -490,9 +446,7 @@ export interface FileRouteTypes {
     | '/admitere/$uniSlug/$materieSlug/$an'
     | '/api/public/hooks/health-check'
     | '/api/public/hooks/scrape-admitere'
-    | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
-    | '/lovable/email/transactional/send'
   id:
     | '__root__'
     | '/'
@@ -510,7 +464,6 @@ export interface FileRouteTypes {
     | '/admin/leads'
     | '/admin/subiecte-bac'
     | '/admitere/$uniSlug'
-    | '/email/unsubscribe'
     | '/grile/$uniSlug'
     | '/lp/grile-admitere'
     | '/profesori/$materie'
@@ -526,7 +479,6 @@ export interface FileRouteTypes {
     | '/admitere/$uniSlug/$materieSlug'
     | '/api/public/log-error'
     | '/lovable/email/events'
-    | '/lovable/email/suppression'
     | '/scoala-soferi/grila/$slug'
     | '/subiecte-bac/an/$an'
     | '/subiecte-bac/lucrare/$slug'
@@ -534,9 +486,7 @@ export interface FileRouteTypes {
     | '/admitere/$uniSlug/$materieSlug/$an'
     | '/api/public/hooks/health-check'
     | '/api/public/hooks/scrape-admitere'
-    | '/lovable/email/queue/process'
     | '/lovable/email/transactional/preview'
-    | '/lovable/email/transactional/send'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -554,7 +504,6 @@ export interface RootRouteChildren {
   AdminGenerateGrileRoute: typeof AdminGenerateGrileRoute
   AdminLeadsRoute: typeof AdminLeadsRoute
   AdminSubiecteBacRoute: typeof AdminSubiecteBacRoute
-  EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   GrileUniSlugRoute: typeof GrileUniSlugRoute
   LpGrileAdmitereRoute: typeof LpGrileAdmitereRoute
   ProfesoriMaterieRoute: typeof ProfesoriMaterieRoute
@@ -567,13 +516,10 @@ export interface RootRouteChildren {
   AdminQuestionsNewRoute: typeof AdminQuestionsNewRoute
   ApiPublicLogErrorRoute: typeof ApiPublicLogErrorRoute
   LovableEmailEventsRoute: typeof LovableEmailEventsRoute
-  LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
   ScoalaSoferiGrilaSlugRoute: typeof ScoalaSoferiGrilaSlugRoute
   ApiPublicHooksHealthCheckRoute: typeof ApiPublicHooksHealthCheckRoute
   ApiPublicHooksScrapeAdmitereRoute: typeof ApiPublicHooksScrapeAdmitereRoute
-  LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
-  LovableEmailTransactionalSendRoute: typeof LovableEmailTransactionalSendRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -732,13 +678,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GrileUniSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/email/unsubscribe': {
-      id: '/email/unsubscribe'
-      path: '/email/unsubscribe'
-      fullPath: '/email/unsubscribe'
-      preLoaderRoute: typeof EmailUnsubscribeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admitere/$uniSlug': {
       id: '/admitere/$uniSlug'
       path: '/$uniSlug'
@@ -795,13 +734,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScoalaSoferiGrilaSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/lovable/email/suppression': {
-      id: '/lovable/email/suppression'
-      path: '/lovable/email/suppression'
-      fullPath: '/lovable/email/suppression'
-      preLoaderRoute: typeof LovableEmailSuppressionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/lovable/email/events': {
       id: '/lovable/email/events'
       path: '/lovable/email/events'
@@ -830,25 +762,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminQuestionsNewRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/lovable/email/transactional/send': {
-      id: '/lovable/email/transactional/send'
-      path: '/lovable/email/transactional/send'
-      fullPath: '/lovable/email/transactional/send'
-      preLoaderRoute: typeof LovableEmailTransactionalSendRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/lovable/email/transactional/preview': {
       id: '/lovable/email/transactional/preview'
       path: '/lovable/email/transactional/preview'
       fullPath: '/lovable/email/transactional/preview'
       preLoaderRoute: typeof LovableEmailTransactionalPreviewRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/lovable/email/queue/process': {
-      id: '/lovable/email/queue/process'
-      path: '/lovable/email/queue/process'
-      fullPath: '/lovable/email/queue/process'
-      preLoaderRoute: typeof LovableEmailQueueProcessRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/hooks/scrape-admitere': {
@@ -968,7 +886,6 @@ const rootRouteChildren: RootRouteChildren = {
   AdminGenerateGrileRoute: AdminGenerateGrileRoute,
   AdminLeadsRoute: AdminLeadsRoute,
   AdminSubiecteBacRoute: AdminSubiecteBacRoute,
-  EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   GrileUniSlugRoute: GrileUniSlugRoute,
   LpGrileAdmitereRoute: LpGrileAdmitereRoute,
   ProfesoriMaterieRoute: ProfesoriMaterieRoute,
@@ -981,13 +898,10 @@ const rootRouteChildren: RootRouteChildren = {
   AdminQuestionsNewRoute: AdminQuestionsNewRoute,
   ApiPublicLogErrorRoute: ApiPublicLogErrorRoute,
   LovableEmailEventsRoute: LovableEmailEventsRoute,
-  LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
   ScoalaSoferiGrilaSlugRoute: ScoalaSoferiGrilaSlugRoute,
   ApiPublicHooksHealthCheckRoute: ApiPublicHooksHealthCheckRoute,
   ApiPublicHooksScrapeAdmitereRoute: ApiPublicHooksScrapeAdmitereRoute,
-  LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
-  LovableEmailTransactionalSendRoute: LovableEmailTransactionalSendRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
