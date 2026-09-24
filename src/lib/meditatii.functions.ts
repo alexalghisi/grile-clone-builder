@@ -51,15 +51,9 @@ export const submitMeditatiiLead = createServerFn({ method: "POST" })
           html,
           text: html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim(),
           subject: `[Meditații] Lead nou — ${data.subject}`,
-          html: `<h2>Cerere meditații</h2>
-            <p><strong>Materie:</strong> ${escapeHtml(data.subject)}</p>
-            <p><strong>Nivel:</strong> ${escapeHtml(data.level)}</p>
-            <p><strong>Contact:</strong> ${escapeHtml(data.contact)} (${escapeHtml(data.contact_type)})</p>
-            <p><strong>Buget:</strong> ${escapeHtml(data.budget)}</p>
-            <p><strong>Mesaj:</strong> ${escapeHtml(data.message)}</p>
-            <p><strong>Pagină:</strong> ${escapeHtml(data.page_url)}</p>`,
         },
-      });
+        { apiKey: process.env.LOVABLE_API_KEY!, sendUrl: process.env.LOVABLE_SEND_URL },
+      );
     } catch (e) {
       // Don't fail the lead if email queue isn't ready
       console.error("[meditatii] email enqueue failed", e);
