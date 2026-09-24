@@ -8,6 +8,7 @@ import { AdSlot, AdLeaderboard } from "@/components/AdSlot";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import promoVideo from "@/assets/promo.mp4.asset.json";
 import {
   Select,
   SelectContent,
@@ -180,6 +181,19 @@ function Index() {
 
       <main className="container mx-auto space-y-16 px-4 py-12">
         <AdLeaderboard className="my-2" />
+
+        <section aria-label="Prezentare GrileAdmitere">
+            <video
+                src={promoVideo.url}
+                className="aspect-video w-full rounded-2xl border border-border object-cover"
+                autoPlay
+                muted
+                loop
+                playsInline
+                controls
+                preload="metadata"
+            />
+        </section>
 
         {/* Popular subjects — quick-start deep links to reduce bounce */}
         {popular.length > 0 && (
