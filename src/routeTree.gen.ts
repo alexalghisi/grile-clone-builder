@@ -41,6 +41,7 @@ import { Route as SubiecteBacLucrareSlugRouteImport } from './routes/subiecte-ba
 import { Route as SubiecteBacAnAnRouteImport } from './routes/subiecte-bac.an.$an'
 import { Route as ScoalaSoferiGrilaSlugRouteImport } from './routes/scoala-soferi.grila.$slug'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
+import { Route as LovableEmailEventsRouteImport } from './routes/lovable/email/events'
 import { Route as ApiPublicLogErrorRouteImport } from './routes/api/public/log-error'
 import { Route as AdmitereUniSlugMaterieSlugRouteImport } from './routes/admitere.$uniSlug.$materieSlug'
 import { Route as AdminQuestionsNewRouteImport } from './routes/admin.questions.new'
@@ -212,6 +213,11 @@ const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
   path: '/lovable/email/suppression',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LovableEmailEventsRoute = LovableEmailEventsRouteImport.update({
+  id: '/lovable/email/events',
+  path: '/lovable/email/events',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicLogErrorRoute = ApiPublicLogErrorRouteImport.update({
   id: '/api/public/log-error',
   path: '/api/public/log-error',
@@ -296,6 +302,7 @@ export interface FileRoutesByFullPath {
   '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
+  '/lovable/email/events': typeof LovableEmailEventsRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/scoala-soferi/grila/$slug': typeof ScoalaSoferiGrilaSlugRoute
   '/subiecte-bac/an/$an': typeof SubiecteBacAnAnRoute
@@ -339,6 +346,7 @@ export interface FileRoutesByTo {
   '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
+  '/lovable/email/events': typeof LovableEmailEventsRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/scoala-soferi/grila/$slug': typeof ScoalaSoferiGrilaSlugRoute
   '/subiecte-bac/an/$an': typeof SubiecteBacAnAnRoute
@@ -383,6 +391,7 @@ export interface FileRoutesById {
   '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
+  '/lovable/email/events': typeof LovableEmailEventsRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/scoala-soferi/grila/$slug': typeof ScoalaSoferiGrilaSlugRoute
   '/subiecte-bac/an/$an': typeof SubiecteBacAnAnRoute
@@ -428,6 +437,7 @@ export interface FileRouteTypes {
     | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
     | '/api/public/log-error'
+    | '/lovable/email/events'
     | '/lovable/email/suppression'
     | '/scoala-soferi/grila/$slug'
     | '/subiecte-bac/an/$an'
@@ -471,6 +481,7 @@ export interface FileRouteTypes {
     | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
     | '/api/public/log-error'
+    | '/lovable/email/events'
     | '/lovable/email/suppression'
     | '/scoala-soferi/grila/$slug'
     | '/subiecte-bac/an/$an'
@@ -514,6 +525,7 @@ export interface FileRouteTypes {
     | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
     | '/api/public/log-error'
+    | '/lovable/email/events'
     | '/lovable/email/suppression'
     | '/scoala-soferi/grila/$slug'
     | '/subiecte-bac/an/$an'
@@ -554,6 +566,7 @@ export interface RootRouteChildren {
   ScoalaSoferiIndexRoute: typeof ScoalaSoferiIndexRoute
   AdminQuestionsNewRoute: typeof AdminQuestionsNewRoute
   ApiPublicLogErrorRoute: typeof ApiPublicLogErrorRoute
+  LovableEmailEventsRoute: typeof LovableEmailEventsRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
   ScoalaSoferiGrilaSlugRoute: typeof ScoalaSoferiGrilaSlugRoute
   ApiPublicHooksHealthCheckRoute: typeof ApiPublicHooksHealthCheckRoute
@@ -789,6 +802,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LovableEmailSuppressionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lovable/email/events': {
+      id: '/lovable/email/events'
+      path: '/lovable/email/events'
+      fullPath: '/lovable/email/events'
+      preLoaderRoute: typeof LovableEmailEventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/log-error': {
       id: '/api/public/log-error'
       path: '/api/public/log-error'
@@ -960,6 +980,7 @@ const rootRouteChildren: RootRouteChildren = {
   ScoalaSoferiIndexRoute: ScoalaSoferiIndexRoute,
   AdminQuestionsNewRoute: AdminQuestionsNewRoute,
   ApiPublicLogErrorRoute: ApiPublicLogErrorRoute,
+  LovableEmailEventsRoute: LovableEmailEventsRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
   ScoalaSoferiGrilaSlugRoute: ScoalaSoferiGrilaSlugRoute,
   ApiPublicHooksHealthCheckRoute: ApiPublicHooksHealthCheckRoute,
