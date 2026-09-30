@@ -72,7 +72,7 @@ export const Route = createFileRoute("/subiecte-bac/materie/$materie")({
     <div className="min-h-screen bg-background"><Header />
       <main className="container mx-auto px-4 py-16 text-center">
         <h1 className="text-2xl font-bold">Eroare</h1>
-        <p className="mt-2 text-sm text-muted-foreground">{error.message}</p>
+        <p className="mt-2 text-sm text-muted-foreground">{(error as Error).message}</p>
       </main></div>
   ),
 });

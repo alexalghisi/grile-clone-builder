@@ -72,7 +72,7 @@ export const Route = createFileRoute("/tutoriale/$slug")({
       <Header />
       <main className="container mx-auto max-w-2xl px-4 py-16">
         <h1 className="text-2xl font-bold">A apărut o eroare</h1>
-        <p className="mt-2 text-muted-foreground">{error.message}</p>
+        <p className="mt-2 text-muted-foreground">{(error as Error).message}</p>
         <button onClick={reset} className="mt-4 underline">Încearcă din nou</button>
       </main>
     </div>
