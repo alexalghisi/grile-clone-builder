@@ -9,88 +9,48 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TutorialeRouteImport } from './routes/tutoriale'
-import { Route as SubiecteBacRouteImport } from './routes/subiecte-bac'
-import { Route as SubiecteAdmitereRouteImport } from './routes/subiecte-admitere'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as SimulareRouteImport } from './routes/simulare'
-import { Route as GrilaZileiRouteImport } from './routes/grila-zilei'
-import { Route as FeedbackRouteImport } from './routes/feedback'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as AutentificareRouteImport } from './routes/autentificare'
-import { Route as AdmitereRouteImport } from './routes/admitere'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ScoalaSoferiIndexRouteImport } from './routes/scoala-soferi.index'
-import { Route as ProfesoriIndexRouteImport } from './routes/profesori.index'
-import { Route as GrileIndexRouteImport } from './routes/grile.index'
-import { Route as TutorialeSlugRouteImport } from './routes/tutoriale.$slug'
-import { Route as SimulareSlugRouteImport } from './routes/simulare.$slug'
-import { Route as ScoalaSoferiTestRouteImport } from './routes/scoala-soferi.test'
-import { Route as ScoalaSoferiCategorieRouteImport } from './routes/scoala-soferi.$categorie'
-import { Route as QuizSlugRouteImport } from './routes/quiz.$slug'
-import { Route as ProfesoriMaterieRouteImport } from './routes/profesori.$materie'
-import { Route as LpGrileAdmitereRouteImport } from './routes/lp.grile-admitere'
-import { Route as GrileUniSlugRouteImport } from './routes/grile.$uniSlug'
-import { Route as AdmitereUniSlugRouteImport } from './routes/admitere.$uniSlug'
-import { Route as AdminSubiecteBacRouteImport } from './routes/admin.subiecte-bac'
-import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
+import { Route as AdmitereRouteImport } from './routes/admitere'
+import { Route as AutentificareRouteImport } from './routes/autentificare'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as FeedbackRouteImport } from './routes/feedback'
+import { Route as GrilaZileiRouteImport } from './routes/grila-zilei'
+import { Route as SimulareRouteImport } from './routes/simulare'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SubiecteAdmitereRouteImport } from './routes/subiecte-admitere'
+import { Route as SubiecteBacRouteImport } from './routes/subiecte-bac'
+import { Route as TutorialeRouteImport } from './routes/tutoriale'
 import { Route as AdminGenerateGrileRouteImport } from './routes/admin.generate-grile'
-import { Route as SubiecteBacMaterieMaterieRouteImport } from './routes/subiecte-bac.materie.$materie'
-import { Route as SubiecteBacLucrareSlugRouteImport } from './routes/subiecte-bac.lucrare.$slug'
-import { Route as SubiecteBacAnAnRouteImport } from './routes/subiecte-bac.an.$an'
-import { Route as ScoalaSoferiGrilaSlugRouteImport } from './routes/scoala-soferi.grila.$slug'
-import { Route as LovableEmailEventsRouteImport } from './routes/lovable/email/events'
-import { Route as ApiPublicLogErrorRouteImport } from './routes/api/public/log-error'
-import { Route as AdmitereUniSlugMaterieSlugRouteImport } from './routes/admitere.$uniSlug.$materieSlug'
+import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
+import { Route as AdminSubiecteBacRouteImport } from './routes/admin.subiecte-bac'
+import { Route as AdmitereUniSlugRouteImport } from './routes/admitere.$uniSlug'
+import { Route as GrileIndexRouteImport } from './routes/grile.index'
+import { Route as GrileUniSlugRouteImport } from './routes/grile.$uniSlug'
+import { Route as LpGrileAdmitereRouteImport } from './routes/lp.grile-admitere'
+import { Route as ProfesoriIndexRouteImport } from './routes/profesori.index'
+import { Route as ProfesoriMaterieRouteImport } from './routes/profesori.$materie'
+import { Route as QuizSlugRouteImport } from './routes/quiz.$slug'
+import { Route as ScoalaSoferiIndexRouteImport } from './routes/scoala-soferi.index'
+import { Route as ScoalaSoferiCategorieRouteImport } from './routes/scoala-soferi.$categorie'
+import { Route as ScoalaSoferiTestRouteImport } from './routes/scoala-soferi.test'
+import { Route as SimulareSlugRouteImport } from './routes/simulare.$slug'
+import { Route as TutorialeSlugRouteImport } from './routes/tutoriale.$slug'
 import { Route as AdminQuestionsNewRouteImport } from './routes/admin.questions.new'
-import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
-import { Route as ApiPublicHooksScrapeAdmitereRouteImport } from './routes/api/public/hooks/scrape-admitere'
-import { Route as ApiPublicHooksHealthCheckRouteImport } from './routes/api/public/hooks/health-check'
+import { Route as AdmitereUniSlugMaterieSlugRouteImport } from './routes/admitere.$uniSlug.$materieSlug'
+import { Route as ApiPublicLogErrorRouteImport } from './routes/api/public/log-error'
+import { Route as LovableEmailEventsRouteImport } from './routes/lovable/email/events'
+import { Route as ScoalaSoferiGrilaSlugRouteImport } from './routes/scoala-soferi.grila.$slug'
+import { Route as SubiecteBacAnAnRouteImport } from './routes/subiecte-bac.an.$an'
+import { Route as SubiecteBacLucrareSlugRouteImport } from './routes/subiecte-bac.lucrare.$slug'
+import { Route as SubiecteBacMaterieMaterieRouteImport } from './routes/subiecte-bac.materie.$materie'
 import { Route as AdmitereUniSlugMaterieSlugAnRouteImport } from './routes/admitere.$uniSlug.$materieSlug.$an'
+import { Route as ApiPublicHooksHealthCheckRouteImport } from './routes/api/public/hooks/health-check'
+import { Route as ApiPublicHooksScrapeAdmitereRouteImport } from './routes/api/public/hooks/scrape-admitere'
+import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 
-const TutorialeRoute = TutorialeRouteImport.update({
-  id: '/tutoriale',
-  path: '/tutoriale',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SubiecteBacRoute = SubiecteBacRouteImport.update({
-  id: '/subiecte-bac',
-  path: '/subiecte-bac',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SubiecteAdmitereRoute = SubiecteAdmitereRouteImport.update({
-  id: '/subiecte-admitere',
-  path: '/subiecte-admitere',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SimulareRoute = SimulareRouteImport.update({
-  id: '/simulare',
-  path: '/simulare',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GrilaZileiRoute = GrilaZileiRouteImport.update({
-  id: '/grila-zilei',
-  path: '/grila-zilei',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FeedbackRoute = FeedbackRouteImport.update({
-  id: '/feedback',
-  path: '/feedback',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AutentificareRoute = AutentificareRouteImport.update({
-  id: '/autentificare',
-  path: '/autentificare',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdmitereRoute = AdmitereRouteImport.update({
@@ -98,79 +58,49 @@ const AdmitereRoute = AdmitereRouteImport.update({
   path: '/admitere',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AutentificareRoute = AutentificareRouteImport.update({
+  id: '/autentificare',
+  path: '/autentificare',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ScoalaSoferiIndexRoute = ScoalaSoferiIndexRouteImport.update({
-  id: '/scoala-soferi/',
-  path: '/scoala-soferi/',
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProfesoriIndexRoute = ProfesoriIndexRouteImport.update({
-  id: '/profesori/',
-  path: '/profesori/',
+const FeedbackRoute = FeedbackRouteImport.update({
+  id: '/feedback',
+  path: '/feedback',
   getParentRoute: () => rootRouteImport,
 } as any)
-const GrileIndexRoute = GrileIndexRouteImport.update({
-  id: '/grile/',
-  path: '/grile/',
+const GrilaZileiRoute = GrilaZileiRouteImport.update({
+  id: '/grila-zilei',
+  path: '/grila-zilei',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TutorialeSlugRoute = TutorialeSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => TutorialeRoute,
-} as any)
-const SimulareSlugRoute = SimulareSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => SimulareRoute,
-} as any)
-const ScoalaSoferiTestRoute = ScoalaSoferiTestRouteImport.update({
-  id: '/scoala-soferi/test',
-  path: '/scoala-soferi/test',
+const SimulareRoute = SimulareRouteImport.update({
+  id: '/simulare',
+  path: '/simulare',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ScoalaSoferiCategorieRoute = ScoalaSoferiCategorieRouteImport.update({
-  id: '/scoala-soferi/$categorie',
-  path: '/scoala-soferi/$categorie',
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const QuizSlugRoute = QuizSlugRouteImport.update({
-  id: '/quiz/$slug',
-  path: '/quiz/$slug',
+const SubiecteAdmitereRoute = SubiecteAdmitereRouteImport.update({
+  id: '/subiecte-admitere',
+  path: '/subiecte-admitere',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProfesoriMaterieRoute = ProfesoriMaterieRouteImport.update({
-  id: '/profesori/$materie',
-  path: '/profesori/$materie',
+const SubiecteBacRoute = SubiecteBacRouteImport.update({
+  id: '/subiecte-bac',
+  path: '/subiecte-bac',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LpGrileAdmitereRoute = LpGrileAdmitereRouteImport.update({
-  id: '/lp/grile-admitere',
-  path: '/lp/grile-admitere',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GrileUniSlugRoute = GrileUniSlugRouteImport.update({
-  id: '/grile/$uniSlug',
-  path: '/grile/$uniSlug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdmitereUniSlugRoute = AdmitereUniSlugRouteImport.update({
-  id: '/$uniSlug',
-  path: '/$uniSlug',
-  getParentRoute: () => AdmitereRoute,
-} as any)
-const AdminSubiecteBacRoute = AdminSubiecteBacRouteImport.update({
-  id: '/admin/subiecte-bac',
-  path: '/admin/subiecte-bac',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminLeadsRoute = AdminLeadsRouteImport.update({
-  id: '/admin/leads',
-  path: '/admin/leads',
+const TutorialeRoute = TutorialeRouteImport.update({
+  id: '/tutoriale',
+  path: '/tutoriale',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminGenerateGrileRoute = AdminGenerateGrileRouteImport.update({
@@ -178,35 +108,79 @@ const AdminGenerateGrileRoute = AdminGenerateGrileRouteImport.update({
   path: '/admin/generate-grile',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SubiecteBacMaterieMaterieRoute =
-  SubiecteBacMaterieMaterieRouteImport.update({
-    id: '/materie/$materie',
-    path: '/materie/$materie',
-    getParentRoute: () => SubiecteBacRoute,
-  } as any)
-const SubiecteBacLucrareSlugRoute = SubiecteBacLucrareSlugRouteImport.update({
-  id: '/lucrare/$slug',
-  path: '/lucrare/$slug',
-  getParentRoute: () => SubiecteBacRoute,
-} as any)
-const SubiecteBacAnAnRoute = SubiecteBacAnAnRouteImport.update({
-  id: '/an/$an',
-  path: '/an/$an',
-  getParentRoute: () => SubiecteBacRoute,
-} as any)
-const ScoalaSoferiGrilaSlugRoute = ScoalaSoferiGrilaSlugRouteImport.update({
-  id: '/scoala-soferi/grila/$slug',
-  path: '/scoala-soferi/grila/$slug',
+const AdminLeadsRoute = AdminLeadsRouteImport.update({
+  id: '/admin/leads',
+  path: '/admin/leads',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LovableEmailEventsRoute = LovableEmailEventsRouteImport.update({
-  id: '/lovable/email/events',
-  path: '/lovable/email/events',
+const AdminSubiecteBacRoute = AdminSubiecteBacRouteImport.update({
+  id: '/admin/subiecte-bac',
+  path: '/admin/subiecte-bac',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicLogErrorRoute = ApiPublicLogErrorRouteImport.update({
-  id: '/api/public/log-error',
-  path: '/api/public/log-error',
+const AdmitereUniSlugRoute = AdmitereUniSlugRouteImport.update({
+  id: '/$uniSlug',
+  path: '/$uniSlug',
+  getParentRoute: () => AdmitereRoute,
+} as any)
+const GrileIndexRoute = GrileIndexRouteImport.update({
+  id: '/grile/',
+  path: '/grile/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GrileUniSlugRoute = GrileUniSlugRouteImport.update({
+  id: '/grile/$uniSlug',
+  path: '/grile/$uniSlug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LpGrileAdmitereRoute = LpGrileAdmitereRouteImport.update({
+  id: '/lp/grile-admitere',
+  path: '/lp/grile-admitere',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfesoriIndexRoute = ProfesoriIndexRouteImport.update({
+  id: '/profesori/',
+  path: '/profesori/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfesoriMaterieRoute = ProfesoriMaterieRouteImport.update({
+  id: '/profesori/$materie',
+  path: '/profesori/$materie',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuizSlugRoute = QuizSlugRouteImport.update({
+  id: '/quiz/$slug',
+  path: '/quiz/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScoalaSoferiIndexRoute = ScoalaSoferiIndexRouteImport.update({
+  id: '/scoala-soferi/',
+  path: '/scoala-soferi/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScoalaSoferiCategorieRoute = ScoalaSoferiCategorieRouteImport.update({
+  id: '/scoala-soferi/$categorie',
+  path: '/scoala-soferi/$categorie',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScoalaSoferiTestRoute = ScoalaSoferiTestRouteImport.update({
+  id: '/scoala-soferi/test',
+  path: '/scoala-soferi/test',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SimulareSlugRoute = SimulareSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => SimulareRoute,
+} as any)
+const TutorialeSlugRoute = TutorialeSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => TutorialeRoute,
+} as any)
+const AdminQuestionsNewRoute = AdminQuestionsNewRouteImport.update({
+  id: '/admin/questions/new',
+  path: '/admin/questions/new',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdmitereUniSlugMaterieSlugRoute =
@@ -215,15 +189,47 @@ const AdmitereUniSlugMaterieSlugRoute =
     path: '/$materieSlug',
     getParentRoute: () => AdmitereUniSlugRoute,
   } as any)
-const AdminQuestionsNewRoute = AdminQuestionsNewRouteImport.update({
-  id: '/admin/questions/new',
-  path: '/admin/questions/new',
+const ApiPublicLogErrorRoute = ApiPublicLogErrorRouteImport.update({
+  id: '/api/public/log-error',
+  path: '/api/public/log-error',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LovableEmailTransactionalPreviewRoute =
-  LovableEmailTransactionalPreviewRouteImport.update({
-    id: '/lovable/email/transactional/preview',
-    path: '/lovable/email/transactional/preview',
+const LovableEmailEventsRoute = LovableEmailEventsRouteImport.update({
+  id: '/lovable/email/events',
+  path: '/lovable/email/events',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScoalaSoferiGrilaSlugRoute = ScoalaSoferiGrilaSlugRouteImport.update({
+  id: '/scoala-soferi/grila/$slug',
+  path: '/scoala-soferi/grila/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SubiecteBacAnAnRoute = SubiecteBacAnAnRouteImport.update({
+  id: '/an/$an',
+  path: '/an/$an',
+  getParentRoute: () => SubiecteBacRoute,
+} as any)
+const SubiecteBacLucrareSlugRoute = SubiecteBacLucrareSlugRouteImport.update({
+  id: '/lucrare/$slug',
+  path: '/lucrare/$slug',
+  getParentRoute: () => SubiecteBacRoute,
+} as any)
+const SubiecteBacMaterieMaterieRoute =
+  SubiecteBacMaterieMaterieRouteImport.update({
+    id: '/materie/$materie',
+    path: '/materie/$materie',
+    getParentRoute: () => SubiecteBacRoute,
+  } as any)
+const AdmitereUniSlugMaterieSlugAnRoute =
+  AdmitereUniSlugMaterieSlugAnRouteImport.update({
+    id: '/$an',
+    path: '/$an',
+    getParentRoute: () => AdmitereUniSlugMaterieSlugRoute,
+  } as any)
+const ApiPublicHooksHealthCheckRoute =
+  ApiPublicHooksHealthCheckRouteImport.update({
+    id: '/api/public/hooks/health-check',
+    path: '/api/public/hooks/health-check',
     getParentRoute: () => rootRouteImport,
   } as any)
 const ApiPublicHooksScrapeAdmitereRoute =
@@ -232,17 +238,11 @@ const ApiPublicHooksScrapeAdmitereRoute =
     path: '/api/public/hooks/scrape-admitere',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiPublicHooksHealthCheckRoute =
-  ApiPublicHooksHealthCheckRouteImport.update({
-    id: '/api/public/hooks/health-check',
-    path: '/api/public/hooks/health-check',
+const LovableEmailTransactionalPreviewRoute =
+  LovableEmailTransactionalPreviewRouteImport.update({
+    id: '/lovable/email/transactional/preview',
+    path: '/lovable/email/transactional/preview',
     getParentRoute: () => rootRouteImport,
-  } as any)
-const AdmitereUniSlugMaterieSlugAnRoute =
-  AdmitereUniSlugMaterieSlugAnRouteImport.update({
-    id: '/$an',
-    path: '/$an',
-    getParentRoute: () => AdmitereUniSlugMaterieSlugRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -524,67 +524,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/tutoriale': {
-      id: '/tutoriale'
-      path: '/tutoriale'
-      fullPath: '/tutoriale'
-      preLoaderRoute: typeof TutorialeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/subiecte-bac': {
-      id: '/subiecte-bac'
-      path: '/subiecte-bac'
-      fullPath: '/subiecte-bac'
-      preLoaderRoute: typeof SubiecteBacRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/subiecte-admitere': {
-      id: '/subiecte-admitere'
-      path: '/subiecte-admitere'
-      fullPath: '/subiecte-admitere'
-      preLoaderRoute: typeof SubiecteAdmitereRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/simulare': {
-      id: '/simulare'
-      path: '/simulare'
-      fullPath: '/simulare'
-      preLoaderRoute: typeof SimulareRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/grila-zilei': {
-      id: '/grila-zilei'
-      path: '/grila-zilei'
-      fullPath: '/grila-zilei'
-      preLoaderRoute: typeof GrilaZileiRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/feedback': {
-      id: '/feedback'
-      path: '/feedback'
-      fullPath: '/feedback'
-      preLoaderRoute: typeof FeedbackRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/autentificare': {
-      id: '/autentificare'
-      path: '/autentificare'
-      fullPath: '/autentificare'
-      preLoaderRoute: typeof AutentificareRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admitere': {
@@ -594,109 +538,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdmitereRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/autentificare': {
+      id: '/autentificare'
+      path: '/autentificare'
+      fullPath: '/autentificare'
+      preLoaderRoute: typeof AutentificareRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/scoala-soferi/': {
-      id: '/scoala-soferi/'
-      path: '/scoala-soferi'
-      fullPath: '/scoala-soferi/'
-      preLoaderRoute: typeof ScoalaSoferiIndexRouteImport
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/profesori/': {
-      id: '/profesori/'
-      path: '/profesori'
-      fullPath: '/profesori/'
-      preLoaderRoute: typeof ProfesoriIndexRouteImport
+    '/feedback': {
+      id: '/feedback'
+      path: '/feedback'
+      fullPath: '/feedback'
+      preLoaderRoute: typeof FeedbackRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/grile/': {
-      id: '/grile/'
-      path: '/grile'
-      fullPath: '/grile/'
-      preLoaderRoute: typeof GrileIndexRouteImport
+    '/grila-zilei': {
+      id: '/grila-zilei'
+      path: '/grila-zilei'
+      fullPath: '/grila-zilei'
+      preLoaderRoute: typeof GrilaZileiRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tutoriale/$slug': {
-      id: '/tutoriale/$slug'
-      path: '/$slug'
-      fullPath: '/tutoriale/$slug'
-      preLoaderRoute: typeof TutorialeSlugRouteImport
-      parentRoute: typeof TutorialeRoute
-    }
-    '/simulare/$slug': {
-      id: '/simulare/$slug'
-      path: '/$slug'
-      fullPath: '/simulare/$slug'
-      preLoaderRoute: typeof SimulareSlugRouteImport
-      parentRoute: typeof SimulareRoute
-    }
-    '/scoala-soferi/test': {
-      id: '/scoala-soferi/test'
-      path: '/scoala-soferi/test'
-      fullPath: '/scoala-soferi/test'
-      preLoaderRoute: typeof ScoalaSoferiTestRouteImport
+    '/simulare': {
+      id: '/simulare'
+      path: '/simulare'
+      fullPath: '/simulare'
+      preLoaderRoute: typeof SimulareRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/scoala-soferi/$categorie': {
-      id: '/scoala-soferi/$categorie'
-      path: '/scoala-soferi/$categorie'
-      fullPath: '/scoala-soferi/$categorie'
-      preLoaderRoute: typeof ScoalaSoferiCategorieRouteImport
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/quiz/$slug': {
-      id: '/quiz/$slug'
-      path: '/quiz/$slug'
-      fullPath: '/quiz/$slug'
-      preLoaderRoute: typeof QuizSlugRouteImport
+    '/subiecte-admitere': {
+      id: '/subiecte-admitere'
+      path: '/subiecte-admitere'
+      fullPath: '/subiecte-admitere'
+      preLoaderRoute: typeof SubiecteAdmitereRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/profesori/$materie': {
-      id: '/profesori/$materie'
-      path: '/profesori/$materie'
-      fullPath: '/profesori/$materie'
-      preLoaderRoute: typeof ProfesoriMaterieRouteImport
+    '/subiecte-bac': {
+      id: '/subiecte-bac'
+      path: '/subiecte-bac'
+      fullPath: '/subiecte-bac'
+      preLoaderRoute: typeof SubiecteBacRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/lp/grile-admitere': {
-      id: '/lp/grile-admitere'
-      path: '/lp/grile-admitere'
-      fullPath: '/lp/grile-admitere'
-      preLoaderRoute: typeof LpGrileAdmitereRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/grile/$uniSlug': {
-      id: '/grile/$uniSlug'
-      path: '/grile/$uniSlug'
-      fullPath: '/grile/$uniSlug'
-      preLoaderRoute: typeof GrileUniSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admitere/$uniSlug': {
-      id: '/admitere/$uniSlug'
-      path: '/$uniSlug'
-      fullPath: '/admitere/$uniSlug'
-      preLoaderRoute: typeof AdmitereUniSlugRouteImport
-      parentRoute: typeof AdmitereRoute
-    }
-    '/admin/subiecte-bac': {
-      id: '/admin/subiecte-bac'
-      path: '/admin/subiecte-bac'
-      fullPath: '/admin/subiecte-bac'
-      preLoaderRoute: typeof AdminSubiecteBacRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/leads': {
-      id: '/admin/leads'
-      path: '/admin/leads'
-      fullPath: '/admin/leads'
-      preLoaderRoute: typeof AdminLeadsRouteImport
+    '/tutoriale': {
+      id: '/tutoriale'
+      path: '/tutoriale'
+      fullPath: '/tutoriale'
+      preLoaderRoute: typeof TutorialeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/generate-grile': {
@@ -706,46 +608,109 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminGenerateGrileRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/subiecte-bac/materie/$materie': {
-      id: '/subiecte-bac/materie/$materie'
-      path: '/materie/$materie'
-      fullPath: '/subiecte-bac/materie/$materie'
-      preLoaderRoute: typeof SubiecteBacMaterieMaterieRouteImport
-      parentRoute: typeof SubiecteBacRoute
-    }
-    '/subiecte-bac/lucrare/$slug': {
-      id: '/subiecte-bac/lucrare/$slug'
-      path: '/lucrare/$slug'
-      fullPath: '/subiecte-bac/lucrare/$slug'
-      preLoaderRoute: typeof SubiecteBacLucrareSlugRouteImport
-      parentRoute: typeof SubiecteBacRoute
-    }
-    '/subiecte-bac/an/$an': {
-      id: '/subiecte-bac/an/$an'
-      path: '/an/$an'
-      fullPath: '/subiecte-bac/an/$an'
-      preLoaderRoute: typeof SubiecteBacAnAnRouteImport
-      parentRoute: typeof SubiecteBacRoute
-    }
-    '/scoala-soferi/grila/$slug': {
-      id: '/scoala-soferi/grila/$slug'
-      path: '/scoala-soferi/grila/$slug'
-      fullPath: '/scoala-soferi/grila/$slug'
-      preLoaderRoute: typeof ScoalaSoferiGrilaSlugRouteImport
+    '/admin/leads': {
+      id: '/admin/leads'
+      path: '/admin/leads'
+      fullPath: '/admin/leads'
+      preLoaderRoute: typeof AdminLeadsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/lovable/email/events': {
-      id: '/lovable/email/events'
-      path: '/lovable/email/events'
-      fullPath: '/lovable/email/events'
-      preLoaderRoute: typeof LovableEmailEventsRouteImport
+    '/admin/subiecte-bac': {
+      id: '/admin/subiecte-bac'
+      path: '/admin/subiecte-bac'
+      fullPath: '/admin/subiecte-bac'
+      preLoaderRoute: typeof AdminSubiecteBacRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/log-error': {
-      id: '/api/public/log-error'
-      path: '/api/public/log-error'
-      fullPath: '/api/public/log-error'
-      preLoaderRoute: typeof ApiPublicLogErrorRouteImport
+    '/admitere/$uniSlug': {
+      id: '/admitere/$uniSlug'
+      path: '/$uniSlug'
+      fullPath: '/admitere/$uniSlug'
+      preLoaderRoute: typeof AdmitereUniSlugRouteImport
+      parentRoute: typeof AdmitereRoute
+    }
+    '/grile/': {
+      id: '/grile/'
+      path: '/grile'
+      fullPath: '/grile/'
+      preLoaderRoute: typeof GrileIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/grile/$uniSlug': {
+      id: '/grile/$uniSlug'
+      path: '/grile/$uniSlug'
+      fullPath: '/grile/$uniSlug'
+      preLoaderRoute: typeof GrileUniSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lp/grile-admitere': {
+      id: '/lp/grile-admitere'
+      path: '/lp/grile-admitere'
+      fullPath: '/lp/grile-admitere'
+      preLoaderRoute: typeof LpGrileAdmitereRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profesori/': {
+      id: '/profesori/'
+      path: '/profesori'
+      fullPath: '/profesori/'
+      preLoaderRoute: typeof ProfesoriIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profesori/$materie': {
+      id: '/profesori/$materie'
+      path: '/profesori/$materie'
+      fullPath: '/profesori/$materie'
+      preLoaderRoute: typeof ProfesoriMaterieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quiz/$slug': {
+      id: '/quiz/$slug'
+      path: '/quiz/$slug'
+      fullPath: '/quiz/$slug'
+      preLoaderRoute: typeof QuizSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scoala-soferi/': {
+      id: '/scoala-soferi/'
+      path: '/scoala-soferi'
+      fullPath: '/scoala-soferi/'
+      preLoaderRoute: typeof ScoalaSoferiIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scoala-soferi/$categorie': {
+      id: '/scoala-soferi/$categorie'
+      path: '/scoala-soferi/$categorie'
+      fullPath: '/scoala-soferi/$categorie'
+      preLoaderRoute: typeof ScoalaSoferiCategorieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scoala-soferi/test': {
+      id: '/scoala-soferi/test'
+      path: '/scoala-soferi/test'
+      fullPath: '/scoala-soferi/test'
+      preLoaderRoute: typeof ScoalaSoferiTestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/simulare/$slug': {
+      id: '/simulare/$slug'
+      path: '/$slug'
+      fullPath: '/simulare/$slug'
+      preLoaderRoute: typeof SimulareSlugRouteImport
+      parentRoute: typeof SimulareRoute
+    }
+    '/tutoriale/$slug': {
+      id: '/tutoriale/$slug'
+      path: '/$slug'
+      fullPath: '/tutoriale/$slug'
+      preLoaderRoute: typeof TutorialeSlugRouteImport
+      parentRoute: typeof TutorialeRoute
+    }
+    '/admin/questions/new': {
+      id: '/admin/questions/new'
+      path: '/admin/questions/new'
+      fullPath: '/admin/questions/new'
+      preLoaderRoute: typeof AdminQuestionsNewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admitere/$uniSlug/$materieSlug': {
@@ -755,18 +720,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdmitereUniSlugMaterieSlugRouteImport
       parentRoute: typeof AdmitereUniSlugRoute
     }
-    '/admin/questions/new': {
-      id: '/admin/questions/new'
-      path: '/admin/questions/new'
-      fullPath: '/admin/questions/new'
-      preLoaderRoute: typeof AdminQuestionsNewRouteImport
+    '/api/public/log-error': {
+      id: '/api/public/log-error'
+      path: '/api/public/log-error'
+      fullPath: '/api/public/log-error'
+      preLoaderRoute: typeof ApiPublicLogErrorRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/lovable/email/transactional/preview': {
-      id: '/lovable/email/transactional/preview'
-      path: '/lovable/email/transactional/preview'
-      fullPath: '/lovable/email/transactional/preview'
-      preLoaderRoute: typeof LovableEmailTransactionalPreviewRouteImport
+    '/lovable/email/events': {
+      id: '/lovable/email/events'
+      path: '/lovable/email/events'
+      fullPath: '/lovable/email/events'
+      preLoaderRoute: typeof LovableEmailEventsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scoala-soferi/grila/$slug': {
+      id: '/scoala-soferi/grila/$slug'
+      path: '/scoala-soferi/grila/$slug'
+      fullPath: '/scoala-soferi/grila/$slug'
+      preLoaderRoute: typeof ScoalaSoferiGrilaSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/subiecte-bac/an/$an': {
+      id: '/subiecte-bac/an/$an'
+      path: '/an/$an'
+      fullPath: '/subiecte-bac/an/$an'
+      preLoaderRoute: typeof SubiecteBacAnAnRouteImport
+      parentRoute: typeof SubiecteBacRoute
+    }
+    '/subiecte-bac/lucrare/$slug': {
+      id: '/subiecte-bac/lucrare/$slug'
+      path: '/lucrare/$slug'
+      fullPath: '/subiecte-bac/lucrare/$slug'
+      preLoaderRoute: typeof SubiecteBacLucrareSlugRouteImport
+      parentRoute: typeof SubiecteBacRoute
+    }
+    '/subiecte-bac/materie/$materie': {
+      id: '/subiecte-bac/materie/$materie'
+      path: '/materie/$materie'
+      fullPath: '/subiecte-bac/materie/$materie'
+      preLoaderRoute: typeof SubiecteBacMaterieMaterieRouteImport
+      parentRoute: typeof SubiecteBacRoute
+    }
+    '/admitere/$uniSlug/$materieSlug/$an': {
+      id: '/admitere/$uniSlug/$materieSlug/$an'
+      path: '/$an'
+      fullPath: '/admitere/$uniSlug/$materieSlug/$an'
+      preLoaderRoute: typeof AdmitereUniSlugMaterieSlugAnRouteImport
+      parentRoute: typeof AdmitereUniSlugMaterieSlugRoute
+    }
+    '/api/public/hooks/health-check': {
+      id: '/api/public/hooks/health-check'
+      path: '/api/public/hooks/health-check'
+      fullPath: '/api/public/hooks/health-check'
+      preLoaderRoute: typeof ApiPublicHooksHealthCheckRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/public/hooks/scrape-admitere': {
@@ -776,19 +783,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicHooksScrapeAdmitereRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/hooks/health-check': {
-      id: '/api/public/hooks/health-check'
-      path: '/api/public/hooks/health-check'
-      fullPath: '/api/public/hooks/health-check'
-      preLoaderRoute: typeof ApiPublicHooksHealthCheckRouteImport
+    '/lovable/email/transactional/preview': {
+      id: '/lovable/email/transactional/preview'
+      path: '/lovable/email/transactional/preview'
+      fullPath: '/lovable/email/transactional/preview'
+      preLoaderRoute: typeof LovableEmailTransactionalPreviewRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/admitere/$uniSlug/$materieSlug/$an': {
-      id: '/admitere/$uniSlug/$materieSlug/$an'
-      path: '/$an'
-      fullPath: '/admitere/$uniSlug/$materieSlug/$an'
-      preLoaderRoute: typeof AdmitereUniSlugMaterieSlugAnRouteImport
-      parentRoute: typeof AdmitereUniSlugMaterieSlugRoute
     }
   }
 }
