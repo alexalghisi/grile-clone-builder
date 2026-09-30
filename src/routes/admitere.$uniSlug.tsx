@@ -47,7 +47,7 @@ export const Route = createFileRoute("/admitere/$uniSlug")({
   },
   component: Page,
   notFoundComponent: () => <div className="container py-10">Universitate fără subiecte încărcate încă.</div>,
-  errorComponent: ({ error }) => <div className="container py-10 text-destructive">Eroare: {String(error?.message ?? error)}</div>,
+  errorComponent: ({ error }) => <div className="container py-10 text-destructive">Eroare: {String((error as Error)?.message ?? error)}</div>,
 });
 
 function Page() {
