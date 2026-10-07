@@ -9,6 +9,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import promoVideo from "@/assets/promo.mp4.asset.json";
+import { NewsletterSignup } from "@/components/NewsletterSignup";
 import {
   Select,
   SelectContent,
@@ -313,6 +314,8 @@ function Index() {
             ))}
           </div>
         </section>
+
+        <NewsletterSignup source="homepage" />
       </main>
 
       <footer className="border-t border-border py-8 text-center text-sm text-muted-foreground">
