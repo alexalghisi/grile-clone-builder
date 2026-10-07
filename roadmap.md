@@ -1,2 +1,2 @@
-- [ ] Newsletter: pick provider (Brevo SMS failed) — waiting on user choice
-- [ ] Opt-in checkbox for news on site
+- [ ] Newsletter sending service — blocked: Brevo/beehiiv signup SMS fails for user
+- [x] Opt-in newsletter signup on homepage
