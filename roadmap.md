@@ -1,0 +1,2 @@
+- [ ] Newsletter: pick provider (Brevo SMS failed) — waiting on user choice
+- [ ] Opt-in checkbox for news on site
