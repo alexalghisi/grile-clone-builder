@@ -80,6 +80,39 @@ export type Database = {
         }
         Relationships: []
       }
+      articole: {
+        Row: {
+          content_md: string
+          description: string
+          id: string
+          keywords: string
+          materie: string
+          published_at: string
+          slug: string
+          title: string
+        }
+        Insert: {
+          content_md: string
+          description: string
+          id?: string
+          keywords?: string
+          materie: string
+          published_at?: string
+          slug: string
+          title: string
+        }
+        Update: {
+          content_md?: string
+          description?: string
+          id?: string
+          keywords?: string
+          materie?: string
+          published_at?: string
+          slug?: string
+          title?: string
+        }
+        Relationships: []
+      }
       attempts: {
         Row: {
           answers: Json | null
@@ -188,6 +221,39 @@ export type Database = {
           updated_at?: string
           variant?: string | null
           year?: number
+        }
+        Relationships: []
+      }
+      content_job_state: {
+        Row: {
+          cron_secret: string
+          grile_cursor: number
+          id: string
+          last_result: Json | null
+          last_run_date: string | null
+          locked_until: string | null
+          paused_reason: string | null
+          updated_at: string
+        }
+        Insert: {
+          cron_secret?: string
+          grile_cursor?: number
+          id: string
+          last_result?: Json | null
+          last_run_date?: string | null
+          locked_until?: string | null
+          paused_reason?: string | null
+          updated_at?: string
+        }
+        Update: {
+          cron_secret?: string
+          grile_cursor?: number
+          id?: string
+          last_result?: Json | null
+          last_run_date?: string | null
+          locked_until?: string | null
+          paused_reason?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
