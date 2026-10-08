@@ -8,6 +8,13 @@
       "when": 1791404639345,
       "tag": "0000_newsletter_subscribers",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1791418068523,
+      "tag": "0001_daily_content",
+      "breakpoints": true
     }
   ]
 }
