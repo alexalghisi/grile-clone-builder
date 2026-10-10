@@ -5,7 +5,7 @@ import { tutoriale, materii } from "@/lib/tutoriale/data";
 import { useState, useMemo } from "react";
 import { listArticole } from "@/lib/articole.functions";
 
-export const Route = createFileRoute("/tutoriale")({
+export const Route = createFileRoute("/tutoriale/")({
   head: () => ({
     meta: [
       { title: "Tutoriale Admitere 2026 — 140+ Ghiduri pe Materii | grileadmitere.ro" },
