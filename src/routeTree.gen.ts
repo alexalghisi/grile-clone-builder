@@ -44,6 +44,7 @@ import { Route as SubiecteBacAnAnRouteImport } from './routes/subiecte-bac.an.$a
 import { Route as SubiecteBacLucrareSlugRouteImport } from './routes/subiecte-bac.lucrare.$slug'
 import { Route as SubiecteBacMaterieMaterieRouteImport } from './routes/subiecte-bac.materie.$materie'
 import { Route as AdmitereUniSlugMaterieSlugAnRouteImport } from './routes/admitere.$uniSlug.$materieSlug.$an'
+import { Route as ApiPublicHooksDailyContentRouteImport } from './routes/api/public/hooks/daily-content'
 import { Route as ApiPublicHooksHealthCheckRouteImport } from './routes/api/public/hooks/health-check'
 import { Route as ApiPublicHooksScrapeAdmitereRouteImport } from './routes/api/public/hooks/scrape-admitere'
 import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
@@ -226,6 +227,12 @@ const AdmitereUniSlugMaterieSlugAnRoute =
     path: '/$an',
     getParentRoute: () => AdmitereUniSlugMaterieSlugRoute,
   } as any)
+const ApiPublicHooksDailyContentRoute =
+  ApiPublicHooksDailyContentRouteImport.update({
+    id: '/api/public/hooks/daily-content',
+    path: '/api/public/hooks/daily-content',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiPublicHooksHealthCheckRoute =
   ApiPublicHooksHealthCheckRouteImport.update({
     id: '/api/public/hooks/health-check',
@@ -281,6 +288,7 @@ export interface FileRoutesByFullPath {
   '/subiecte-bac/lucrare/$slug': typeof SubiecteBacLucrareSlugRoute
   '/subiecte-bac/materie/$materie': typeof SubiecteBacMaterieMaterieRoute
   '/admitere/$uniSlug/$materieSlug/$an': typeof AdmitereUniSlugMaterieSlugAnRoute
+  '/api/public/hooks/daily-content': typeof ApiPublicHooksDailyContentRoute
   '/api/public/hooks/health-check': typeof ApiPublicHooksHealthCheckRoute
   '/api/public/hooks/scrape-admitere': typeof ApiPublicHooksScrapeAdmitereRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -321,6 +329,7 @@ export interface FileRoutesByTo {
   '/subiecte-bac/lucrare/$slug': typeof SubiecteBacLucrareSlugRoute
   '/subiecte-bac/materie/$materie': typeof SubiecteBacMaterieMaterieRoute
   '/admitere/$uniSlug/$materieSlug/$an': typeof AdmitereUniSlugMaterieSlugAnRoute
+  '/api/public/hooks/daily-content': typeof ApiPublicHooksDailyContentRoute
   '/api/public/hooks/health-check': typeof ApiPublicHooksHealthCheckRoute
   '/api/public/hooks/scrape-admitere': typeof ApiPublicHooksScrapeAdmitereRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -362,6 +371,7 @@ export interface FileRoutesById {
   '/subiecte-bac/lucrare/$slug': typeof SubiecteBacLucrareSlugRoute
   '/subiecte-bac/materie/$materie': typeof SubiecteBacMaterieMaterieRoute
   '/admitere/$uniSlug/$materieSlug/$an': typeof AdmitereUniSlugMaterieSlugAnRoute
+  '/api/public/hooks/daily-content': typeof ApiPublicHooksDailyContentRoute
   '/api/public/hooks/health-check': typeof ApiPublicHooksHealthCheckRoute
   '/api/public/hooks/scrape-admitere': typeof ApiPublicHooksScrapeAdmitereRoute
   '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
@@ -404,6 +414,7 @@ export interface FileRouteTypes {
     | '/subiecte-bac/lucrare/$slug'
     | '/subiecte-bac/materie/$materie'
     | '/admitere/$uniSlug/$materieSlug/$an'
+    | '/api/public/hooks/daily-content'
     | '/api/public/hooks/health-check'
     | '/api/public/hooks/scrape-admitere'
     | '/lovable/email/transactional/preview'
@@ -444,6 +455,7 @@ export interface FileRouteTypes {
     | '/subiecte-bac/lucrare/$slug'
     | '/subiecte-bac/materie/$materie'
     | '/admitere/$uniSlug/$materieSlug/$an'
+    | '/api/public/hooks/daily-content'
     | '/api/public/hooks/health-check'
     | '/api/public/hooks/scrape-admitere'
     | '/lovable/email/transactional/preview'
@@ -484,6 +496,7 @@ export interface FileRouteTypes {
     | '/subiecte-bac/lucrare/$slug'
     | '/subiecte-bac/materie/$materie'
     | '/admitere/$uniSlug/$materieSlug/$an'
+    | '/api/public/hooks/daily-content'
     | '/api/public/hooks/health-check'
     | '/api/public/hooks/scrape-admitere'
     | '/lovable/email/transactional/preview'
@@ -517,6 +530,7 @@ export interface RootRouteChildren {
   ApiPublicLogErrorRoute: typeof ApiPublicLogErrorRoute
   LovableEmailEventsRoute: typeof LovableEmailEventsRoute
   ScoalaSoferiGrilaSlugRoute: typeof ScoalaSoferiGrilaSlugRoute
+  ApiPublicHooksDailyContentRoute: typeof ApiPublicHooksDailyContentRoute
   ApiPublicHooksHealthCheckRoute: typeof ApiPublicHooksHealthCheckRoute
   ApiPublicHooksScrapeAdmitereRoute: typeof ApiPublicHooksScrapeAdmitereRoute
   LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
@@ -769,6 +783,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdmitereUniSlugMaterieSlugAnRouteImport
       parentRoute: typeof AdmitereUniSlugMaterieSlugRoute
     }
+    '/api/public/hooks/daily-content': {
+      id: '/api/public/hooks/daily-content'
+      path: '/api/public/hooks/daily-content'
+      fullPath: '/api/public/hooks/daily-content'
+      preLoaderRoute: typeof ApiPublicHooksDailyContentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/hooks/health-check': {
       id: '/api/public/hooks/health-check'
       path: '/api/public/hooks/health-check'
@@ -899,6 +920,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicLogErrorRoute: ApiPublicLogErrorRoute,
   LovableEmailEventsRoute: LovableEmailEventsRoute,
   ScoalaSoferiGrilaSlugRoute: ScoalaSoferiGrilaSlugRoute,
+  ApiPublicHooksDailyContentRoute: ApiPublicHooksDailyContentRoute,
   ApiPublicHooksHealthCheckRoute: ApiPublicHooksHealthCheckRoute,
   ApiPublicHooksScrapeAdmitereRoute: ApiPublicHooksScrapeAdmitereRoute,
   LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
