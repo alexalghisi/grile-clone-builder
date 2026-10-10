@@ -3,8 +3,8 @@ import { z } from "zod";
 import { createClient } from "@supabase/supabase-js";
 
 function pub() {
-  const key = process.env["SUPABASE_PUBLISHABLE_KEY"] ?? process.env["SUPABASE_ANON_KEY"]!;
-  return createClient(process.env["SUPABASE_URL"]!, key, {
+  const key = process.env["SUPABASE_PUBLISHABLE_KEY"] ?? process.env["SUPABASE_ANON_KEY"] ?? import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+  return createClient(process.env["SUPABASE_URL"] ?? import.meta.env.VITE_SUPABASE_URL, key, {
     auth: { persistSession: false },
     global: {
       fetch: (input, init) => {
@@ -31,6 +31,7 @@ export const listArticole = createServerFn({ method: "GET" }).handler(async (): 
 export const getArticol = createServerFn({ method: "GET" })
   .inputValidator((d) => z.object({ slug: z.string().max(200) }).parse(d))
   .handler(async ({ data }) => {
-    const { data: row } = await pub().from("articole").select("*").eq("slug", data.slug).maybeSingle();
+    const { data: row, error } = await pub().from("articole").select("*").eq("slug", data.slug).maybeSingle();
+    if (error) console.error("getArticol", error.message);
     return row as (ArticolMeta & { keywords: string; content_md: string }) | null;
   });
