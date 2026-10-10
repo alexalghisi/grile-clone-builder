@@ -19,7 +19,6 @@ import { Route as SimulareRouteImport } from './routes/simulare'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as SubiecteAdmitereRouteImport } from './routes/subiecte-admitere'
 import { Route as SubiecteBacRouteImport } from './routes/subiecte-bac'
-import { Route as TutorialeRouteImport } from './routes/tutoriale'
 import { Route as AdminGenerateGrileRouteImport } from './routes/admin.generate-grile'
 import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
 import { Route as AdminSubiecteBacRouteImport } from './routes/admin.subiecte-bac'
@@ -34,6 +33,7 @@ import { Route as ScoalaSoferiIndexRouteImport } from './routes/scoala-soferi.in
 import { Route as ScoalaSoferiCategorieRouteImport } from './routes/scoala-soferi.$categorie'
 import { Route as ScoalaSoferiTestRouteImport } from './routes/scoala-soferi.test'
 import { Route as SimulareSlugRouteImport } from './routes/simulare.$slug'
+import { Route as TutorialeIndexRouteImport } from './routes/tutoriale.index'
 import { Route as TutorialeSlugRouteImport } from './routes/tutoriale.$slug'
 import { Route as AdminQuestionsNewRouteImport } from './routes/admin.questions.new'
 import { Route as AdmitereUniSlugMaterieSlugRouteImport } from './routes/admitere.$uniSlug.$materieSlug'
@@ -97,11 +97,6 @@ const SubiecteAdmitereRoute = SubiecteAdmitereRouteImport.update({
 const SubiecteBacRoute = SubiecteBacRouteImport.update({
   id: '/subiecte-bac',
   path: '/subiecte-bac',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TutorialeRoute = TutorialeRouteImport.update({
-  id: '/tutoriale',
-  path: '/tutoriale',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminGenerateGrileRoute = AdminGenerateGrileRouteImport.update({
@@ -173,6 +168,11 @@ const SimulareSlugRoute = SimulareSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => SimulareRoute,
+} as any)
+const TutorialeIndexRoute = TutorialeIndexRouteImport.update({
+  id: '/tutoriale/',
+  path: '/tutoriale/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const TutorialeSlugRoute = TutorialeSlugRouteImport.update({
   id: '/$slug',
@@ -263,7 +263,6 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
   '/subiecte-bac': typeof SubiecteBacRouteWithChildren
-  '/tutoriale': typeof TutorialeRouteWithChildren
   '/admin/generate-grile': typeof AdminGenerateGrileRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/subiecte-bac': typeof AdminSubiecteBacRoute
@@ -279,6 +278,7 @@ export interface FileRoutesByFullPath {
   '/grile/': typeof GrileIndexRoute
   '/profesori/': typeof ProfesoriIndexRoute
   '/scoala-soferi/': typeof ScoalaSoferiIndexRoute
+  '/tutoriale/': typeof TutorialeIndexRoute
   '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
@@ -304,7 +304,6 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
   '/subiecte-bac': typeof SubiecteBacRouteWithChildren
-  '/tutoriale': typeof TutorialeRouteWithChildren
   '/admin/generate-grile': typeof AdminGenerateGrileRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/subiecte-bac': typeof AdminSubiecteBacRoute
@@ -320,6 +319,7 @@ export interface FileRoutesByTo {
   '/grile': typeof GrileIndexRoute
   '/profesori': typeof ProfesoriIndexRoute
   '/scoala-soferi': typeof ScoalaSoferiIndexRoute
+  '/tutoriale': typeof TutorialeIndexRoute
   '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
@@ -346,7 +346,6 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/subiecte-admitere': typeof SubiecteAdmitereRoute
   '/subiecte-bac': typeof SubiecteBacRouteWithChildren
-  '/tutoriale': typeof TutorialeRouteWithChildren
   '/admin/generate-grile': typeof AdminGenerateGrileRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/subiecte-bac': typeof AdminSubiecteBacRoute
@@ -362,6 +361,7 @@ export interface FileRoutesById {
   '/grile/': typeof GrileIndexRoute
   '/profesori/': typeof ProfesoriIndexRoute
   '/scoala-soferi/': typeof ScoalaSoferiIndexRoute
+  '/tutoriale/': typeof TutorialeIndexRoute
   '/admin/questions/new': typeof AdminQuestionsNewRoute
   '/admitere/$uniSlug/$materieSlug': typeof AdmitereUniSlugMaterieSlugRouteWithChildren
   '/api/public/log-error': typeof ApiPublicLogErrorRoute
@@ -389,7 +389,6 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/subiecte-admitere'
     | '/subiecte-bac'
-    | '/tutoriale'
     | '/admin/generate-grile'
     | '/admin/leads'
     | '/admin/subiecte-bac'
@@ -405,6 +404,7 @@ export interface FileRouteTypes {
     | '/grile/'
     | '/profesori/'
     | '/scoala-soferi/'
+    | '/tutoriale/'
     | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
     | '/api/public/log-error'
@@ -430,7 +430,6 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/subiecte-admitere'
     | '/subiecte-bac'
-    | '/tutoriale'
     | '/admin/generate-grile'
     | '/admin/leads'
     | '/admin/subiecte-bac'
@@ -446,6 +445,7 @@ export interface FileRouteTypes {
     | '/grile'
     | '/profesori'
     | '/scoala-soferi'
+    | '/tutoriale'
     | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
     | '/api/public/log-error'
@@ -471,7 +471,6 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/subiecte-admitere'
     | '/subiecte-bac'
-    | '/tutoriale'
     | '/admin/generate-grile'
     | '/admin/leads'
     | '/admin/subiecte-bac'
@@ -487,6 +486,7 @@ export interface FileRouteTypes {
     | '/grile/'
     | '/profesori/'
     | '/scoala-soferi/'
+    | '/tutoriale/'
     | '/admin/questions/new'
     | '/admitere/$uniSlug/$materieSlug'
     | '/api/public/log-error'
@@ -513,7 +513,6 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SubiecteAdmitereRoute: typeof SubiecteAdmitereRoute
   SubiecteBacRoute: typeof SubiecteBacRouteWithChildren
-  TutorialeRoute: typeof TutorialeRouteWithChildren
   AdminGenerateGrileRoute: typeof AdminGenerateGrileRoute
   AdminLeadsRoute: typeof AdminLeadsRoute
   AdminSubiecteBacRoute: typeof AdminSubiecteBacRoute
@@ -526,6 +525,7 @@ export interface RootRouteChildren {
   GrileIndexRoute: typeof GrileIndexRoute
   ProfesoriIndexRoute: typeof ProfesoriIndexRoute
   ScoalaSoferiIndexRoute: typeof ScoalaSoferiIndexRoute
+  TutorialeIndexRoute: typeof TutorialeIndexRoute
   AdminQuestionsNewRoute: typeof AdminQuestionsNewRoute
   ApiPublicLogErrorRoute: typeof ApiPublicLogErrorRoute
   LovableEmailEventsRoute: typeof LovableEmailEventsRoute
@@ -606,13 +606,6 @@ declare module '@tanstack/react-router' {
       path: '/subiecte-bac'
       fullPath: '/subiecte-bac'
       preLoaderRoute: typeof SubiecteBacRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/tutoriale': {
-      id: '/tutoriale'
-      path: '/tutoriale'
-      fullPath: '/tutoriale'
-      preLoaderRoute: typeof TutorialeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/generate-grile': {
@@ -712,6 +705,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/simulare/$slug'
       preLoaderRoute: typeof SimulareSlugRouteImport
       parentRoute: typeof SimulareRoute
+    }
+    '/tutoriale/': {
+      id: '/tutoriale/'
+      path: '/tutoriale'
+      fullPath: '/tutoriale/'
+      preLoaderRoute: typeof TutorialeIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/tutoriale/$slug': {
       id: '/tutoriale/$slug'
@@ -880,18 +880,6 @@ const SubiecteBacRouteWithChildren = SubiecteBacRoute._addFileChildren(
   SubiecteBacRouteChildren,
 )
 
-interface TutorialeRouteChildren {
-  TutorialeSlugRoute: typeof TutorialeSlugRoute
-}
-
-const TutorialeRouteChildren: TutorialeRouteChildren = {
-  TutorialeSlugRoute: TutorialeSlugRoute,
-}
-
-const TutorialeRouteWithChildren = TutorialeRoute._addFileChildren(
-  TutorialeRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdmitereRoute: AdmitereRouteWithChildren,
@@ -903,7 +891,6 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SubiecteAdmitereRoute: SubiecteAdmitereRoute,
   SubiecteBacRoute: SubiecteBacRouteWithChildren,
-  TutorialeRoute: TutorialeRouteWithChildren,
   AdminGenerateGrileRoute: AdminGenerateGrileRoute,
   AdminLeadsRoute: AdminLeadsRoute,
   AdminSubiecteBacRoute: AdminSubiecteBacRoute,
@@ -916,6 +903,7 @@ const rootRouteChildren: RootRouteChildren = {
   GrileIndexRoute: GrileIndexRoute,
   ProfesoriIndexRoute: ProfesoriIndexRoute,
   ScoalaSoferiIndexRoute: ScoalaSoferiIndexRoute,
+  TutorialeIndexRoute: TutorialeIndexRoute,
   AdminQuestionsNewRoute: AdminQuestionsNewRoute,
   ApiPublicLogErrorRoute: ApiPublicLogErrorRoute,
   LovableEmailEventsRoute: LovableEmailEventsRoute,
