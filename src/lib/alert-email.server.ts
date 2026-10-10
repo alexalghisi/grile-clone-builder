@@ -67,7 +67,6 @@ export async function sendErrorAlert(payload: AlertPayload): Promise<void> {
       /AbortError|The operation was aborted/i,
       /Non-Error promise rejection captured/i,
       /^Script error\.?$/,
-    ]
       /^aborted$|abortIncoming|ECONNRESET|socket hang up/i,
     ]
     if (IGNORED_PATTERNS.some((re) => re.test(combined))) return
