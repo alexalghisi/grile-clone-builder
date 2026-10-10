@@ -68,7 +68,10 @@ export async function sendErrorAlert(payload: AlertPayload): Promise<void> {
       /Non-Error promise rejection captured/i,
       /^Script error\.?$/,
     ]
+      /^aborted$|abortIncoming|ECONNRESET|socket hang up/i,
+    ]
     if (IGNORED_PATTERNS.some((re) => re.test(combined))) return
+    if (/\/\/(localhost|127\.0\.0\.1)(:\d+)?\//.test(payload.url || '')) return
     if (!msg || msg === 'undefined' || msg === 'null' || msg === '[object Object]') return
 
 
