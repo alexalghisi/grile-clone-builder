@@ -57,6 +57,13 @@ export const Route = createFileRoute("/sitemap.xml")({
           priority: "0.6",
         }));
 
+        const { data: arts } = await supabaseAdmin.from("articole").select("slug, published_at");
+        const articoleEntries: SitemapEntry[] = (arts ?? []).map((a) => ({
+          path: `/tutoriale/${a.slug}`,
+          lastmod: a.published_at.slice(0, 10),
+          changefreq: "monthly",
+          priority: "0.7",
+        }));
         const { data: unis } = await supabaseAdmin
           .from("universities")
           .select("slug")
@@ -134,6 +141,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...scoalaGrilaEntries,
           ...profesoriEntries,
           ...tutorialeEntries,
+          ...articoleEntries,
         ];
         const urls = all.map((e) =>
           [

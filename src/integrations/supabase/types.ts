@@ -1033,6 +1033,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      grile_groups: {
+        Args: never
+        Returns: {
+          facultate: string
+          materie: string
+          universitate: string
+        }[]
+      }
       has_active_subscription: {
         Args: { check_env?: string; user_uuid: string }
         Returns: boolean

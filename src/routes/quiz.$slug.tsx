@@ -78,10 +78,24 @@ function EmailGate({ slug, onDone }: { slug: string; onDone: () => void }) {
   );
 }
 
+const SLUG_WORDS: Record<string, string> = {
+  med: "Medicină", bio: "Biologie", chim: "Chimie", chimie: "Chimie", fiz: "Fizică", fizica: "Fizică",
+  mate: "Matematică", mat: "Matematică", info: "Informatică", inf: "Informatică", ro: "Română",
+  rom: "Română", ist: "Istorie", geo: "Geografie", eco: "Economie", log: "Logică", anat: "Anatomie",
+  stom: "Stomatologie", farm: "Farmacie", drept: "Drept", fmi: "FMI", csie: "CSIE", ac: "Automatică",
+};
+function readableSlug(slug: string) {
+  const parts = slug.split("-");
+  const uni = parts[0].toUpperCase();
+  const rest = parts.slice(1).map((p) => SLUG_WORDS[p] ?? p.charAt(0).toUpperCase() + p.slice(1));
+  return { uni, label: [uni, ...rest].join(" ") };
+}
+
 export const Route = createFileRoute("/quiz/$slug")({
   head: ({ params }) => {
-    const title = `Test Grile ${params.slug} — Admitere 2026 | GrileAdmitere.ro`;
-    const description = `Rezolvă grilele de admitere 2026 pentru ${params.slug} cu explicații pas cu pas la fiecare răspuns. Gratuit.`;
+    const { label } = readableSlug(params.slug);
+    const title = `Grile ${label} Admitere 2026 — Test Online Rezolvat`;
+    const description = `Grile de admitere 2026 ${label}: întrebări dificile după programa oficială, cu răspunsuri și explicații pas cu pas. Exersează gratuit acum.`;
     return {
       meta: [
         { title },
@@ -89,6 +103,8 @@ export const Route = createFileRoute("/quiz/$slug")({
         { property: "og:title", content: title },
         { property: "og:description", content: description },
         { property: "og:url", content: `https://grileadmitere.ro/quiz/${params.slug}` },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary_large_image" },
       ],
       links: [{ rel: "canonical", href: `https://grileadmitere.ro/quiz/${params.slug}` }],
       scripts: [{

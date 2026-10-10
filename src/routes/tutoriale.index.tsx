@@ -3,8 +3,9 @@ import { Link } from "@tanstack/react-router";
 import { Header } from "@/components/Header";
 import { tutoriale, materii } from "@/lib/tutoriale/data";
 import { useState, useMemo } from "react";
+import { listArticole } from "@/lib/articole.functions";
 
-export const Route = createFileRoute("/tutoriale")({
+export const Route = createFileRoute("/tutoriale/")({
   head: () => ({
     meta: [
       { title: "Tutoriale Admitere 2026 — 140+ Ghiduri pe Materii | grileadmitere.ro" },
@@ -31,10 +32,12 @@ export const Route = createFileRoute("/tutoriale")({
       }),
     }],
   }),
+  loader: () => listArticole(),
   component: TutorialeIndex,
 });
 
 function TutorialeIndex() {
+  const noi = Route.useLoaderData();
   const [q, setQ] = useState("");
   const [mat, setMat] = useState<string>("toate");
   const filtered = useMemo(() => {
@@ -60,6 +63,23 @@ function TutorialeIndex() {
         <p className="mt-3 text-lg text-muted-foreground max-w-3xl">
           Peste {tutoriale.length} ghiduri pas cu pas, scrise pentru elevii care se pregătesc de admitere la facultate și de examenul de bacalaureat. Algoritmi, formule, scheme de rezolvare, tehnici de memorare și strategii de examen — toate gratuit.
         </p>
+
+        {noi.length > 0 && (
+          <section className="mt-8">
+            <h2 className="text-2xl font-semibold border-b pb-2">Articole noi</h2>
+            <ul className="mt-4 grid sm:grid-cols-2 gap-3">
+              {noi.slice(0, 12).map(a => (
+                <li key={a.slug}>
+                  <Link to="/tutoriale/$slug" params={{ slug: a.slug }} className="block p-4 rounded-lg border hover:border-primary transition">
+                    <p className="text-xs uppercase tracking-wide text-primary">{a.materie} · {new Date(a.published_at).toLocaleDateString("ro-RO")}</p>
+                    <h3 className="mt-1 font-medium leading-snug">{a.title}</h3>
+                    <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{a.description}</p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         <div className="mt-6 flex flex-col sm:flex-row gap-3">
           <input
