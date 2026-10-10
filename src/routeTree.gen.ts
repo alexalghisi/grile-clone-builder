@@ -175,9 +175,9 @@ const TutorialeIndexRoute = TutorialeIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const TutorialeSlugRoute = TutorialeSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => TutorialeRoute,
+  id: '/tutoriale/$slug',
+  path: '/tutoriale/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminQuestionsNewRoute = AdminQuestionsNewRouteImport.update({
   id: '/admin/questions/new',
@@ -522,6 +522,7 @@ export interface RootRouteChildren {
   QuizSlugRoute: typeof QuizSlugRoute
   ScoalaSoferiCategorieRoute: typeof ScoalaSoferiCategorieRoute
   ScoalaSoferiTestRoute: typeof ScoalaSoferiTestRoute
+  TutorialeSlugRoute: typeof TutorialeSlugRoute
   GrileIndexRoute: typeof GrileIndexRoute
   ProfesoriIndexRoute: typeof ProfesoriIndexRoute
   ScoalaSoferiIndexRoute: typeof ScoalaSoferiIndexRoute
@@ -715,10 +716,10 @@ declare module '@tanstack/react-router' {
     }
     '/tutoriale/$slug': {
       id: '/tutoriale/$slug'
-      path: '/$slug'
+      path: '/tutoriale/$slug'
       fullPath: '/tutoriale/$slug'
       preLoaderRoute: typeof TutorialeSlugRouteImport
-      parentRoute: typeof TutorialeRoute
+      parentRoute: typeof rootRouteImport
     }
     '/admin/questions/new': {
       id: '/admin/questions/new'
@@ -900,6 +901,7 @@ const rootRouteChildren: RootRouteChildren = {
   QuizSlugRoute: QuizSlugRoute,
   ScoalaSoferiCategorieRoute: ScoalaSoferiCategorieRoute,
   ScoalaSoferiTestRoute: ScoalaSoferiTestRoute,
+  TutorialeSlugRoute: TutorialeSlugRoute,
   GrileIndexRoute: GrileIndexRoute,
   ProfesoriIndexRoute: ProfesoriIndexRoute,
   ScoalaSoferiIndexRoute: ScoalaSoferiIndexRoute,
