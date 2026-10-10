@@ -1,12 +1,16 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Header } from "@/components/Header";
 import { tutorialeBySlug, tutoriale } from "@/lib/tutoriale/data";
+import { getArticol } from "@/lib/articole.functions";
+import { QuestionContent } from "@/components/QuestionContent";
 
 export const Route = createFileRoute("/tutoriale/$slug")({
-  loader: ({ params }) => {
+  loader: async ({ params }) => {
     const t = tutorialeBySlug.get(params.slug);
-    if (!t) throw notFound();
-    return t;
+    if (t) return { ...t, content_md: null as string | null, published_at: null as string | null };
+    const a = await getArticol({ data: { slug: params.slug } });
+    if (!a) throw notFound();
+    return { slug: a.slug, title: a.title, materie: a.materie, keywords: a.keywords, intro: a.description, body: "", content_md: a.content_md, published_at: a.published_at };
   },
   head: ({ params, loaderData }) => {
     const t = loaderData;
@@ -39,6 +43,7 @@ export const Route = createFileRoute("/tutoriale/$slug")({
             author: { "@type": "Organization", name: "grileadmitere.ro" },
             publisher: { "@type": "Organization", name: "grileadmitere.ro" },
             mainEntityOfPage: url,
+            ...(t.published_at ? { datePublished: t.published_at, dateModified: t.published_at } : {}),
             articleSection: t.materie,
           }),
         },
@@ -99,6 +104,10 @@ function TutorialPage() {
           <h1>{t.title}</h1>
           <p className="lead text-lg text-muted-foreground">{t.intro}</p>
 
+          {t.content_md ? (
+            <div className="not-prose-fix"><QuestionContent text={t.content_md} /></div>
+          ) : (
+            <>
           <h2>Ce trebuie să știi</h2>
           <p>{t.body}</p>
 
@@ -121,6 +130,8 @@ function TutorialPage() {
           <p>Tutorialul îți dă scheletul. Pentru admitere, completează cu manualul oficial și sute de grile rezolvate pe materie.</p>
           <h3>Pot folosi tutorialul și pentru BAC?</h3>
           <p>Da. Conținutul respectă programa școlară și se suprapune larg cu programa de bacalaureat.</p>
+            </>
+          )}
         </article>
 
         {related.length > 0 && (
