@@ -25,6 +25,14 @@ function send(payload: Record<string, unknown>) {
   } catch {}
 }
 
+export function isInjectedThirdParty(stack: string): boolean {
+  if (!stack) return false;
+  const frames = stack.split("\n").map((l) => l.trim()).filter(Boolean);
+  const urls = frames.map((f) => f.match(/https?:\/\/[^\s)]+/)?.[0]).filter(Boolean) as string[];
+  if (!urls.length) return false;
+  return urls.every((u) => !/\/assets\/|\/src\/|\/node_modules\/|\/@/.test(u) && !/\.m?[jt]sx?(\?|:|$)/.test(u.replace(/:\d+:\d+$/, "").split("/").pop() ?? ""));
+}
+
 const sent = new Set<string>();
 function once(key: string) {
   if (sent.has(key)) return false;
@@ -57,7 +65,8 @@ export function ClientErrorReporter() {
         stackStr.includes("adsbygoogle") ||
         // Minified React #418/#423/#425 are hydration mismatches usually caused by
         // browser extensions injecting DOM; recoverable, not actionable.
-        /Minified React error #(418|421|422|423|425)/.test(msg)
+        /Minified React error #(418|421|422|423|425)/.test(msg) ||
+        isInjectedThirdParty(stackStr)
       ) {
         return;
       }
