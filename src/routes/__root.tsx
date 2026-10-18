@@ -106,14 +106,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "Grile admitere 2026 rezolvate pas cu pas pentru UMF, UPB, UBB, ASE și 100+ universități. Explicații detaliate, simulări BAC gratuite. Începe acum!" },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "GrileAdmitere.ro" },
-      { property: "og:image:width", content: "1200" },
-      { property: "og:image:height", content: "630" },
       { name: "twitter:card", content: "summary" },
       { property: "og:locale", content: "ro_RO" },
       { name: "twitter:title", content: "Grile Admitere 2026 Rezolvate Gratis | GrileAdmitere" },
       { name: "twitter:description", content: "Grile admitere 2026 rezolvate pas cu pas pentru UMF, UPB, UBB, ASE și 100+ universități. Explicații detaliate, simulări BAC gratuite. Începe acum!" },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/83c63369-cbf9-4437-ad9f-4f41926f2eac/id-preview-5022c68a--55f0cd08-eee4-4482-98ba-9f1422bac10e.lovable.app-1778656224108.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/83c63369-cbf9-4437-ad9f-4f41926f2eac/id-preview-5022c68a--55f0cd08-eee4-4482-98ba-9f1422bac10e.lovable.app-1778656224108.png" },
     ],
     links: [
       {

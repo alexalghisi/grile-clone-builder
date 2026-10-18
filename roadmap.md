@@ -1,2 +1,5 @@
 - [ ] Newsletter sending service — blocked: Brevo/beehiiv signup SMS fails for user
 - [x] Opt-in newsletter signup on homepage
+- [ ] Verify daily articles, questions, simulations and credit circuit breaker
+- [ ] Publish site after security review
+- [ ] Run and verify live content generation

@@ -7,6 +7,10 @@ import { ArrowRight } from "lucide-react";
 export const Route = createFileRoute("/subiecte-admitere")({
   head: () => ({
     meta: [
+      { property: "og:title", content: "Subiecte de Admitere — GrileAdmitere.ro" },
+      { property: "og:description", content: "Grile pe materii pentru admitere: biologie, chimie, fizică, matematică, română, engleză." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Subiecte de Admitere — GrileAdmitere.ro" },
       { name: "description", content: "Grile pe materii pentru admitere: biologie, chimie, fizică, matematică, română, engleză." },
     ],

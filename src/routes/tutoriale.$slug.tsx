@@ -25,6 +25,7 @@ export const Route = createFileRoute("/tutoriale/$slug")({
         { property: "og:title", content: t.title },
         { property: "og:description", content: desc.slice(0, 158) },
         { property: "og:type", content: "article" },
+        { name: "twitter:card", content: "summary_large_image" },
         { property: "og:url", content: url },
         { name: "article:section", content: t.materie },
       ],

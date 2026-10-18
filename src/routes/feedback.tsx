@@ -14,6 +14,10 @@ export const Route = createFileRoute("/feedback")({
   component: FeedbackPage,
   head: () => ({
     meta: [
+      { property: "og:title", content: "Feedback - GrileAdmitere" },
+      { property: "og:description", content: "Trimite-ne feedback, raportează un bug sau propune o îmbunătățire pentru GrileAdmitere." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Feedback - GrileAdmitere" },
       { name: "description", content: "Trimite-ne feedback, raportează un bug sau propune o îmbunătățire pentru GrileAdmitere." },
     ],

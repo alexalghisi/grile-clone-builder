@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { listSimulations } from "@/lib/db.functions";
@@ -62,8 +62,13 @@ export const Route = createFileRoute("/simulare")({
       },
     ],
   }),
-  component: Page,
+  component: SimulationLayout,
 });
+
+function SimulationLayout() {
+  const pathname = useRouterState({ select: state => state.location.pathname });
+  return pathname.replace(/\/$/, "") === "/simulare" ? <Page /> : <Outlet />;
+}
 
 function Page() {
   const fn = useServerFn(listSimulations);

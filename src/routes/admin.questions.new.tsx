@@ -16,7 +16,12 @@ import { toast } from "sonner";
 import { Eye, Save, Upload, ImageIcon, X } from "lucide-react";
 
 export const Route = createFileRoute("/admin/questions/new")({
-  head: () => ({ meta: [{ title: "Admin · Adaugă grilă" }, { name: "robots", content: "noindex, nofollow" }] }),
+  head: () => ({ meta: [
+      { name: "description", content: "Administrarea Admin · Adaugă grilă pe GrileAdmitere.ro." },
+      { property: "og:title", content: "Admin · Adaugă grilă" },
+      { property: "og:description", content: "Administrarea Admin · Adaugă grilă pe GrileAdmitere.ro." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },{ title: "Admin · Adaugă grilă" }, { name: "robots", content: "noindex, nofollow" }] }),
   component: Page,
 });
 

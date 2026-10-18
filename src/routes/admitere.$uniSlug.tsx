@@ -16,6 +16,7 @@ export const Route = createFileRoute("/admitere/$uniSlug")({
     const url = `https://grileadmitere.ro/admitere/${slug}`;
     return {
       meta: [
+      { name: "twitter:card", content: "summary_large_image" },
         { title },
         { name: "description", content: description },
         { name: "keywords", content: `subiecte admitere ${slug}, ${slug} admitere pdf, admitere ${slug} 2026, ${slug} biologie chimie matematica` },

@@ -15,6 +15,7 @@ export const Route = createFileRoute("/grile/$uniSlug")({
     const description = `Grile admitere ${SLUG} 2026 rezolvate pas cu pas, cu explicații detaliate la fiecare răspuns. Subiecte din anii precedenți, simulări gratuite și pregătire online completă pentru facultate.`;
     return {
       meta: [
+      { name: "twitter:card", content: "summary_large_image" },
         { title },
         { name: "description", content: description },
         { name: "keywords", content: `grile ${slug}, admitere ${slug} 2026, teste ${slug}, subiecte ${slug}, pregatire admitere ${slug}, facultate ${slug}` },

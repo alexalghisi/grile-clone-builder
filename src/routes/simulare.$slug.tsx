@@ -18,6 +18,9 @@ export const Route = createFileRoute("/simulare/$slug")({
     const title = `Simulare ${params.slug} — Admitere 2026 | GrileAdmitere.ro`;
     return {
       meta: [
+      { property: "og:description", content: "Simulări de antrenament cu întrebări și explicații pentru pregătire la admitere." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
         { title },
         { name: "description", content: `Simulare admitere cronometrată în format real. Subiecte cu 6 variante, formule matematice și figuri, rezolvare pas cu pas.` },
         { property: "og:title", content: title },
