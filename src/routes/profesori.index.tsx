@@ -14,6 +14,7 @@ const URL = "https://grileadmitere.ro/profesori";
 export const Route = createFileRoute("/profesori/")({
   head: () => ({
     meta: [
+      { name: "twitter:card", content: "summary_large_image" },
       { title: TITLE },
       { name: "description", content: DESCRIPTION },
       {

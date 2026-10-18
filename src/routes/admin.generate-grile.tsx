@@ -20,6 +20,11 @@ import {
 export const Route = createFileRoute("/admin/generate-grile")({
   head: () => ({
     meta: [
+      { name: "description", content: "Administrarea Admin · Generare AI Grile Avansate pe GrileAdmitere.ro." },
+      { property: "og:title", content: "Admin · Generare AI Grile Avansate" },
+      { property: "og:description", content: "Administrarea Admin · Generare AI Grile Avansate pe GrileAdmitere.ro." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Admin · Generare AI Grile Avansate" },
       { name: "robots", content: "noindex, nofollow" },
     ],

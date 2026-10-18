@@ -24,6 +24,11 @@ import {
 export const Route = createFileRoute("/admin/subiecte-bac")({
   head: () => ({
     meta: [
+      { name: "description", content: "Administrarea Admin · Subiecte BAC pe GrileAdmitere.ro." },
+      { property: "og:title", content: "Admin · Subiecte BAC" },
+      { property: "og:description", content: "Administrarea Admin · Subiecte BAC pe GrileAdmitere.ro." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Admin · Subiecte BAC" },
       { name: "robots", content: "noindex, nofollow" },
     ],

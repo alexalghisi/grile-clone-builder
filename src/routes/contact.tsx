@@ -13,6 +13,7 @@ import { sendContactMessage } from '@/lib/contact.functions'
 export const Route = createFileRoute('/contact')({
   head: () => ({
     meta: [
+      { name: "twitter:card", content: "summary_large_image" },
       { title: 'Contact GrileAdmitere — Suport admitere, grile și BAC | Răspuns rapid' },
       { name: 'description', content: 'Contactează echipa GrileAdmitere.ro pentru întrebări despre grile admitere 2026, simulări BAC, profesori meditații și colaborări. Îți răspundem rapid pe email.' },
       { name: 'keywords', content: 'contact grile admitere, suport admitere facultate, contact profesori meditatii, intrebari BAC, grileadmitere contact' },

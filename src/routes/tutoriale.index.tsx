@@ -13,6 +13,8 @@ export const Route = createFileRoute("/tutoriale/")({
       { property: "og:title", content: "Tutoriale Admitere 2026 — 140+ Ghiduri pe Materii" },
       { property: "og:description", content: "Ghiduri pas cu pas pentru fiecare materie de la admitere și BAC: matematică, biologie, chimie, fizică, română, informatică." },
       { property: "og:url", content: "https://grileadmitere.ro/tutoriale" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [{ rel: "canonical", href: "https://grileadmitere.ro/tutoriale" }],
     scripts: [{
@@ -68,10 +70,10 @@ function TutorialeIndex() {
           <section className="mt-8">
             <h2 className="text-2xl font-semibold border-b pb-2">Articole noi</h2>
             <ul className="mt-4 grid sm:grid-cols-2 gap-3">
-              {noi.slice(0, 12).map(a => (
+              {noi.map(a => (
                 <li key={a.slug}>
                   <Link to="/tutoriale/$slug" params={{ slug: a.slug }} className="block p-4 rounded-lg border hover:border-primary transition">
-                    <p className="text-xs uppercase tracking-wide text-primary">{a.materie} · {new Date(a.published_at).toLocaleDateString("ro-RO")}</p>
+                    <p className="text-xs uppercase tracking-wide text-primary">{a.materie} · {new Date(a.published_at).toLocaleDateString("ro-RO", { timeZone: "Europe/Bucharest" })}</p>
                     <h3 className="mt-1 font-medium leading-snug">{a.title}</h3>
                     <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{a.description}</p>
                   </Link>

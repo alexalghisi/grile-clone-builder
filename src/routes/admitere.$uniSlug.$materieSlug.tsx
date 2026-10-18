@@ -12,6 +12,7 @@ export const Route = createFileRoute("/admitere/$uniSlug/$materieSlug")({
     const url = `https://grileadmitere.ro/admitere/${params.uniSlug}/${params.materieSlug}`;
     return {
       meta: [
+      { name: "twitter:card", content: "summary_large_image" },
         { title }, { name: "description", content: description },
         { property: "og:title", content: title }, { property: "og:description", content: description },
         { property: "og:url", content: url }, { property: "og:type", content: "article" },

@@ -22,6 +22,13 @@
       "when": 1791629800520,
       "tag": "0002_grile_groups_fn",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1792358344973,
+      "tag": "0003_daily_content_checkpoints",
+      "breakpoints": true
     }
   ]
 }

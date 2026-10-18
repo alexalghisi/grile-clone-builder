@@ -16,6 +16,11 @@ import { Mail, Download, Filter } from "lucide-react";
 export const Route = createFileRoute("/admin/leads")({
   head: () => ({
     meta: [
+      { name: "description", content: "Administrarea Admin · Leaduri email | GrileAdmitere pe GrileAdmitere.ro." },
+      { property: "og:title", content: "Admin · Leaduri email | GrileAdmitere" },
+      { property: "og:description", content: "Administrarea Admin · Leaduri email | GrileAdmitere pe GrileAdmitere.ro." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Admin · Leaduri email | GrileAdmitere" },
       { name: "robots", content: "noindex, nofollow" },
     ],

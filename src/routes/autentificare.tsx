@@ -12,6 +12,10 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/autentificare")({
   head: () => ({
     meta: [
+      { property: "og:title", content: "Autentificare — GrileAdmitere.ro" },
+      { property: "og:description", content: "Autentifică-te pe GrileAdmitere.ro pentru a-ți salva progresul la grilele de admitere și simulările BAC 2026." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
       { title: "Autentificare — GrileAdmitere.ro" },
       { name: "description", content: "Autentifică-te pe GrileAdmitere.ro pentru a-ți salva progresul la grilele de admitere și simulările BAC 2026." },
       { name: "robots", content: "noindex, follow" },

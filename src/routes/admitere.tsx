@@ -13,6 +13,7 @@ export const Route = createFileRoute("/admitere")({
     const description = "Arhivă cu subiecte admitere PDF pentru facultățile din România: UMF, Politehnică, ASE, UBB, UAIC. Toate materiile, gratuit.";
     return {
       meta: [
+      { name: "twitter:card", content: "summary_large_image" },
         { title },
         { name: "description", content: description },
         { name: "keywords", content: "subiecte admitere, admitere facultate pdf, admitere 2026, UMF subiecte, politehnica subiecte, admitere biologie, admitere matematica, subiecte rezolvate admitere" },

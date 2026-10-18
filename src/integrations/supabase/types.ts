@@ -588,6 +588,7 @@ export type Database = {
           difficulty: string | null
           explanation: string | null
           figure_url: string | null
+          generation_key: string | null
           id: string
           options: Json
           problem_number: number | null
@@ -603,6 +604,7 @@ export type Database = {
           difficulty?: string | null
           explanation?: string | null
           figure_url?: string | null
+          generation_key?: string | null
           id?: string
           options: Json
           problem_number?: number | null
@@ -618,6 +620,7 @@ export type Database = {
           difficulty?: string | null
           explanation?: string | null
           figure_url?: string | null
+          generation_key?: string | null
           id?: string
           options?: Json
           problem_number?: number | null
@@ -1051,6 +1054,15 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
+      }
+      save_daily_question_batch: {
+        Args: {
+          p_batch: number
+          p_day: string
+          p_rows: Json
+          p_subject: string
+        }
+        Returns: number
       }
     }
     Enums: {

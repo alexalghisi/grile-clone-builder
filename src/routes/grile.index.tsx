@@ -16,6 +16,7 @@ export const Route = createFileRoute("/grile/")({
       "Grile admitere 2026 rezolvate pas cu pas de profesori cu experiență: UMF, UPB, UBB, ASE, UAIC, UTCN și 100+ facultăți. Mii de grile + profesori verificați. 100% gratuit.";
     return {
       meta: [
+      { name: "twitter:card", content: "summary_large_image" },
         { title },
         { name: "description", content: description },
         { name: "keywords", content: "grile, grile admitere, grile online, grile rezolvate, grile facultate, grile UMF, grile UPB, grile ASE, grile UBB, grile UAIC, grile UTCN, grile medicina, grile informatica, grile matematica, grile biologie, grile chimie, grile profesori, profesori grile, grile cu profesori, admitere 2026, teste admitere" },

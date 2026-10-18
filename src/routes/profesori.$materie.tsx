@@ -12,7 +12,8 @@ export const Route = createFileRoute("/profesori/$materie")({
     return m;
   },
   head: ({ loaderData }) => {
-    if (!loaderData) return { meta: [] };
+    if (!loaderData) return { meta: [
+      { name: "twitter:card", content: "summary_large_image" },] };
     const m = loaderData;
     const title = `Profesori ${m.nume} 2026 — Meditații + Grile ${m.nume} Rezolvate`;
     const description = `${m.profesori[0].toUpperCase() + m.profesori.slice(1)} pentru admitere și BAC 2026. Grile ${m.nume.toLowerCase()} rezolvate pas cu pas de profesori cu experiență. 100% gratuit.`;
