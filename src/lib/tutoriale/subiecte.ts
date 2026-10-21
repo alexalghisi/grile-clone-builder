@@ -99,7 +99,7 @@ const fizica: IntrebareRezolvata[] = [
     "**A este corect**: volumul scade de 2 ori, presiunea crește de 2 ori. **B** inversează proporționalitatea. **C** ar fi transformarea izobară. **D** presupune dependență de pătratul volumului."),
   q("Un resort cu constanta elastică $k = 200\\,N/m$ este alungit cu $5\\,cm$. Forța elastică are modulul:", ["$10\\,N$", "$1000\\,N$", "$40\\,N$", "$0{,}25\\,N$"], 0,
     "1. Legea lui Hooke: $F = k \\Delta l$, cu $\\Delta l = 0{,}05\\,m$.\n2. $F = 200 \\cdot 0{,}05 = 10\\,N$.",
-    "**A este corect**. **B** folosește centimetri fără conversie ($200 \\cdot 5$). **C** = $k / 5$. **D** amestecă unitățile ($k \\cdot \\Delta l^2 / 2$ cu $\\Delta l$ în cm, împărțit apoi la 100) — este forma energiei, nu a forței."),
+    "**A este corect**. **B** folosește centimetri fără conversie ($200 \\cdot 5$). **C** = $k / 5$. **D** = $\\frac{k \\Delta l^2}{2} = 0{,}25$ — aceasta este energia elastică (în J), nu forța."),
   q("Ce impuls are un corp de $0{,}5\\,kg$ care se deplasează cu $4\\,m/s$?", ["$2\\,kg\\cdot m/s$", "$8\\,kg\\cdot m/s$", "$4\\,J$", "$0{,}125\\,kg\\cdot m/s$"], 0,
     "1. Impulsul: $p = m v$.\n2. $p = 0{,}5 \\cdot 4 = 2\\,kg \\cdot m/s$.",
     "**A este corect**. **B** = $m v^2$, fără sens. **C** este energia cinetică $\\frac{m v^2}{2} = 4\\,J$ — altă mărime, alt unit. **D** = $m / v$."),
