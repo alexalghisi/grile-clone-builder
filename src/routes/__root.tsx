@@ -7,6 +7,7 @@ import {
   HeadContent,
   Scripts,
   redirect,
+  useRouterState,
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
