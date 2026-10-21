@@ -492,7 +492,6 @@ function Page() {
   );
 }
 
-/** Server-rendered, crawlable content: H1, intro, the full list of solved questions and related links. */
 function SeoContent({ subject, questions, recs, slug }: { subject: any; questions: Q[]; recs: any[]; slug: string }) {
   const uni = String(subject?.universities?.short_name ?? subject?.universities?.name ?? "").replace(/\s*20\d\d\s*$/, "").trim();
   const uniSlug = subject?.universities?.slug as string | undefined;
