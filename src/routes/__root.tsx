@@ -97,7 +97,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "Grile Admitere 2026 Rezolvate Gratis | GrileAdmitere" },
       { name: "description", content: "Grile admitere 2026 rezolvate pas cu pas pentru UMF, UPB, UBB, ASE și 100+ universități. Explicații detaliate, simulări BAC gratuite. Începe acum!" },
       { name: "author", content: "GrileAdmitere.ro" },
-      { name: "keywords", content: "admitere facultate, grile admitere, pregătire admitere, UPB, UBB, ASE, Medicină, teste admitere, România" },
       { name: "robots", content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" },
       { name: "googlebot", content: "index, follow" },
       { name: "language", content: "Romanian" },
@@ -107,10 +106,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:description", content: "Grile admitere 2026 rezolvate pas cu pas pentru UMF, UPB, UBB, ASE și 100+ universități. Explicații detaliate, simulări BAC gratuite. Începe acum!" },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "GrileAdmitere.ro" },
-      { name: "twitter:card", content: "summary" },
+      { name: "twitter:card", content: "summary_large_image" },
       { property: "og:locale", content: "ro_RO" },
-      { name: "twitter:title", content: "Grile Admitere 2026 Rezolvate Gratis | GrileAdmitere" },
-      { name: "twitter:description", content: "Grile admitere 2026 rezolvate pas cu pas pentru UMF, UPB, UBB, ASE și 100+ universități. Explicații detaliate, simulări BAC gratuite. Începe acum!" },
+      { property: "og:image", content: "https://grileadmitere.ro/og-image.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { name: "twitter:image", content: "https://grileadmitere.ro/og-image.png" },
     ],
     links: [
       {
@@ -141,12 +142,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           description:
             "Platformă gratuită de pregătire pentru admiterea la facultate cu grile rezolvate pas cu pas.",
           address: { "@type": "PostalAddress", addressCountry: "RO" },
-          aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: "4.8",
-            ratingCount: "10000",
-            bestRating: "5",
-          },
         }),
       },
       {
@@ -156,11 +151,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@type": "WebSite",
           name: "GrileAdmitere.ro",
           url: "https://grileadmitere.ro",
-          potentialAction: {
-            "@type": "SearchAction",
-            target: "https://grileadmitere.ro/search?q={search_term_string}",
-            "query-input": "required name=search_term_string",
-          },
+          inLanguage: "ro-RO",
         }),
       },
     ],

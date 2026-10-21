@@ -19,7 +19,9 @@ export const Route = createFileRoute("/api/public/hooks/daily-content")({
             };
             emit({ status: "started" });
             try {
-              const result = await runDailyContent(progress => emit({ progress }));
+              const url = new URL(request.url);
+              const maxSteps = Math.max(1, Math.min(50, Number(url.searchParams.get("steps") ?? "3") || 3));
+              const result = await runDailyContent(progress => emit({ progress }), maxSteps);
               emit({ result });
             } catch (error) {
               emit({ error: error instanceof Error ? error.message : "Generarea a eșuat" });

@@ -26,9 +26,8 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/subiecte-bac", changefreq: "weekly", priority: "0.7" },
           { path: "/subiecte-admitere", changefreq: "weekly", priority: "0.7" },
           { path: "/admitere", changefreq: "weekly", priority: "0.8" },
-          { path: "/tutoriale", changefreq: "weekly", priority: "0.6" },
-          { path: "/feedback", changefreq: "monthly", priority: "0.3" },
-          { path: "/autentificare", changefreq: "monthly", priority: "0.3" },
+          { path: "/tutoriale", changefreq: "daily", priority: "0.8" },
+          { path: "/contact", changefreq: "yearly", priority: "0.2" },
           { path: "/scoala-soferi", changefreq: "weekly", priority: "0.9" },
           { path: "/scoala-soferi/test", changefreq: "weekly", priority: "0.8" },
           { path: "/profesori", changefreq: "weekly", priority: "0.95" },
@@ -57,12 +56,19 @@ export const Route = createFileRoute("/sitemap.xml")({
           priority: "0.6",
         }));
 
-        const { data: arts } = await supabaseAdmin.from("articole").select("slug, published_at");
+        const { data: arts } = await supabaseAdmin.from("articole").select("slug, published_at").order("published_at", { ascending: false });
+        const { data: sims } = await supabaseAdmin.from("simulations").select("slug, created_at").order("created_at", { ascending: false }).limit(2000);
+        const simEntries: SitemapEntry[] = ((sims ?? []) as Array<{ slug: string; created_at: string }>).map((sm) => ({
+          path: `/simulare/${sm.slug}`,
+          lastmod: sm.created_at?.slice(0, 10),
+          changefreq: "monthly",
+          priority: "0.6",
+        }));
         const articoleEntries: SitemapEntry[] = (arts ?? []).map((a) => ({
           path: `/tutoriale/${a.slug}`,
           lastmod: a.published_at.slice(0, 10),
-          changefreq: "monthly",
-          priority: "0.7",
+          changefreq: "weekly",
+          priority: "0.75",
         }));
         const { data: unis } = await supabaseAdmin
           .from("universities")
@@ -70,7 +76,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           .order("short_name");
         const { data: subjects } = await supabaseAdmin
           .from("subjects")
-          .select("slug");
+          .select("slug, created_at");
         const { data: bacSubjects } = await supabaseAdmin
           .from("bac_papers")
           .select("subject_slug, slug, year");
@@ -85,8 +91,9 @@ export const Route = createFileRoute("/sitemap.xml")({
         }));
         const quizEntries: SitemapEntry[] = (subjects ?? []).map((s: any) => ({
           path: `/quiz/${s.slug}`,
+          lastmod: s.created_at?.slice?.(0, 10),
           changefreq: "weekly",
-          priority: "0.6",
+          priority: "0.75",
         }));
         const bacRows = (bacSubjects ?? []) as Array<{ subject_slug: string; slug: string | null; year: number }>;
         const bacMaterieEntries: SitemapEntry[] = Array.from(
@@ -142,6 +149,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...profesoriEntries,
           ...tutorialeEntries,
           ...articoleEntries,
+          ...simEntries,
         ];
         const urls = all.map((e) =>
           [

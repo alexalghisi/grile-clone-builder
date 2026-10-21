@@ -16,14 +16,18 @@ export const Route = createFileRoute("/tutoriale/$slug")({
     const t = loaderData;
     if (!t) return { meta: [{ title: "Tutorial — grileadmitere.ro" }] };
     const url = `https://grileadmitere.ro/tutoriale/${params.slug}`;
-    const desc = `${t.intro} Subiecte cheie: ${t.keywords}.`;
+    const raw = t.content_md ? t.intro : `${t.intro} Subiecte cheie: ${t.keywords}.`;
+    const desc = raw.length <= 158 ? raw : raw.slice(0, 155).replace(/\s+\S*$/, "") + "…";
     return {
       meta: [
         { title: `${t.title} — Tutorial ${t.materie} | grileadmitere.ro` },
-        { name: "description", content: desc.slice(0, 158) },
+        { name: "description", content: desc },
+        { name: "twitter:title", content: t.title },
+        { name: "twitter:description", content: desc },
         { name: "keywords", content: `${t.keywords}, ${t.materie}, admitere 2026, BAC, tutorial, grile` },
         { property: "og:title", content: t.title },
-        { property: "og:description", content: desc.slice(0, 158) },
+        { property: "og:description", content: desc },
+        ...(t.published_at ? [{ property: "article:published_time", content: t.published_at }] : []),
         { property: "og:type", content: "article" },
         { name: "twitter:card", content: "summary_large_image" },
         { property: "og:url", content: url },
