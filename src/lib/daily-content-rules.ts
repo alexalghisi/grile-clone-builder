@@ -1,4 +1,4 @@
-export const articlesPerDay = (_date: Date) => 3;
+export const articlesPerDay = (_date: Date) => 1;
 
 export type DailyQuestion = { intrebare: string; variante: string[]; raspuns_corect: string; explicatie: string; referinta_programa: string };
 

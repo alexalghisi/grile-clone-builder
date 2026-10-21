@@ -1,16 +1,8 @@
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { createLovableAiGatewayRunIdFetch } from "./ai-run-id.server";
 import { articlesPerDay, validateQuestions, type DailyQuestion } from "./daily-content-rules";
-import {
-  buildSolutionSlug,
-  isCompleteSolutionArticle,
-  pickSolutionCandidate,
-  quizPathOf,
-  solutionPrompt,
-  subjectLabel,
-  toCandidate,
-  type QuestionRow,
-} from "./solution-article";
+import { materieDinRotatie, slugSubiect, validateIntrebari, type IntrebareRezolvata } from "./subiect-rezolvat";
+import { SUBIECTE_REZOLVATE } from "./tutoriale/subiecte";
 
 const MODEL = "openai/gpt-6-astra";
 const GRILE_PER_GROUP = 50;
@@ -76,72 +68,62 @@ async function askJson<T>(prompt: string, schemaName: string, schema: Record<str
   return JSON.parse(text) as T;
 }
 
-const ARTICLE_SCHEMA = {
+const SUBIECT_SCHEMA = {
   type: "object",
   additionalProperties: false,
-  required: ["answer_confirmed", "topic", "title", "keywords", "description", "content_md"],
+  required: ["title", "description", "keywords", "intro", "intrebari"],
   properties: {
-    answer_confirmed: { type: "boolean" },
-    topic: { type: "string" },
     title: { type: "string" },
-    keywords: { type: "string" },
     description: { type: "string" },
-    content_md: { type: "string" },
+    keywords: { type: "string" },
+    intro: { type: "string" },
+    intrebari: {
+      type: "array",
+      items: {
+        type: "object",
+        additionalProperties: false,
+        required: ["enunt", "variante", "corect", "rezolvare", "de_ce"],
+        properties: {
+          enunt: { type: "string" },
+          variante: { type: "array", items: { type: "string" } },
+          corect: { type: "integer" },
+          rezolvare: { type: "string" },
+          de_ce: { type: "string" },
+        },
+      },
+    },
   },
 };
 
-type SolutionArticle = {
-  answer_confirmed: boolean;
-  topic: string;
-  title: string;
-  keywords: string;
-  description: string;
-  content_md: string;
-};
+type SubiectAi = { title: string; description: string; keywords: string; intro: string; intrebari: IntrebareRezolvata[] };
 
-async function generateSolutionArticle(offset: number, rejected: string[]): Promise<string | null> {
-  const { data: existing, error: existingError } = await supabaseAdmin
-    .from("articole")
-    .select("slug,question_id");
-  if (existingError) throw existingError;
-  const usedIds = new Set([
-    ...rejected,
-    ...(existing ?? []).flatMap((a) => (a.question_id ? [a.question_id] : [])),
-  ]);
-  const { data: rows, error } = await supabaseAdmin
-    .from("questions")
-    .select(
-      "id,question_text,options,correct_index,explanation,solution_md,subjects(name,slug,universities(short_name,name,slug))",
-    )
-    .not("explanation", "is", null)
-    .order("created_at", { ascending: false })
-    .limit(300);
+async function generateSubiectRezolvat(): Promise<string> {
+  const { data: existing, error } = await supabaseAdmin.from("articole").select("slug,materie").not("subject_slug", "is", null);
   if (error) throw error;
-  const q = pickSolutionCandidate(
-    ((rows ?? []) as unknown as QuestionRow[]).flatMap(toCandidate),
-    usedIds,
-    offset,
-  );
-  if (!q) throw new Error("Nu mai există grile fără articol de rezolvare");
-  const a = await askJson<SolutionArticle>(solutionPrompt(q), "articol", ARTICLE_SCHEMA);
-  if (!a.answer_confirmed || !isCompleteSolutionArticle(a.content_md, quizPathOf(q))) {
-    rejected.push(q.id);
-    return null;
-  }
-  const takenSlugs = new Set((existing ?? []).map((row) => row.slug));
-  const slug = buildSolutionSlug(
-    { materie: q.subjectName, universitate: q.universitate, topic: a.topic },
-    takenSlugs,
-    q.id,
-  );
+  const rot = materieDinRotatie(SUBIECTE_REZOLVATE.length + (existing ?? []).length);
+  const taken = new Set([...(existing ?? []).map(a => a.slug), ...SUBIECTE_REZOLVATE.map(s => s.slug)]);
+  let varianta = 1;
+  while (taken.has(slugSubiect(rot.materie, varianta))) varianta++;
+  const slug = slugSubiect(rot.materie, varianta);
+  const { data: subj } = await supabaseAdmin.from("subjects").select("slug,name,universities(name)").ilike("slug", `%-${rot.pattern}`).limit(1).maybeSingle();
+  const uni = (subj?.universities as { name: string } | null)?.name;
+  const prompt = `Ești profesor român care pregătește elevi pentru admiterea la facultate. Scrie varianta ${varianta} a unui subiect de antrenament pentru admitere la ${rot.materie}${uni ? ` (nivel ${uni}, ${subj?.name})` : ""}, conform programei de liceu din România.
+Exact 10 întrebări grilă, dificultate de admitere, fiecare cu 4 variante distincte (fără prefixe A/B), un singur răspuns corect (corect = index 0-3, distribuie răspunsurile corecte pe poziții diferite).
+Pentru fiecare: enunt (Markdown, LaTeX între $...$, cod în blocuri Markdown dacă e cazul), rezolvare (pași numerotați, fiecare calcul sau argument justificat), de_ce (de ce răspunsul corect e corect și, pe rând, de ce fiecare variantă greșită e greșită, cu greșeala tipică care duce la ea).
+Rezolvă independent fiecare întrebare și verifică răspunsul înainte să îl marchezi. Fără umplutură.
+title: 50-70 caractere, începe cu „Subiect admitere ${rot.materie} varianta ${varianta} rezolvat”. description: 140-158 caractere, unică. keywords: 5-8 căutări separate prin virgulă. intro: o propoziție cu temele acoperite.
+Este un subiect de antrenament, nu un subiect oficial: nu pretinde altceva.`;
+  const a = await askJson<SubiectAi>(prompt, "subiect", SUBIECT_SCHEMA);
+  const intrebari = validateIntrebari(a.intrebari, 10);
   const { error: saveError } = await supabaseAdmin.from("articole").insert({
     slug,
-    question_id: q.id,
     title: a.title.trim(),
-    materie: subjectLabel(q.subjectName),
+    materie: rot.materie,
     keywords: a.keywords,
     description: a.description.trim().slice(0, 160),
-    content_md: a.content_md,
+    content_md: a.intro.trim(),
+    intrebari: intrebari as never,
+    subject_slug: subj?.slug ?? rot.pattern,
   });
   if (saveError) throw saveError;
   return slug;
@@ -222,13 +204,8 @@ export async function runDailyContent(report: (value: unknown) => void = () => {
     while (Number(result.article_step) < articlesPerDay(now)) {
       if (stepsDone >= maxSteps) { result.partial = true; return result; }
       stepsDone++;
-      const rejected = (result.rejected_questions as string[] | undefined) ?? [];
-      result.rejected_questions = rejected;
-      const slug = await generateSolutionArticle(Number(result.article_step), rejected);
-      if (slug) {
-        result.article_step = Number(result.article_step) + 1;
-        result.latest_article = slug;
-      }
+      result.latest_article = await generateSubiectRezolvat();
+      result.article_step = Number(result.article_step) + 1;
       await saveProgress();
       report(result);
     }

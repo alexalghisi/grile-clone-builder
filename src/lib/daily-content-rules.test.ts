@@ -4,8 +4,8 @@ import { articlesPerDay, validateQuestions, type DailyQuestion } from "./daily-c
 const question = (): DailyQuestion => ({ intrebare: "Care este rezultatul acestui calcul avansat?", variante: ["1", "2", "3", "4", "5"], raspuns_corect: "E", explicatie: "Rezolvarea detaliată pornește de la definiție și verifică toate condițiile problemei. ".repeat(2), referinta_programa: "Algebră" });
 
 describe("daily content rules", () => {
-  it("generates three SEO articles each day", () => {
-    expect([1, 2, 3].map(day => articlesPerDay(new Date(`2026-10-0${day}T04:00:00Z`)))).toEqual([3, 3, 3]);
+  it("publishes one solved paper each day", () => {
+    expect([1, 2, 3].map(day => articlesPerDay(new Date(`2026-10-0${day}T04:00:00Z`)))).toEqual([1, 1, 1]);
   });
   it("requires the full batch of ten new questions", () => {
     expect(() => validateQuestions([question()], 5, 10)).toThrow();
