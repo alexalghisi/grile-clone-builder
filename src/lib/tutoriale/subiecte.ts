@@ -92,7 +92,7 @@ const fizica: IntrebareRezolvata[] = [
     "1. Legea lui Ohm: $I = \\frac{U}{R}$.\n2. $I = \\frac{12}{4} = 3\\,A$.",
     "**A este corect**. **B** = $U \\cdot R$. **C** = $R / U$, raport inversat. **D** = $U + R$, mărimi incompatibile."),
   q("Un motor efectuează un lucru mecanic de $600\\,J$ în $20\\,s$. Puterea medie este:", ["$30\\,W$", "$12\\,000\\,W$", "$580\\,W$", "$0{,}03\\,W$"], 0,
-    "1. $P = \\frac{L}{t}$.\n2. $P = \\frac{600}{20} = 30\\,W$.",
+    "1. Puterea medie este lucrul mecanic efectuat în unitatea de timp: $P = \\frac{L}{t}$.\n2. $P = \\frac{600\\,J}{20\\,s} = 30\\,W$.",
     "**A este corect**. **B** = $L \\cdot t$. **C** = $L - t$, fără sens fizic. **D** = $t / L$, raport inversat."),
   q("Un gaz ideal se comprimă izoterm de la $V_1 = 2\\,L$ la $V_2 = 1\\,L$. Presiunea inițială este $10^5\\,Pa$. Presiunea finală este:", ["$2 \\cdot 10^5\\,Pa$", "$0{,}5 \\cdot 10^5\\,Pa$", "$10^5\\,Pa$", "$4 \\cdot 10^5\\,Pa$"], 0,
     "1. Transformare izotermă (Boyle–Mariotte): $p_1 V_1 = p_2 V_2$.\n2. $p_2 = \\frac{p_1 V_1}{V_2} = \\frac{10^5 \\cdot 2}{1} = 2 \\cdot 10^5\\,Pa$.",
