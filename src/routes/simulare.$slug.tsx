@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
@@ -14,20 +14,62 @@ import { Clock, CheckCircle2, XCircle, Trophy, AlertTriangle } from "lucide-reac
 import { AdInArticle } from "@/components/AdSlot";
 
 export const Route = createFileRoute("/simulare/$slug")({
-  head: ({ params }) => {
-    const title = `Simulare ${params.slug} — Admitere 2026 | GrileAdmitere.ro`;
+  loader: async ({ params }) => {
+    const data = await getSimulation({ data: { slug: params.slug } });
+    if (!data) throw notFound();
+    return data;
+  },
+  staleTime: 5 * 60 * 1000,
+  head: ({ params, loaderData }) => {
+    const sim = (loaderData?.simulation ?? null) as any;
+    const uni = String(sim?.universities?.short_name ?? "").replace(/\s*20\d\d\s*$/, "").trim();
+    const materie = sim?.subjects?.name ?? "";
+    const n = sim?.total_questions ?? loaderData?.questions?.length ?? 30;
+    const title = sim
+      ? `Simulare Admitere ${materie} ${uni} — ${n} Grile Cronometrate, Rezolvate | GrileAdmitere.ro`
+      : `Simulare Admitere 2026 | GrileAdmitere.ro`;
+    const description = sim
+      ? `Simulare admitere ${materie} ${uni}: ${n} grile în ${sim.duration_minutes} de minute, format de examen, cu răspunsuri și rezolvare pas cu pas. Gratuit, fără cont.`.slice(0, 158)
+      : "Simulare admitere cronometrată în format real, cu rezolvare pas cu pas.";
+    const url = `https://grileadmitere.ro/simulare/${params.slug}`;
     return {
       meta: [
-      { property: "og:description", content: "Simulări de antrenament cu întrebări și explicații pentru pregătire la admitere." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
         { title },
-        { name: "description", content: `Simulare admitere cronometrată în format real. Subiecte cu 6 variante, formule matematice și figuri, rezolvare pas cu pas.` },
+        { name: "description", content: description },
         { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: "website" },
+        { property: "og:url", content: url },
+        { name: "twitter:card", content: "summary_large_image" },
       ],
-      links: [{ rel: "canonical", href: `https://grileadmitere.ro/simulare/${params.slug}` }],
+      links: [{ rel: "canonical", href: url }],
+      scripts: sim ? [{
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Quiz",
+          name: title,
+          description,
+          url,
+          inLanguage: "ro-RO",
+          isAccessibleForFree: true,
+          numberOfQuestions: n,
+          timeRequired: `PT${sim.duration_minutes}M`,
+          about: { "@type": "Thing", name: materie },
+          provider: { "@type": "Organization", name: "GrileAdmitere.ro", url: "https://grileadmitere.ro" },
+        }),
+      }] : [],
     };
   },
+  notFoundComponent: () => (
+    <div className="min-h-screen bg-background">
+      <Header />
+      <main className="container mx-auto max-w-2xl px-4 py-16 text-center">
+        <h1 className="text-2xl font-bold">Simularea nu există</h1>
+        <Link to="/simulare" className="mt-6 inline-block underline">Vezi toate simulările</Link>
+      </main>
+    </div>
+  ),
   component: Page,
 });
 
@@ -44,10 +86,12 @@ type Q = {
 
 function Page() {
   const { slug } = Route.useParams();
+  const loaded = Route.useLoaderData();
   const fn = useServerFn(getSimulation);
   const { data, isLoading } = useQuery({
     queryKey: ["sim", slug],
     queryFn: () => fn({ data: { slug } }),
+    initialData: loaded,
     staleTime: 5 * 60 * 1000,
   });
 

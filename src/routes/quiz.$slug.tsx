@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
@@ -91,22 +91,39 @@ function readableSlug(slug: string) {
   return { uni, label: [uni, ...rest].join(" ") };
 }
 
+const stripMd = (t: string) => t.replace(/\$[^$]*\$/g, " ").replace(/```[\s\S]*?```/g, " ").replace(/[*_`#>\[\]]/g, "").replace(/\s+/g, " ").trim();
+
 export const Route = createFileRoute("/quiz/$slug")({
-  head: ({ params }) => {
-    const { label } = readableSlug(params.slug);
-    const title = `Grile ${label} Admitere 2026 — Test Online Rezolvat`;
-    const description = `Grile de admitere 2026 ${label}: întrebări dificile după programa oficială, cu răspunsuri și explicații pas cu pas. Exersează gratuit acum.`;
+  loader: async ({ params }) => {
+    const data = await getQuiz({ data: { slug: params.slug } });
+    if (!data) throw notFound();
+    const subject = data.subject as any;
+    const next = await getNextSubjects({ data: { currentSubjectId: subject.id, universityId: subject.university_id } });
+    return { quiz: data, next };
+  },
+  staleTime: 5 * 60 * 1000,
+  head: ({ params, loaderData }) => {
+    const subject = (loaderData?.quiz?.subject ?? null) as any;
+    const uni = String(subject?.universities?.short_name ?? subject?.universities?.name ?? readableSlug(params.slug).uni).replace(/\s*20\d\d\s*$/, "").trim();
+    const label = subject ? `${subject.name} ${uni}` : readableSlug(params.slug).label;
+    const count = loaderData?.quiz?.questions?.length ?? 0;
+    const title = `Grile ${label} Admitere 2026 Rezolvate${count ? ` — ${count} Întrebări` : ""} | GrileAdmitere.ro`;
+    const description = `Grile admitere ${label} 2026 rezolvate pas cu pas: ${count ? `${count} întrebări` : "întrebări"} cu răspunsuri și explicații detaliate, gratuit și nelimitat. Testează-te online acum.`;
+    const url = `https://grileadmitere.ro/quiz/${params.slug}`;
+    const questions = ((loaderData?.quiz?.questions ?? []) as Q[]).slice(0, 10);
     return {
       meta: [
         { title },
         { name: "description", content: description },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
-        { property: "og:url", content: `https://grileadmitere.ro/quiz/${params.slug}` },
+        { property: "og:url", content: url },
         { property: "og:type", content: "website" },
         { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
       ],
-      links: [{ rel: "canonical", href: `https://grileadmitere.ro/quiz/${params.slug}` }],
+      links: [{ rel: "canonical", href: url }],
       scripts: [{
         type: "application/ld+json",
         children: JSON.stringify({
@@ -114,14 +131,50 @@ export const Route = createFileRoute("/quiz/$slug")({
           "@type": "Quiz",
           name: title,
           description,
-          url: `https://grileadmitere.ro/quiz/${params.slug}`,
+          url,
           inLanguage: "ro-RO",
           educationalUse: "Assessment",
           learningResourceType: "Quiz",
+          isAccessibleForFree: true,
+          about: { "@type": "Thing", name: subject?.name ?? label },
+          educationalAlignment: { "@type": "AlignmentObject", alignmentType: "educationalSubject", targetName: subject?.name ?? label },
+          hasPart: questions.map((q) => {
+            const correct = getCorrectIndices(q);
+            return {
+              "@type": "Question",
+              eduQuestionType: "Multiple choice",
+              name: stripMd(q.question_text).slice(0, 200),
+              text: stripMd(q.question_text),
+              acceptedAnswer: { "@type": "Answer", text: correct.map((i) => stripMd(q.options[i] ?? "")).join(" · ") },
+              suggestedAnswer: q.options.filter((_, i) => !correct.includes(i)).map((o) => ({ "@type": "Answer", text: stripMd(o) })),
+            };
+          }),
+        }),
+      }, {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            { "@type": "ListItem", position: 1, name: "Acasă", item: "https://grileadmitere.ro/" },
+            { "@type": "ListItem", position: 2, name: "Grile Admitere", item: "https://grileadmitere.ro/grile" },
+            ...(subject?.universities?.slug ? [{ "@type": "ListItem", position: 3, name: uni, item: `https://grileadmitere.ro/grile/${subject.universities.slug}` }] : []),
+            { "@type": "ListItem", position: subject?.universities?.slug ? 4 : 3, name: subject?.name ?? label, item: url },
+          ],
         }),
       }],
     };
   },
+  notFoundComponent: () => (
+    <div className="min-h-screen bg-background">
+      <Header />
+      <main className="container mx-auto max-w-2xl px-4 py-16 text-center">
+        <h1 className="text-2xl font-bold">Setul de grile nu există</h1>
+        <p className="mt-3 text-muted-foreground">Alege o universitate și o materie din lista completă.</p>
+        <Link to="/grile" className="mt-6 inline-block underline">Toate grilele de admitere</Link>
+      </main>
+    </div>
+  ),
   component: Page,
 });
 
@@ -148,11 +201,13 @@ const sameAnswers = (answer: number | number[] | undefined, correct: number[]) =
 
 function Page() {
   const { slug } = Route.useParams();
+  const loaded = Route.useLoaderData();
   const queryClient = useQueryClient();
   const fn = useServerFn(getQuiz);
   const { data, isLoading } = useQuery({
     queryKey: ["quiz", slug],
     queryFn: () => fn({ data: { slug } }),
+    initialData: loaded.quiz,
     staleTime: 5 * 60 * 1000,
     gcTime: 30 * 60 * 1000,
   });
@@ -163,6 +218,7 @@ function Page() {
     queryKey: ["next-subjects", subjectId],
     queryFn: () => nextFn({ data: { currentSubjectId: subjectId, universityId } }),
     enabled: !!subjectId,
+    initialData: loaded.next,
     staleTime: 10 * 60 * 1000,
     gcTime: 30 * 60 * 1000,
   });
@@ -430,7 +486,101 @@ function Page() {
         </Card>
         <AdLeaderboard className="my-6" />
         <AdSlot className="my-6" />
+        <SeoContent subject={data.subject as any} questions={(data.questions ?? []) as Q[]} recs={nextData?.recommendations ?? []} slug={slug} />
       </main>
     </div>
+  );
+}
+
+/** Server-rendered, crawlable content: H1, intro, the full list of solved questions and related links. */
+function SeoContent({ subject, questions, recs, slug }: { subject: any; questions: Q[]; recs: any[]; slug: string }) {
+  const uni = String(subject?.universities?.short_name ?? subject?.universities?.name ?? "").replace(/\s*20\d\d\s*$/, "").trim();
+  const uniSlug = subject?.universities?.slug as string | undefined;
+  const label = `${subject?.name ?? ""} ${uni}`.trim();
+  const total = questions.length;
+  const shown = questions.slice(0, 50);
+  return (
+    <article className="mt-10 max-w-3xl">
+      <nav aria-label="Breadcrumb" className="text-xs text-muted-foreground">
+        <Link to="/" className="hover:underline">Acasă</Link>
+        <span className="mx-1">/</span>
+        <Link to="/grile" className="hover:underline">Grile Admitere</Link>
+        {uniSlug && (<><span className="mx-1">/</span><Link to="/grile/$uniSlug" params={{ uniSlug }} className="hover:underline">{uni}</Link></>)}
+        <span className="mx-1">/</span>
+        <span>{subject?.name}</span>
+      </nav>
+      <h1 className="mt-2 text-2xl font-bold">Grile {label} — Admitere 2026, rezolvate pas cu pas</h1>
+      <p className="mt-3 text-sm text-muted-foreground">
+        Această pagină conține {total} grile de admitere la {subject?.name} pentru {uni}, fiecare cu răspunsul corect și explicație detaliată.
+        Rezolvă testul interactiv de mai sus (30 de întrebări per sesiune, cronometrate) sau parcurge mai jos toate întrebările cu rezolvări.
+        Grilele sunt gratuite și nelimitate; nu reprezintă subiecte oficiale ale universității, ci material de antrenament în formatul examenului.
+      </p>
+      {subject?.description && <p className="mt-2 text-sm text-muted-foreground">{subject.description}</p>}
+
+      <h2 className="mt-8 text-xl font-semibold">Toate grilele {label} cu răspunsuri și explicații</h2>
+      <ol className="mt-4 space-y-3">
+        {shown.map((qq, i) => {
+          const correct = getCorrectIndices(qq);
+          return (
+            <li key={qq.id} id={`grila-${i + 1}`}>
+              <details className="rounded-md border p-4">
+                <summary className="cursor-pointer text-sm font-medium">
+                  <span className="mr-1 font-semibold">Grila {i + 1}.</span>
+                  <span className="inline-block align-top [&_p]:inline"><QuestionContent text={qq.question_text} figureUrl={qq.figure_url} /></span>
+                </summary>
+                <ul className="mt-3 space-y-1 text-sm">
+                  {qq.options.map((opt, j) => (
+                    <li key={j} className={correct.includes(j) ? "font-semibold text-green-700 dark:text-green-400" : ""}>
+                      <span className="mr-1">{String.fromCharCode(65 + j)})</span>
+                      <span className="inline-block align-top [&_p]:my-0 [&_p]:inline"><QuestionContent text={opt} /></span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-3 text-sm">
+                  <span className="font-medium">Răspuns corect: </span>
+                  {correct.map((c) => String.fromCharCode(65 + c)).join(", ")}
+                </div>
+                {(qq.solution_md?.trim() || qq.explanation?.trim()) && (
+                  <div className="mt-2 text-sm text-foreground/90">
+                    <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Rezolvare</div>
+                    <QuestionContent text={(qq.solution_md?.trim() || qq.explanation) as string} />
+                  </div>
+                )}
+              </details>
+            </li>
+          );
+        })}
+      </ol>
+      {total > shown.length && <p className="mt-3 text-sm text-muted-foreground">Sunt afișate primele {shown.length} din {total} grile. Restul le găsești în testul interactiv de mai sus.</p>}
+
+      <h2 className="mt-10 text-xl font-semibold">Cum te pregătești eficient la {subject?.name} pentru {uni}</h2>
+      <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
+        <li>Rezolvă grilele cronometrat, apoi citește explicația la fiecare întrebare, inclusiv la cele nimerite.</li>
+        <li>Notează capitolele unde greșești și revino la ele după 2–3 zile (repetare spațiată).</li>
+        <li>O dată pe săptămână fă o <Link to="/simulare" className="underline">simulare completă</Link> în format de examen.</li>
+        <li>Exersează zilnic cu <Link to="/grila-zilei" className="underline">grila zilei</Link> și citește <Link to="/tutoriale" className="underline">ghidurile pe materii</Link>.</li>
+      </ul>
+
+      <h2 className="mt-10 text-xl font-semibold">Întrebări frecvente</h2>
+      <div className="mt-3 space-y-3 text-sm">
+        <div><h3 className="font-semibold">Grilele {label} sunt gratuite?</h3><p className="text-muted-foreground">Da. Toate grilele de pe grileadmitere.ro sunt gratuite și nelimitate, cu răspunsuri și explicații pas cu pas.</p></div>
+        <div><h3 className="font-semibold">Sunt acestea subiectele oficiale de admitere {uni}?</h3><p className="text-muted-foreground">Nu. Sunt întrebări de antrenament construite după structura și capitolele examenului. Pentru subiectele oficiale consultă <Link to="/subiecte-admitere" className="underline">arhiva de subiecte</Link> și site-ul universității.</p></div>
+        <div><h3 className="font-semibold">Câte grile sunt în acest set?</h3><p className="text-muted-foreground">Setul conține {total} grile la {subject?.name}, iar testul interactiv îți servește 30 de întrebări pe sesiune. Se adaugă grile noi zilnic.</p></div>
+      </div>
+
+      {recs.length > 0 && (
+        <>
+          <h2 className="mt-10 text-xl font-semibold">Alte seturi de grile recomandate</h2>
+          <ul className="mt-3 grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
+            {recs.map((r: any) => (
+              <li key={r.id}><Link to="/quiz/$slug" params={{ slug: r.slug }} className="underline">Grile {r.name} {r.universities?.short_name ?? ""}</Link></li>
+            ))}
+            {uniSlug && <li><Link to="/grile/$uniSlug" params={{ uniSlug }} className="underline">Toate materiile {uni}</Link></li>}
+            <li><Link to="/grile" className="underline">Toate universitățile</Link></li>
+          </ul>
+        </>
+      )}
+      <p className="mt-8 text-xs text-muted-foreground">URL: grileadmitere.ro/quiz/{slug}</p>
+    </article>
   );
 }
