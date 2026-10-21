@@ -57,19 +57,19 @@ function subiectHead(s: SubiectRezolvat) {
 export const Route = createFileRoute("/tutoriale/$slug")({
   loader: async ({ params }) => {
     const st = subiecteBySlug.get(params.slug);
-    if (st) return { subiect: st };
+    if (st) return { kind: "subiect" as const, subiect: st };
     const t = tutorialeBySlug.get(params.slug);
-    if (t) return { ...t, content_md: null as string | null, published_at: null as string | null };
+    if (t) return { kind: "ghid" as const, ...t, content_md: null as string | null, published_at: null as string | null };
     const a = await getArticol({ data: { slug: params.slug } });
     if (!a) throw notFound();
     if (Array.isArray(a.intrebari) && a.intrebari.length) {
-      return { subiect: { slug: a.slug, title: a.title, description: a.description, materie: a.materie, keywords: a.keywords, intro: a.content_md || a.description, subject_slug: a.subject_slug, published_at: a.published_at, intrebari: a.intrebari as IntrebareRezolvata[] } satisfies SubiectRezolvat };
+      return { kind: "subiect" as const, subiect: { slug: a.slug, title: a.title, description: a.description, materie: a.materie, keywords: a.keywords, intro: a.content_md || a.description, subject_slug: a.subject_slug, published_at: a.published_at, intrebari: a.intrebari as IntrebareRezolvata[] } satisfies SubiectRezolvat };
     }
-    return { slug: a.slug, title: a.title, materie: a.materie, keywords: a.keywords, intro: a.description, body: "", content_md: a.content_md, published_at: a.published_at };
+    return { kind: "ghid" as const, slug: a.slug, title: a.title, materie: a.materie, keywords: a.keywords, intro: a.description, body: "", content_md: a.content_md, published_at: a.published_at };
   },
   head: ({ params, loaderData }) => {
     if (!loaderData) return { meta: [{ title: "Tutorial indisponibil — grileadmitere.ro" }, { name: "robots", content: "noindex" }] };
-    if ("subiect" in loaderData) return subiectHead(loaderData.subiect);
+    if (loaderData.kind === "subiect") return subiectHead(loaderData.subiect);
     const t = loaderData;
     const url = `https://grileadmitere.ro/tutoriale/${params.slug}`;
     const raw = t.content_md ? t.intro : `${t.intro} Subiecte cheie: ${t.keywords}.`;
@@ -148,7 +148,7 @@ export const Route = createFileRoute("/tutoriale/$slug")({
 
 function TutorialPage() {
   const data = Route.useLoaderData();
-  if ("subiect" in data) {
+  if (data.kind === "subiect") {
     return (
       <div className="min-h-screen bg-background">
         <Header />
@@ -166,7 +166,7 @@ function TutorialPage() {
   return <GhidPage t={data} />;
 }
 
-function GhidPage({ t }: { t: Exclude<ReturnType<typeof Route.useLoaderData>, { subiect: SubiectRezolvat }> }) {
+function GhidPage({ t }: { t: Extract<ReturnType<typeof Route.useLoaderData>, { kind: "ghid" }> }) {
   const related = tutoriale.filter(x => x.materie === t.materie && x.slug !== t.slug).slice(0, 6);
 
   return (
