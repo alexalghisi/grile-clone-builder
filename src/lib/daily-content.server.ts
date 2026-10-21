@@ -1,7 +1,16 @@
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { createLovableAiGatewayRunIdFetch } from "./ai-run-id.server";
 import { articlesPerDay, validateQuestions, type DailyQuestion } from "./daily-content-rules";
-import { pickTopics, slugifyKeyword } from "./seo-topics";
+import {
+  buildSolutionSlug,
+  isCompleteSolutionArticle,
+  pickSolutionCandidate,
+  quizPathOf,
+  solutionPrompt,
+  subjectLabel,
+  toCandidate,
+  type QuestionRow,
+} from "./solution-article";
 
 const MODEL = "openai/gpt-6-astra";
 const GRILE_PER_GROUP = 50;
@@ -70,62 +79,72 @@ async function askJson<T>(prompt: string, schemaName: string, schema: Record<str
 const ARTICLE_SCHEMA = {
   type: "object",
   additionalProperties: false,
-  required: ["title", "materie", "keywords", "description", "content_md"],
+  required: ["answer_confirmed", "topic", "title", "keywords", "description", "content_md"],
   properties: {
+    answer_confirmed: { type: "boolean" },
+    topic: { type: "string" },
     title: { type: "string" },
-    materie: { type: "string" },
     keywords: { type: "string" },
     description: { type: "string" },
     content_md: { type: "string" },
   },
 };
 
-async function generateArticles(count: number, offset = 0, day = new Date().toISOString().slice(0, 10)) {
-  const { data: recent } = await supabaseAdmin.from("articole").select("title,slug").order("published_at", { ascending: false }).limit(400);
-  const usedSlugs = new Set((recent ?? []).map((r) => r.slug));
-  const avoid = (recent ?? []).slice(0, 60).map((r) => r.title).join(" | ");
-  const topics = pickTopics(new Date(day), articlesPerDay(new Date(day)), usedSlugs);
-  const out: string[] = [];
-  for (let n = 0; n < count; n++) {
-    const topic = topics[(offset + n) % topics.length];
-    const materie = topic.materie;
-    const links = (topic.links ?? ["/grile"]).join(", ");
-    const a = await askJson<{ title: string; materie: string; keywords: string; description: string; content_md: string }>(
-      `Ești profesor român cu experiență la pregătirea pentru admitere și BAC și scrii pe blogul grileadmitere.ro (grile de admitere rezolvate gratuit, nelimitat).
-Scrie UN articol SEO-first, în limba română cu diacritice, care să ocupe prima pagină Google pentru căutarea: „${topic.keyword}”.
-Unghi obligatoriu: ${topic.angle}.
-Cerințe SEO (respectă-le exact):
-- title: 50-65 de caractere, conține cuvântul-cheie „${topic.keyword}” (sau o formă naturală a lui) cât mai la început; promite un beneficiu concret; fără clickbait.
-- description: meta descriere 140-158 caractere, conține cuvântul-cheie, se termină cu un îndemn.
-- keywords: 6-10 cuvinte-cheie/variante de căutare (ex. sinonime, întrebări), separate prin virgulă.
-- content_md: 1200-1700 cuvinte în Markdown. Primul paragraf (max 60 cuvinte) răspunde direct la intenția căutării și conține cuvântul-cheie. Apoi: secțiuni ## și ### cu subtitluri care conțin variante naturale ale cuvântului-cheie, liste, pași numerotați, cel puțin un exemplu rezolvat pas cu pas (sau un plan/tabel concret), formule LaTeX între $...$ când e cazul, o secțiune „## Greșeli frecvente”, o secțiune „## Întrebări frecvente” cu 4 întrebări (### întrebare + răspuns de 2-4 propoziții) și o concluzie scurtă cu îndemn.
-- Include în text, natural, cel puțin 3 legături interne în format Markdown către: ${links} (ex. [grile rezolvate gratuit](/grile)). Nu folosi URL-uri externe.
-- Fără H1. Ton cald, clar, concret. Nu repeta cuvântul-cheie artificial (keyword stuffing).
-- Informații corecte. NU inventa date exacte (date calendaristice, număr de locuri, medii, taxe, autori, statistici). Când e vorba de regulamente sau calendare oficiale, spune că elevul trebuie să verifice site-ul oficial al universității/ministerului.
-- materie: exact „${materie}”.
-Nu repeta aceste titluri existente: ${avoid}`,
-      "articol",
-      ARTICLE_SCHEMA,
-    );
-    const words = a.content_md.split(/\s+/).length;
-    const internalLinks = (a.content_md.match(/\]\(\/[a-z0-9\-\/]*\)/g) ?? []).length;
-    if (a.materie !== materie || words < 900 || !a.content_md.includes("## ") || internalLinks < 2 || !/##\s*Întrebări frecvente/i.test(a.content_md))
-      throw new Error("Articol incomplet, fără legături interne sau materia incorectă");
-    let slug = slugifyKeyword(topic.keyword);
-    if (usedSlugs.has(slug)) slug = `${slug}-${day}`;
-    usedSlugs.add(slug);
-    const { error } = await supabaseAdmin.from("articole").upsert({
-      slug,
-      title: a.title.trim().slice(0, 90),
-      materie,
-      keywords: a.keywords,
-      description: a.description.trim().slice(0, 160),
-      content_md: a.content_md,
-    }, { onConflict: "slug", ignoreDuplicates: true });
-    if (error) throw error;
-    out.push(slug);
+type SolutionArticle = {
+  answer_confirmed: boolean;
+  topic: string;
+  title: string;
+  keywords: string;
+  description: string;
+  content_md: string;
+};
+
+async function generateSolutionArticle(offset: number, rejected: string[]): Promise<string | null> {
+  const { data: existing, error: existingError } = await supabaseAdmin
+    .from("articole")
+    .select("slug,question_id");
+  if (existingError) throw existingError;
+  const usedIds = new Set([
+    ...rejected,
+    ...(existing ?? []).flatMap((a) => (a.question_id ? [a.question_id] : [])),
+  ]);
+  const { data: rows, error } = await supabaseAdmin
+    .from("questions")
+    .select(
+      "id,question_text,options,correct_index,explanation,solution_md,subjects(name,slug,universities(short_name,name,slug))",
+    )
+    .not("explanation", "is", null)
+    .order("created_at", { ascending: false })
+    .limit(300);
+  if (error) throw error;
+  const q = pickSolutionCandidate(
+    ((rows ?? []) as unknown as QuestionRow[]).flatMap(toCandidate),
+    usedIds,
+    offset,
+  );
+  if (!q) throw new Error("Nu mai există grile fără articol de rezolvare");
+  const a = await askJson<SolutionArticle>(solutionPrompt(q), "articol", ARTICLE_SCHEMA);
+  if (!a.answer_confirmed || !isCompleteSolutionArticle(a.content_md, quizPathOf(q))) {
+    rejected.push(q.id);
+    return null;
   }
-  return out;
+  const takenSlugs = new Set((existing ?? []).map((row) => row.slug));
+  const slug = buildSolutionSlug(
+    { materie: q.subjectName, universitate: q.universitate, topic: a.topic },
+    takenSlugs,
+    q.id,
+  );
+  const { error: saveError } = await supabaseAdmin.from("articole").insert({
+    slug,
+    question_id: q.id,
+    title: a.title.trim(),
+    materie: subjectLabel(q.subjectName),
+    keywords: a.keywords,
+    description: a.description.trim().slice(0, 160),
+    content_md: a.content_md,
+  });
+  if (saveError) throw saveError;
+  return slug;
 }
 
 const GRILE_SCHEMA = {
@@ -203,9 +222,13 @@ export async function runDailyContent(report: (value: unknown) => void = () => {
     while (Number(result.article_step) < articlesPerDay(now)) {
       if (stepsDone >= maxSteps) { result.partial = true; return result; }
       stepsDone++;
-      const slugs = await generateArticles(1, Number(result.article_step), today);
-      result.article_step = Number(result.article_step) + 1;
-      result.latest_article = slugs[0];
+      const rejected = (result.rejected_questions as string[] | undefined) ?? [];
+      result.rejected_questions = rejected;
+      const slug = await generateSolutionArticle(Number(result.article_step), rejected);
+      if (slug) {
+        result.article_step = Number(result.article_step) + 1;
+        result.latest_article = slug;
+      }
       await saveProgress();
       report(result);
     }
