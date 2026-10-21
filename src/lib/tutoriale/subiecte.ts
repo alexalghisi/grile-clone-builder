@@ -99,7 +99,7 @@ const fizica: IntrebareRezolvata[] = [
     "**A este corect**: volumul scade de 2 ori, presiunea crește de 2 ori. **B** inversează proporționalitatea. **C** ar fi transformarea izobară. **D** presupune dependență de pătratul volumului."),
   q("Un resort cu constanta elastică $k = 200\\,N/m$ este alungit cu $5\\,cm$. Forța elastică are modulul:", ["$10\\,N$", "$1000\\,N$", "$40\\,N$", "$0{,}25\\,N$"], 0,
     "1. Legea lui Hooke: $F = k \\Delta l$, cu $\\Delta l = 0{,}05\\,m$.\n2. $F = 200 \\cdot 0{,}05 = 10\\,N$.",
-    "**A este corect**. **B** folosește centimetri fără conversie ($200 \\cdot 5$). **C** = $k / 5$. **D** = $\\frac{k \\Delta l^2}{2}$ cu valori amestecate — formula energiei, nu a forței."),
+    "**A este corect**. **B** folosește centimetri fără conversie ($200 \\cdot 5$). **C** = $k / 5$. **D** amestecă unitățile ($k \\cdot \\Delta l^2 / 2$ cu $\\Delta l$ în cm, împărțit apoi la 100) — este forma energiei, nu a forței."),
   q("Ce impuls are un corp de $0{,}5\\,kg$ care se deplasează cu $4\\,m/s$?", ["$2\\,kg\\cdot m/s$", "$8\\,kg\\cdot m/s$", "$4\\,J$", "$0{,}125\\,kg\\cdot m/s$"], 0,
     "1. Impulsul: $p = m v$.\n2. $p = 0{,}5 \\cdot 4 = 2\\,kg \\cdot m/s$.",
     "**A este corect**. **B** = $m v^2$, fără sens. **C** este energia cinetică $\\frac{m v^2}{2} = 4\\,J$ — altă mărime, alt unit. **D** = $m / v$."),
@@ -108,7 +108,7 @@ const fizica: IntrebareRezolvata[] = [
     "**A este corect**. **B** = $\\frac{T_2}{T_1}$, uită „1 −”. **C** depășește 100%, imposibil fizic. **D** = $\\frac{T_1 - T_2}{1000}$, împărțire greșită."),
   q("Un obiect este așezat la $30\\,cm$ în fața unei lentile convergente cu distanța focală $f = 10\\,cm$. La ce distanță de lentilă se formează imaginea?", ["$15\\,cm$", "$7{,}5\\,cm$", "$20\\,cm$", "$30\\,cm$"], 0,
     "1. Formula lentilelor subțiri: $\\frac{1}{x_2} - \\frac{1}{x_1} = \\frac{1}{f}$, cu $x_1 = -30\\,cm$.\n2. $\\frac{1}{x_2} = \\frac{1}{10} - \\frac{1}{30} = \\frac{2}{30}$, deci $x_2 = 15\\,cm$ (imagine reală, după lentilă).",
-    "**A este corect**. **B** adună inversele ($\\frac{1}{10} + \\frac{1}{30}$), greșind semnul lui $x_1$. **C** = $30 - 10$, scădere directă a distanțelor. **D** ar fi corect doar pentru obiect la $2f = 20\\,cm$ (imagine la $2f$), confuzie de caz."),
+    "**A este corect**. **B** adună inversele ($\\frac{1}{10} + \\frac{1}{30}$), greșind semnul lui $x_1$. **C** = $30 - 10$, scădere directă a distanțelor. **D** presupune că imaginea apare la aceeași distanță ca obiectul, ceea ce se întâmplă doar când obiectul este la $2f = 20\\,cm$."),
 ];
 
 export const SUBIECTE_REZOLVATE: SubiectRezolvat[] = [

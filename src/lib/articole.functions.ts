@@ -17,12 +17,12 @@ function pub() {
   });
 }
 
-export type ArticolMeta = { slug: string; title: string; materie: string; description: string; published_at: string };
+export type ArticolMeta = { slug: string; title: string; materie: string; description: string; published_at: string; subject_slug: string | null };
 
 export const listArticole = createServerFn({ method: "GET" }).handler(async (): Promise<ArticolMeta[]> => {
   const { data } = await pub()
     .from("articole")
-    .select("slug,title,materie,description,published_at")
+    .select("slug,title,materie,description,published_at,subject_slug")
     .order("published_at", { ascending: false })
     .limit(500);
   return (data as ArticolMeta[]) ?? [];
@@ -33,5 +33,5 @@ export const getArticol = createServerFn({ method: "GET" })
   .handler(async ({ data }) => {
     const { data: row, error } = await pub().from("articole").select("*").eq("slug", data.slug).maybeSingle();
     if (error) console.error("getArticol", error.message);
-    return row as (ArticolMeta & { keywords: string; content_md: string }) | null;
+    return row as (ArticolMeta & { keywords: string; content_md: string; intrebari: unknown }) | null;
   });
