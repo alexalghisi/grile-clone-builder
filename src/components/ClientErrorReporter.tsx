@@ -89,6 +89,7 @@ export function ClientErrorReporter() {
       if (message.includes("Load failed") || message.includes("NetworkError") || message.includes("Failed to fetch")) return;
       if (message.includes("AbortError") || message.includes("The operation was aborted")) return;
       if (message.includes("adsbygoogle") || message.includes("TagError")) return;
+      if (/reading '(M_ID|__gCrWeb|webkit)'/.test(message)) return;
       if (isInjectedThirdParty(reason?.stack ? String(reason.stack) : "")) return;
       if (/Minified React error #(418|421|422|423|425)/.test(message)) return;
       if (
