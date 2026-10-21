@@ -33,5 +33,5 @@ export const getArticol = createServerFn({ method: "GET" })
   .handler(async ({ data }) => {
     const { data: row, error } = await pub().from("articole").select("*").eq("slug", data.slug).maybeSingle();
     if (error) console.error("getArticol", error.message);
-    return row as (ArticolMeta & { keywords: string; content_md: string; intrebari: unknown }) | null;
+    return row as (ArticolMeta & { keywords: string; content_md: string; intrebari: import("@/lib/subiect-rezolvat").IntrebareRezolvata[] | null }) | null;
   });
