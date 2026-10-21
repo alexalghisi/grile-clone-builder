@@ -64,7 +64,7 @@ function TutorialeIndex() {
         </nav>
         <h1 className="text-4xl font-bold tracking-tight">Subiecte de admitere rezolvate</h1>
         <p className="mt-3 text-lg text-muted-foreground max-w-3xl">
-          Peste {tutoriale.length} ghiduri pas cu pas, scrise pentru elevii care se pregătesc de admitere la facultate și de examenul de bacalaureat. Algoritmi, formule, scheme de rezolvare, tehnici de memorare și strategii de examen — toate gratuit.
+          Fiecare subiect conține toate întrebările, răspunsul corect, rezolvarea pas cu pas și de ce celelalte variante sunt greșite. Publicăm o variantă nouă în fiecare zi.
         </p>
 
         <section className="mt-8">
