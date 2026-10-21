@@ -29,6 +29,13 @@
       "when": 1792358344973,
       "tag": "0003_daily_content_checkpoints",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792597695761,
+      "tag": "0004_daily_sim_per_subject",
+      "breakpoints": true
     }
   ]
 }
