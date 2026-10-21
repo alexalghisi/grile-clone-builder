@@ -4,6 +4,7 @@ import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { DRIVING_QUESTIONS, DRIVING_CATEGORIES } from "@/lib/scoala-soferi/questions";
 import { PROFESORI_MATERII } from "@/lib/profesori/data";
 import { tutoriale } from "@/lib/tutoriale/data";
+import { SUBIECTE_REZOLVATE } from "@/lib/tutoriale/subiecte";
 
 const BASE_URL = "https://grileadmitere.ro";
 
@@ -39,6 +40,12 @@ export const Route = createFileRoute("/sitemap.xml")({
           priority: "0.85",
         }));
 
+        const subiecteEntries: SitemapEntry[] = SUBIECTE_REZOLVATE.map((s) => ({
+          path: `/tutoriale/${s.slug}`,
+          lastmod: s.published_at ?? undefined,
+          changefreq: "monthly",
+          priority: "0.85",
+        }));
         const tutorialeEntries: SitemapEntry[] = tutoriale.map((t) => ({
           path: `/tutoriale/${t.slug}`,
           changefreq: "monthly",
@@ -147,6 +154,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...scoalaCatEntries,
           ...scoalaGrilaEntries,
           ...profesoriEntries,
+          ...subiecteEntries,
           ...tutorialeEntries,
           ...articoleEntries,
           ...simEntries,
@@ -174,7 +182,7 @@ export const Route = createFileRoute("/sitemap.xml")({
         return new Response(xml, {
           headers: {
             "Content-Type": "application/xml",
-            "Cache-Control": "public, max-age=3600",
+            "Cache-Control": "public, max-age=600",
           },
         });
       },

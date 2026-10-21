@@ -4,14 +4,15 @@ import { Header } from "@/components/Header";
 import { tutoriale, materii } from "@/lib/tutoriale/data";
 import { useState, useMemo } from "react";
 import { listArticole } from "@/lib/articole.functions";
+import { SUBIECTE_REZOLVATE } from "@/lib/tutoriale/subiecte";
 
 export const Route = createFileRoute("/tutoriale/")({
   head: () => ({
     meta: [
-      { title: "Tutoriale Admitere 2026 — 140+ Ghiduri pe Materii | grileadmitere.ro" },
-      { name: "description", content: "Peste 140 de tutoriale gratuite pentru admitere și BAC 2026: matematică, fizică, chimie, biologie, română, informatică, anatomie, logică, economie, geografie. Ghiduri pas cu pas scrise de profesori." },
-      { property: "og:title", content: "Tutoriale Admitere 2026 — 140+ Ghiduri pe Materii" },
-      { property: "og:description", content: "Ghiduri pas cu pas pentru fiecare materie de la admitere și BAC: matematică, biologie, chimie, fizică, română, informatică." },
+      { title: "Subiecte admitere rezolvate 2026 — grile cu rezolvare pas cu pas | grileadmitere.ro" },
+      { name: "description", content: "Subiecte de admitere rezolvate complet la Informatică, Matematică, Fizică și alte materii: fiecare grilă cu răspuns corect, rezolvare pas cu pas și explicații. Variantă nouă zilnic." },
+      { property: "og:title", content: "Subiecte admitere rezolvate 2026 — grile cu rezolvare" },
+      { property: "og:description", content: "Subiecte de admitere rezolvate complet, cu răspuns corect și rezolvare pas cu pas pentru fiecare grilă. Variantă nouă în fiecare zi." },
       { property: "og:url", content: "https://grileadmitere.ro/tutoriale" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -25,7 +26,7 @@ export const Route = createFileRoute("/tutoriale/")({
         name: "Tutoriale Admitere 2026",
         url: "https://grileadmitere.ro/tutoriale",
         description: "Colecție de tutoriale gratuite pentru pregătirea admiterii și BAC-ului 2026.",
-        hasPart: tutoriale.slice(0, 50).map(t => ({
+        hasPart: [...SUBIECTE_REZOLVATE, ...tutoriale.slice(0, 40)].map(t => ({
           "@type": "Article",
           headline: t.title,
           url: `https://grileadmitere.ro/tutoriale/${t.slug}`,
@@ -61,16 +62,31 @@ function TutorialeIndex() {
         <nav aria-label="Breadcrumb" className="mb-4 text-sm text-muted-foreground">
           <Link to="/" className="hover:underline">Acasă</Link> / <span>Tutoriale</span>
         </nav>
-        <h1 className="text-4xl font-bold tracking-tight">Tutoriale Admitere 2026 & BAC</h1>
+        <h1 className="text-4xl font-bold tracking-tight">Subiecte de admitere rezolvate</h1>
         <p className="mt-3 text-lg text-muted-foreground max-w-3xl">
-          Peste {tutoriale.length} ghiduri pas cu pas, scrise pentru elevii care se pregătesc de admitere la facultate și de examenul de bacalaureat. Algoritmi, formule, scheme de rezolvare, tehnici de memorare și strategii de examen — toate gratuit.
+          Fiecare subiect conține toate întrebările, răspunsul corect, rezolvarea pas cu pas și de ce celelalte variante sunt greșite. Publicăm o variantă nouă în fiecare zi.
         </p>
 
-        {noi.length > 0 && (
+        <section className="mt-8">
+          <h2 className="text-2xl font-semibold border-b pb-2">Subiecte de admitere rezolvate</h2>
+          <ul className="mt-4 grid sm:grid-cols-2 gap-3">
+            {[...noi.filter(a => a.subject_slug), ...SUBIECTE_REZOLVATE.map(s => ({ ...s, published_at: s.published_at ?? "" }))].map(a => (
+              <li key={a.slug}>
+                <Link to="/tutoriale/$slug" params={{ slug: a.slug }} className="block p-4 rounded-lg border hover:border-primary transition">
+                  <p className="text-xs uppercase tracking-wide text-primary">{a.materie}</p>
+                  <h3 className="mt-1 font-medium leading-snug">{a.title}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground line-clamp-2">{a.description}</p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {noi.some(a => !a.subject_slug) && (
           <section className="mt-8">
-            <h2 className="text-2xl font-semibold border-b pb-2">Articole noi</h2>
+            <h2 className="text-2xl font-semibold border-b pb-2">Grile rezolvate</h2>
             <ul className="mt-4 grid sm:grid-cols-2 gap-3">
-              {noi.map(a => (
+              {noi.filter(a => !a.subject_slug).map(a => (
                 <li key={a.slug}>
                   <Link to="/tutoriale/$slug" params={{ slug: a.slug }} className="block p-4 rounded-lg border hover:border-primary transition">
                     <p className="text-xs uppercase tracking-wide text-primary">{a.materie} · {new Date(a.published_at).toLocaleDateString("ro-RO", { timeZone: "Europe/Bucharest" })}</p>
@@ -126,19 +142,6 @@ function TutorialeIndex() {
           )}
         </div>
 
-        <section className="mt-16 prose dark:prose-invert max-w-none">
-          <h2>De ce să folosești tutorialele de pe grileadmitere.ro</h2>
-          <p>
-            Fiecare tutorial e construit în jurul programei oficiale de admitere și BAC. Găsești scheme de rezolvare, formule cheie, exemple rezolvate și capcane frecvente. Tutorialele se completează perfect cu grilele de pe site — citește teoria, apoi exersează cu sute de grile pe aceeași materie.
-          </p>
-          <h2>Cum studiezi eficient cu aceste tutoriale</h2>
-          <ol>
-            <li>Alege materia și subiectul slab.</li>
-            <li>Citește tutorialul activ — notează formulele și exemplele cu mâna.</li>
-            <li>Rezolvă imediat 10-20 grile pe acel subiect la <Link to="/grile">grile online</Link>.</li>
-            <li>Revino peste 3 zile (repetiție spațiată) ca să consolidezi.</li>
-          </ol>
-        </section>
       </main>
     </div>
   );

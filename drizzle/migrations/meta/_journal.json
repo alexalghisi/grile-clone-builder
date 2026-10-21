@@ -50,6 +50,13 @@
       "when": 1792608739852,
       "tag": "0006_articole_question_id",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1792614183856,
+      "tag": "0007_articole_subiecte_rezolvate",
+      "breakpoints": true
     }
   ]
 }

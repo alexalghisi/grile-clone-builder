@@ -3,18 +3,74 @@ import { Header } from "@/components/Header";
 import { tutorialeBySlug, tutoriale } from "@/lib/tutoriale/data";
 import { getArticol } from "@/lib/articole.functions";
 import { QuestionContent } from "@/components/QuestionContent";
+import { SubiectRezolvatView } from "@/components/SubiectRezolvatView";
+import { subiecteBySlug } from "@/lib/tutoriale/subiecte";
+import { letter, type SubiectRezolvat, type IntrebareRezolvata } from "@/lib/subiect-rezolvat";
+
+const BASE = "https://grileadmitere.ro";
+const plain = (t: string) => t.replace(/```[\s\S]*?```/g, " [cod] ").replace(/[$*`#]/g, "").replace(/\s+/g, " ").trim();
+
+function subiectHead(s: SubiectRezolvat) {
+  const url = `${BASE}/tutoriale/${s.slug}`;
+  return {
+    meta: [
+      { title: `${s.title} | grileadmitere.ro` },
+      { name: "description", content: s.description },
+      { name: "keywords", content: s.keywords },
+      { property: "og:title", content: s.title },
+      { property: "og:description", content: s.description },
+      { property: "og:type", content: "article" },
+      { property: "og:url", content: url },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: s.title },
+      { name: "twitter:description", content: s.description },
+      ...(s.published_at ? [{ property: "article:published_time", content: s.published_at }] : []),
+    ],
+    links: [{ rel: "canonical", href: url }],
+    scripts: [
+      { type: "application/ld+json", children: JSON.stringify({
+        "@context": "https://schema.org", "@type": "Article", headline: s.title, description: s.description,
+        inLanguage: "ro-RO", about: s.materie, keywords: s.keywords, mainEntityOfPage: url,
+        author: { "@type": "Organization", name: "grileadmitere.ro" },
+        publisher: { "@type": "Organization", name: "grileadmitere.ro", logo: { "@type": "ImageObject", url: `${BASE}/logo.png` } },
+        ...(s.published_at ? { datePublished: s.published_at, dateModified: s.published_at } : {}),
+      }) },
+      { type: "application/ld+json", children: JSON.stringify({
+        "@context": "https://schema.org", "@type": "FAQPage",
+        mainEntity: s.intrebari.map((q, i) => ({
+          "@type": "Question", name: `Întrebarea ${i + 1}: ${plain(q.enunt)}`,
+          acceptedAnswer: { "@type": "Answer", text: `Răspuns corect: ${letter(q.corect)}) ${plain(q.variante[q.corect])}. ${plain(q.rezolvare)} ${plain(q.de_ce)}` },
+        })),
+      }) },
+      { type: "application/ld+json", children: JSON.stringify({
+        "@context": "https://schema.org", "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Acasă", item: `${BASE}/` },
+          { "@type": "ListItem", position: 2, name: "Tutoriale", item: `${BASE}/tutoriale` },
+          { "@type": "ListItem", position: 3, name: s.title, item: url },
+        ],
+      }) },
+    ],
+  };
+}
 
 export const Route = createFileRoute("/tutoriale/$slug")({
   loader: async ({ params }) => {
+    const st = subiecteBySlug.get(params.slug);
+    if (st) return { kind: "subiect" as const, subiect: st };
     const t = tutorialeBySlug.get(params.slug);
-    if (t) return { ...t, content_md: null as string | null, published_at: null as string | null };
+    if (t) return { kind: "ghid" as const, ...t, content_md: null as string | null, published_at: null as string | null };
     const a = await getArticol({ data: { slug: params.slug } });
     if (!a) throw notFound();
-    return { slug: a.slug, title: a.title, materie: a.materie, keywords: a.keywords, intro: a.description, body: "", content_md: a.content_md, published_at: a.published_at };
+    if (Array.isArray(a.intrebari) && a.intrebari.length) {
+      return { kind: "subiect" as const, subiect: { slug: a.slug, title: a.title, description: a.description, materie: a.materie, keywords: a.keywords, intro: a.content_md || a.description, subject_slug: a.subject_slug, published_at: a.published_at, intrebari: a.intrebari as IntrebareRezolvata[] } satisfies SubiectRezolvat };
+    }
+    return { kind: "ghid" as const, slug: a.slug, title: a.title, materie: a.materie, keywords: a.keywords, intro: a.description, body: "", content_md: a.content_md, published_at: a.published_at };
   },
   head: ({ params, loaderData }) => {
+    if (!loaderData) return { meta: [{ title: "Tutorial indisponibil — grileadmitere.ro" }, { name: "robots", content: "noindex" }] };
+    if (loaderData.kind === "subiect") return subiectHead(loaderData.subiect);
     const t = loaderData;
-    if (!t) return { meta: [{ title: "Tutorial — grileadmitere.ro" }] };
     const url = `https://grileadmitere.ro/tutoriale/${params.slug}`;
     const raw = t.content_md ? t.intro : `${t.intro} Subiecte cheie: ${t.keywords}.`;
     const desc = raw.length <= 158 ? raw : raw.slice(0, 155).replace(/\s+\S*$/, "") + "…";
@@ -91,7 +147,26 @@ export const Route = createFileRoute("/tutoriale/$slug")({
 });
 
 function TutorialPage() {
-  const t = Route.useLoaderData();
+  const data = Route.useLoaderData();
+  if (data.kind === "subiect") {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <main className="container mx-auto max-w-3xl px-4 py-10">
+          <nav aria-label="Breadcrumb" className="mb-4 text-sm text-muted-foreground">
+            <Link to="/" className="hover:underline">Acasă</Link> /{" "}
+            <Link to="/tutoriale" className="hover:underline">Tutoriale</Link> /{" "}
+            <span>{data.subiect.materie}</span>
+          </nav>
+          <SubiectRezolvatView s={data.subiect} />
+        </main>
+      </div>
+    );
+  }
+  return <GhidPage t={data} />;
+}
+
+function GhidPage({ t }: { t: Extract<ReturnType<typeof Route.useLoaderData>, { kind: "ghid" }> }) {
   const related = tutoriale.filter(x => x.materie === t.materie && x.slug !== t.slug).slice(0, 6);
 
   return (

@@ -85,36 +85,50 @@ export type Database = {
           content_md: string
           description: string
           id: string
+          intrebari: Json | null
           keywords: string
           materie: string
           published_at: string
           question_id: string | null
           slug: string
+          subject_slug: string | null
           title: string
         }
         Insert: {
           content_md: string
           description: string
           id?: string
+          intrebari?: Json | null
           keywords?: string
           materie: string
           published_at?: string
           question_id?: string | null
           slug: string
+          subject_slug?: string | null
           title: string
         }
         Update: {
           content_md?: string
           description?: string
           id?: string
+          intrebari?: Json | null
           keywords?: string
           materie?: string
           published_at?: string
           question_id?: string | null
           slug?: string
+          subject_slug?: string | null
           title?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "articole_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "questions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       attempts: {
         Row: {

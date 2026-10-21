@@ -1,0 +1,1 @@
+- Solved admission papers ("subiecte rezolvate") live in articole.intrebari (jsonb) plus static seeds in src/lib/tutoriale/subiecte.ts; the daily job publishes one per day rotating subjects via MATERII_ROTATIE — keeps /tutoriale/$slug rendering one format with SSR and FAQ/Article JSON-LD.
