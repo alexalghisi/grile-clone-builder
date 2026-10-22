@@ -177,12 +177,8 @@ function RootShell({ children }: { children: React.ReactNode }) {
   );
 }
 
-const FOCUS_PATHS = /^\/(simulare\/|quiz\/|grile\/|grila-zilei|scoala-soferi\/(test|grila))/;
-
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const focus = FOCUS_PATHS.test(pathname);
 
   return (
     <QueryClientProvider client={queryClient}>
