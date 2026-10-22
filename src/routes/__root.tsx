@@ -189,8 +189,6 @@ function RootComponent() {
       <div className={focus ? "pb-6" : "pb-[64px] md:pb-[100px]"}>
         <Outlet />
       </div>
-      {!focus && <StickyBottomAd />}
-      {!focus && <AdSocialBar />}
       <Toaster />
       <ClientErrorReporter />
     </QueryClientProvider>
