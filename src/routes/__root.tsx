@@ -186,7 +186,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className={focus ? "pb-6" : "pb-[64px] md:pb-[100px]"}>
+      <div className="pb-6">
         <Outlet />
       </div>
       <Toaster />
