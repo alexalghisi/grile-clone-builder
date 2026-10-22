@@ -7,11 +7,10 @@ import {
   HeadContent,
   Scripts,
   redirect,
-  useRouterState,
 } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
-import { AdScript, StickyBottomAd, AdSocialBar } from "@/components/AdSlot";
+import { AdScript } from "@/components/AdSlot";
 import { Toaster } from "@/components/ui/sonner";
 import { ClientErrorReporter, reportClientError } from "@/components/ClientErrorReporter";
 
@@ -177,20 +176,14 @@ function RootShell({ children }: { children: React.ReactNode }) {
   );
 }
 
-const FOCUS_PATHS = /^\/(simulare\/|quiz\/|grile\/|grila-zilei|scoala-soferi\/(test|grila))/;
-
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const focus = FOCUS_PATHS.test(pathname);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className={focus ? "pb-6" : "pb-[64px] md:pb-[100px]"}>
+      <div className="pb-6">
         <Outlet />
       </div>
-      {!focus && <StickyBottomAd />}
-      {!focus && <AdSocialBar />}
       <Toaster />
       <ClientErrorReporter />
     </QueryClientProvider>

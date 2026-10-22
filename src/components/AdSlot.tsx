@@ -18,13 +18,8 @@ function writeSessionFlag(key: string) {
   } catch {}
 }
 
-function FallbackDisplayAd({ className = "" }: { className?: string }) {
-  return (
-    <>
-      <AdMobileBanner className={className} />
-      <AdLeaderboard className={className} />
-    </>
-  );
+function FallbackDisplayAd(_: { className?: string }) {
+  return null;
 }
 
 function useAdsensePush<T extends HTMLElement>(ref: React.RefObject<T | null>, enabled: boolean) {
