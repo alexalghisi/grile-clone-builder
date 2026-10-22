@@ -36,8 +36,8 @@ export const Route = createFileRoute("/")({
     meta: [
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { title: "Grile Admitere 2026 + Profesori Verificați — GrileAdmitere.ro" },
-      { name: "description", content: "Grile admitere și BAC 2026 rezolvate pas cu pas de profesori verificați. Mii de grile + profesori particulari pentru UPB, UBB, UTCN, UMF, UAIC, ASE și 100+ facultăți. 100% gratuit." },
+      { title: "Grile Admitere 2026 Gratis, Rezolvate | GrileAdmitere.ro" },
+      { name: "description", content: "Grile admitere 2026 gratuite pentru UMF, UPB, UBB și ASE, cu explicații pas cu pas. Exersează pe materii și verifică-ți pregătirea cu simulări cronometrate." },
       { name: "keywords", content: "grile, grile admitere, grile online, grile facultate, grile rezolvate, grile cu profesori, profesori, profesori online, profesori meditatii, profesori admitere, profesori BAC, profesori matematica, profesori romana, profesori biologie, profesori chimie, profesori fizica, profesori informatica, UMF, UPB, UBB, ASE, UAIC, UTCN" },
       { property: "og:title", content: "Grile Admitere 2026 + Profesori Verificați — GrileAdmitere.ro" },
       { property: "og:description", content: "Cea mai mare bază de grile rezolvate de profesori verificați. Grile admitere și BAC 2026 — UMF, UPB, UBB, ASE, UAIC, UTCN. Gratuit." },
